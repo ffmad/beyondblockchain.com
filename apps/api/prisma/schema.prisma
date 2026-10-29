@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  moduleFormat = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  summary       String
+  description   String
+  audience      String
+  url           String
+  category      String
+  role          String?
+  startedYear   Int
+  status        String?
+  featured      Boolean  @default(false)
+  displayOrder  Int      @default(0)
+  published     Boolean  @default(false)
+  logoUrl       String?
+  imageUrl      String?
+  mobileImageUrl String?
+  imageAlt      String?
+  imageCaption  String?
+  internalNotes String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([published, displayOrder])
+}

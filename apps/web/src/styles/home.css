@@ -1,0 +1,825 @@
+/* Studio: the logo's rocket cutout is the aperture; light through it lands on the product's real screen. */
+
+/* Brand mark and its one-time entrance */
+.brand-mark {
+  position: relative;
+  filter: drop-shadow(0 28px 36px rgb(35 78 155 / 0.22));
+}
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.brand-mark canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.js .brand-mark.has-entrance img {
+  opacity: 0;
+  animation: mark-fallback 0s linear 1.3s forwards;
+}
+.js .brand-mark.has-entrance.is-entering img {
+  animation: none;
+  opacity: 0;
+}
+.mark-ready .brand-mark.has-entrance img {
+  opacity: 1;
+  animation: none;
+}
+@keyframes mark-fallback {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hero */
+.studio-hero {
+  padding-block: 16px 88px;
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 22px;
+  align-items: start;
+}
+.masthead {
+  grid-column: 1 / span 6;
+  grid-row: 1;
+  font-family: var(--f-display);
+  font-weight: 760;
+  font-stretch: 78%;
+  font-size: clamp(54px, 8.6vw, 140px);
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  margin-top: 12px;
+}
+.masthead span {
+  display: block;
+}
+.studio-lead {
+  grid-column: 1 / span 5;
+  grid-row: 2;
+  max-width: 36ch;
+  font-size: clamp(18px, 1.55vw, 22px);
+  line-height: 1.45;
+  color: var(--muted);
+}
+.studio-lead a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--brand-300);
+  text-underline-offset: 4px;
+}
+.studio-lead a:hover {
+  color: var(--brand-700);
+}
+.aperture {
+  --mark-w: clamp(170px, 16vw, 230px);
+  --mark-x: 4%;
+  --mark-y: 6%;
+  grid-column: 7 / -1;
+  grid-row: 1 / span 4;
+  position: relative;
+  height: clamp(560px, 48vw, 700px);
+}
+.aperture-mark {
+  position: absolute;
+  left: var(--mark-x);
+  bottom: var(--mark-y);
+  width: var(--mark-w);
+  z-index: 2;
+}
+/* Starts at the rocket's nose (72.5% across, 31.5% down the mark) and follows its 36° heading. */
+.aperture-beam {
+  position: absolute;
+  left: calc(var(--mark-x) + var(--mark-w) * 0.725);
+  bottom: calc(var(--mark-y) + var(--mark-w) * 1.0833 * 0.685);
+  width: 52%;
+  height: 76px;
+  transform-origin: 0 50%;
+  transform: translateY(50%) rotate(-36deg);
+  background: linear-gradient(
+    90deg,
+    rgb(80 114 175 / 0.55),
+    rgb(133 157 200 / 0.38) 70%,
+    rgb(205 215 232 / 0)
+  );
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.aperture-beam::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.9) 50%, transparent);
+  width: 30%;
+  opacity: 0;
+}
+.aperture-beam.sweeping::after {
+  animation: beam-sweep 0.82s cubic-bezier(0.7, 0, 0.2, 1);
+}
+@keyframes beam-sweep {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(340%);
+    opacity: 0;
+  }
+}
+.aperture-stage {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: clamp(240px, 21vw, 300px);
+  z-index: 3;
+  display: grid;
+  gap: 12px;
+}
+.stage-phone {
+  position: relative;
+  aspect-ratio: 390 / 844;
+  border-radius: 34px;
+  border: 7px solid #0c1424;
+  background: #fff;
+  overflow: hidden;
+  box-shadow:
+    0 40px 60px -30px rgb(12 20 36 / 0.55),
+    0 0 0 1px rgb(12 20 36 / 0.08);
+}
+.stage-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.aperture-stage figcaption {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Project picker */
+.picker {
+  grid-column: 1 / span 5;
+  grid-row: 3;
+  display: grid;
+  gap: 14px;
+}
+.picker-list {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+.picker-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  text-align: left;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.picker-item img {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+.picker-item span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.picker-item strong {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 650;
+  font-stretch: 88%;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.picker-item small {
+  font-size: 14px;
+  color: var(--muted);
+}
+.picker-item:hover {
+  background: rgb(255 255 255 / 0.7);
+}
+.picker-item[aria-pressed='true'] {
+  background: var(--ink);
+  color: #fff;
+}
+.picker-item[aria-pressed='true'] small,
+.picker-item[aria-pressed='true'] .picker-since {
+  color: var(--brand-100);
+}
+.picker-since {
+  margin-left: auto;
+  align-self: flex-start;
+  padding-top: 4px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+}
+.picker-detail {
+  grid-column: 1 / span 5;
+  grid-row: 4;
+  display: grid;
+  gap: 16px;
+}
+.picker-detail p {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 44ch;
+}
+.picker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 22px;
+}
+
+/* Work chapters */
+.work-head {
+  padding-block: 8px 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+.chapter {
+  --scene: #fff;
+  --scene-ink: var(--ink);
+  --scene-muted: var(--muted);
+  --scene-accent: var(--brand-700);
+  background: var(--scene);
+  color: var(--scene-ink);
+  padding-block: clamp(72px, 9vw, 132px);
+  overflow: hidden;
+}
+.chapter-ikitai {
+  --scene: #e8edfb;
+  --scene-ink: #0c1424;
+  --scene-muted: #4a5674;
+  --scene-accent: #0d55fd;
+}
+.chapter-fairmints {
+  --scene: #06130d;
+  --scene-ink: #ebfff4;
+  --scene-muted: #9fc6b1;
+  --scene-accent: #2de093;
+}
+.chapter-festcompass {
+  --scene: #edf3ec;
+  --scene-ink: #10241a;
+  --scene-muted: #4c6356;
+  --scene-accent: #2e7d4f;
+}
+.chapter-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(36px, 5vw, 88px);
+  align-items: center;
+}
+.chapter-flip .chapter-inner {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+.chapter-flip .chapter-copy {
+  order: 2;
+}
+.chapter-copy {
+  display: grid;
+  justify-items: start;
+}
+.chapter-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--scene-muted);
+}
+.chapter-meta img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.chapter-since {
+  color: var(--scene-accent);
+}
+.chapter-copy > h2 {
+  margin-top: 22px;
+  font-family: var(--f-display);
+  font-size: clamp(52px, 7vw, 112px);
+  font-weight: 760;
+  font-stretch: 80%;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+}
+.chapter-summary {
+  margin-top: 18px;
+  font-family: var(--f-display);
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 600;
+  font-stretch: 92%;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+.chapter-description {
+  margin-top: 16px;
+  max-width: 46ch;
+  font-size: 17px;
+  color: var(--scene-muted);
+}
+.chapter-status {
+  margin-top: 10px;
+  font-size: 15px;
+}
+.chapter-facts {
+  margin-top: 18px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--scene-muted);
+}
+.chapter-facts span + span::before {
+  content: ' · ';
+}
+.chapter-cta {
+  margin-top: 28px;
+  background: var(--scene-ink);
+  color: var(--scene);
+}
+.chapter-cta:hover {
+  background: var(--scene-accent);
+  color: var(--scene);
+}
+.chapter-fairmints .chapter-cta:hover {
+  color: #06130d;
+}
+.chapter-visual {
+  position: relative;
+  min-width: 0;
+}
+.capture-viewer {
+  position: relative;
+}
+.capture-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  position: relative;
+}
+.capture-open {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 7px 11px;
+  border-radius: 99px;
+  background: rgb(12 20 36 / 0.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.capture-button:hover .capture-open,
+.capture-button:focus-visible .capture-open {
+  opacity: 1;
+}
+@media (hover: none) {
+  .capture-open {
+    opacity: 1;
+  }
+}
+.browser-frame {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    0 40px 70px -40px rgb(0 0 0 / 0.55),
+    0 0 0 1px rgb(0 0 0 / 0.06);
+}
+.browser-bar {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #f1f2f4;
+  border-bottom: 1px solid #e3e5e9;
+}
+.browser-bar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #cfd3da;
+}
+.browser-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.chapter-device {
+  position: relative;
+}
+.chapter-fairmints .chapter-device {
+  padding-right: 9%;
+}
+.chapter-phone {
+  position: absolute;
+  right: 0;
+  bottom: -12%;
+  width: 22%;
+  border-radius: 22px;
+  border: 5px solid #0c1424;
+  background: #fff;
+  box-shadow: 0 30px 50px -24px rgb(0 0 0 / 0.6);
+}
+.chapter-caption {
+  margin-top: 26px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--scene-muted);
+}
+.chapter-festcompass .chapter-visual {
+  display: grid;
+}
+.scene-art {
+  grid-area: 1 / 1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.chapter-festcompass .chapter-device {
+  grid-area: 1 / 1;
+  align-self: end;
+  width: 84%;
+  margin: 0 -6% -10% auto;
+}
+.chapter-festcompass .chapter-caption {
+  margin-top: 48px;
+}
+
+/* Ikitai: post to plan */
+.ikitai-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 24px 26px;
+}
+.ikitai-flow figure {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+.ikitai-flow figcaption {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--scene-muted);
+}
+.flow-post {
+  position: relative;
+  width: min(300px, 100%);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 30px 50px -30px rgb(12 20 36 / 0.5);
+}
+.flow-post img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.flow-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -30%;
+  height: 30%;
+  background: linear-gradient(to bottom, transparent, rgb(13 85 253 / 0.35), transparent);
+  opacity: 0;
+}
+.flow-source.scanning .flow-scan {
+  animation: flow-scan 0.95s ease-in-out forwards;
+}
+@keyframes flow-scan {
+  from {
+    top: -30%;
+    opacity: 1;
+  }
+  to {
+    top: 100%;
+    opacity: 1;
+  }
+}
+.flow-arrow {
+  position: relative;
+  width: 48px;
+  height: 2px;
+  background: var(--scene-accent);
+}
+.flow-arrow::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--scene-accent);
+  border-right: 2px solid var(--scene-accent);
+  transform: rotate(45deg);
+}
+.flow-phone .capture-viewer {
+  width: min(290px, 100%);
+}
+.phone-frame {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1320 / 2868;
+  border-radius: 36px;
+  border: 7px solid #0c1424;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 40px 60px -30px rgb(12 20 36 / 0.55);
+}
+.phone-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+.phone-screen.active {
+  opacity: 1;
+}
+.phone-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  color: var(--scene-muted);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.phone-frame.waiting .phone-empty {
+  opacity: 1;
+}
+.flow-controls {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 22px;
+}
+.flow-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.flow-tabs button {
+  padding: 9px 14px;
+  border-radius: 99px;
+  border: 1px solid rgb(12 20 36 / 0.18);
+  background: rgb(255 255 255 / 0.7);
+  font-size: 14px;
+  font-weight: 500;
+}
+.flow-tabs button[aria-pressed='true'] {
+  background: var(--scene-ink);
+  border-color: var(--scene-ink);
+  color: #fff;
+}
+.flow-replay {
+  border: 0;
+  background: none;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--scene-accent);
+}
+.flow-replay:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.flow-note {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: var(--scene-muted);
+}
+
+/* Bridge to the person */
+.bridge {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 18px 24px;
+  padding-block: clamp(84px, 10vw, 140px);
+}
+.bridge .eyebrow {
+  grid-column: 1 / -1;
+}
+.bridge h2 {
+  grid-column: 1 / span 7;
+  font-family: var(--f-display);
+  font-size: clamp(44px, 6vw, 92px);
+  font-weight: 740;
+  font-stretch: 80%;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+.bridge-copy {
+  grid-column: 8 / -1;
+  align-self: end;
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+.bridge-copy p {
+  font-size: 17px;
+  color: var(--muted);
+}
+
+@media (max-width: 1100px) {
+  .masthead,
+  .studio-lead,
+  .picker,
+  .picker-detail {
+    grid-column: 1 / span 6;
+  }
+}
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .masthead,
+  .studio-lead,
+  .aperture,
+  .picker,
+  .picker-detail,
+  .bridge h2,
+  .bridge-copy {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  /* On phones the project choice comes before the stage it controls. */
+  .picker {
+    order: 3;
+  }
+  .aperture {
+    order: 4;
+    --mark-w: clamp(104px, 27vw, 190px);
+    --mark-x: 0%;
+    --mark-y: 4%;
+    height: clamp(330px, 100vw, 520px);
+  }
+  .picker-detail {
+    order: 5;
+  }
+  .aperture-stage {
+    width: clamp(160px, 45vw, 230px);
+  }
+  .aperture-beam {
+    height: 54px;
+  }
+  .picker-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    border-top: 0;
+  }
+  .picker-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .picker-item img {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+  }
+  .picker-item strong {
+    font-size: 17px;
+  }
+  .picker-item small {
+    display: none;
+  }
+  .picker-since {
+    margin-left: 0;
+    padding-top: 0;
+    font-size: 10px;
+  }
+  .chapter-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chapter-flip .chapter-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chapter-flip .chapter-copy {
+    order: 0;
+  }
+  .bridge {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .masthead {
+    font-size: clamp(50px, 17vw, 90px);
+  }
+  .ikitai-flow {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 18px 14px;
+    align-items: start;
+  }
+  .flow-post {
+    border-radius: 8px;
+  }
+  .ikitai-flow .flow-source figcaption {
+    font-size: 9px;
+    text-align: center;
+  }
+  .flow-phone .capture-viewer {
+    width: min(300px, 100%);
+  }
+  .flow-arrow {
+    display: none;
+  }
+  .phone-frame {
+    border-width: 5px;
+    border-radius: 24px;
+  }
+  .chapter-phone {
+    width: 26%;
+  }
+  .chapter-festcompass .chapter-device {
+    width: 92%;
+    margin-right: 0;
+  }
+}
+/* Very narrow phones: full-width picker rows, and the saved post sits above the app screen. */
+@media (max-width: 360px) {
+  .picker-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .picker-item {
+    flex-direction: row;
+    align-items: center;
+  }
+  .picker-since {
+    margin-left: auto;
+  }
+  .ikitai-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .flow-post {
+    width: 96px;
+  }
+  .flow-phone .capture-viewer {
+    width: min(288px, 100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .brand-mark.has-entrance img {
+    opacity: 1;
+    animation: none;
+  }
+}

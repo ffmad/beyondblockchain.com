@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beyond Blockchain — share artwork</title>
+    <style>
+      @font-face {
+        font-family: 'DM Sans';
+        src: url('/node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2')
+          format('woff2');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'DM Sans';
+        src: url('/node_modules/@fontsource/dm-sans/files/dm-sans-latin-500-normal.woff2')
+          format('woff2');
+        font-weight: 500;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: white;
+        color: #111928;
+        font-family: 'DM Sans', sans-serif;
+      }
+      main {
+        width: 1200px;
+        height: 630px;
+        padding: 42px 58px 36px;
+        position: relative;
+        overflow: hidden;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 29px;
+        border-bottom: 1px solid #dfe4ed;
+      }
+      header img {
+        width: 197px;
+        height: auto;
+      }
+      header p {
+        margin: 0;
+        font-size: 19px;
+        color: #637087;
+      }
+      h1 {
+        font-size: 104px;
+        font-weight: 500;
+        letter-spacing: -6px;
+        line-height: 1;
+        margin: 45px 0 23px;
+        position: relative;
+        z-index: 1;
+      }
+      h1 span {
+        color: #03207a;
+      }
+      .name {
+        margin: 0;
+        font-size: 23px;
+        color: #637087;
+      }
+      .mark {
+        position: absolute;
+        width: 315px;
+        height: 342px;
+        object-fit: contain;
+        right: 66px;
+        top: 156px;
+        transform: rotate(8deg);
+      }
+      footer {
+        position: absolute;
+        left: 58px;
+        right: 58px;
+        bottom: 35px;
+        display: flex;
+        align-items: center;
+        gap: 37px;
+        border-top: 1px solid #dfe4ed;
+        padding-top: 23px;
+      }
+      footer div {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        font-size: 21px;
+      }
+      footer img {
+        width: 33px;
+        height: 33px;
+        object-fit: contain;
+      }
+      footer p {
+        margin: 0 0 0 auto;
+        font-size: 16px;
+        color: #637087;
+      }
+      .profile h1 {
+        font-size: 86px;
+        letter-spacing: -4.5px;
+        margin-top: 64px;
+      }
+      .profile .mark {
+        width: 240px;
+        height: 260px;
+        right: 59px;
+        top: 192px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <img src="/brand/beyond-blockchain-logo.svg" alt="Beyond Blockchain" />
+        <p>beyondblockchain.com</p>
+      </header>
+      <h1>Founder.<br /><span>Developer.</span></h1>
+      <p class="name">Quentin de Beauchesne · ffmad</p>
+      <img class="mark" src="/brand/beyond-blockchain-mark.svg" alt="" />
+      <footer>
+        <div><img src="/projects/ikitai-logo.svg" alt="" />Ikitai</div>
+        <div><img src="/projects/fairmints-logo.svg" alt="" />Fairmints</div>
+        <div><img src="/projects/festcompass-logo.svg" alt="" />FestCompass</div>
+        <p>Independent projects</p>
+      </footer>
+    </main>
+    <script>
+      if (new URLSearchParams(location.search).has('profile')) {
+        document.querySelector('main').classList.add('profile');
+        document.querySelector('h1').innerHTML = 'Quentin<br><span>de Beauchesne.</span>';
+        document.querySelector('.name').textContent = 'Founder & developer · ffmad';
+        document.querySelector('footer p').textContent = 'Experience & current work';
+      }
+    </script>
+  </body>
+</html>

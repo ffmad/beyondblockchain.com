@@ -1,0 +1,34 @@
+{
+  "name": "beyond-blockchain",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24.12 <25",
+    "npm": ">=11 <12"
+  },
+  "packageManager": "npm@11.19.1",
+  "scripts": {
+    "dev": "npm run build -w @beyond/api && concurrently -k -n api,types,web -c cyan,gray,yellow \"npm run dev -w @beyond/api\" \"npm run watch -w @beyond/api\" \"npm run dev -w @beyond/web\"",
+    "db:generate": "npm run db:generate -w @beyond/api",
+    "db:migrate": "npm run db:migrate -w @beyond/api",
+    "db:migrate:dev": "npm run db:migrate:dev -w @beyond/api --",
+    "db:seed": "npm run db:seed -w @beyond/api",
+    "db:setup": "npm run db:generate && npm run db:migrate && npm run db:seed",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run build -w @beyond/web && npm run test -w @beyond/api",
+    "build": "npm run build -w @beyond/api && npm run build -w @beyond/web",
+    "start": "npm run start -w @beyond/api",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "concurrently": "^9.2.1",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3"
+  }
+}

@@ -1,0 +1,10 @@
+package-lock.json
+node_modules/
+**/dist/
+**/dist-server/
+apps/api/src/generated/
+apps/api/prisma/migrations/
+apps/web/public/
+.local/
+docs/WEBSITE_BRIEF.md
+docs/KICKOFF_PROMPT.md

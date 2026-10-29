@@ -1,0 +1,38 @@
+{
+  "name": "@beyond/api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "prisma generate && tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+    "dev": "node --watch dist/main.js",
+    "start": "node dist/main.js",
+    "typecheck": "prisma generate && tsc -p tsconfig.json --noEmit",
+    "db:generate": "prisma generate",
+    "db:prepare": "node --import tsx scripts/prepare-db.mjs",
+    "db:migrate": "npm run db:prepare && prisma migrate deploy",
+    "db:migrate:dev": "npm run db:prepare && prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "test": "npm run build && node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@beyond/shared": "*",
+    "@nestjs/common": "12.3.2",
+    "@nestjs/core": "12.3.2",
+    "@nestjs/platform-express": "12.3.2",
+    "@prisma/adapter-better-sqlite3": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "compression": "^1.8.2",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/express": "^5.0.0",
+    "prisma": "7.10.1",
+    "tsx": "^4.20.6"
+  }
+}
