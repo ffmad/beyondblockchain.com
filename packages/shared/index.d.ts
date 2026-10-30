@@ -15,6 +15,17 @@ export interface Project {
   mobileImageUrl: string | null;
   imageAlt: string | null;
   imageCaption: string | null;
+  /** The technologies it's built with, in display order. */
+  stack: string[];
+  /** Main products have cards and a page; experiments and earlier work are listed more briefly. */
+  kind: 'product' | 'experiment' | 'earlier';
+  /** Where a product stands: live, in app-store review, or in beta. */
+  stage: 'live' | 'review' | 'beta' | null;
+  /** Where it can be used: web, ios, android. */
+  platforms: string[];
+  /** Interface languages, as language codes. */
+  languages: string[];
+  endedYear: number | null;
 }
 
 export interface Link {

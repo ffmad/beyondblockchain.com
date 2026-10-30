@@ -9,8 +9,8 @@ The user supplied the original SVG wordmark and PNG icon.
 - `public/brand/beyond-blockchain-logo.svg` preserves the supplied paths and blue gradients. Its large embedded noise bitmap/pattern was removed to reduce file weight.
 - `public/brand/beyond-blockchain-mark.svg` isolates the original icon paths with the rocket cutout intact.
 - `public/brand/beyond-blockchain-icon.png` is the supplied raster icon, used as the favicon.
-- `src/components/BrandMark.vue` samples the original mark (with its own gradient) for an optional one-time tile entrance, then shows the untouched SVG.
-- `public/social/projects.png` and `quentin.png` are 1200 × 630 browser renders of `tools/share-card.html`, using the original logo and project marks.
+- `src/content/brand-mark.ts` splits the original mark path into the full hexagon, the rocket’s trail, the rocket and its window; masking the hexagon with them rebuilds the original exactly. `src/components/BrandMark.vue` uses these for the one-time logo animation, then shows the untouched SVG.
+- `public/social/*.png` are the 1200 × 630 link previews, one per public page and language (`home`, `quentin`, `work-<slug>`, each `.en` and `.ja`), rendered by `tools/share-cards.mjs` from the live content with the real product screens and marks.
 
 ## Current projects
 
@@ -28,8 +28,15 @@ The user supplied the original SVG wordmark and PNG icon.
 | `projects/festcompass-background.jpg` | Original illustration from FestCompass’s public website                                                                      |
 | `projects/festcompass-guide.png`      | Actual 1280 × 720 [festival guide](https://festcompass.jp/festivals)                                                         |
 | `projects/festcompass-mobile.png`     | Actual 390 × 844 responsive festival guide                                                                                   |
+| `projects/taplog-logo.svg`            | TapLog’s app icon, from `taplog/frontend/public/brand/taplog-app-icon.svg`                                                   |
+| `projects/taplog-capture.png`         | Actual 1280 × 720 [TapLog](https://taplog.jp) home page (Japanese), captured 30 October 2026                                 |
+| `projects/taplog-mobile.png`          | Actual 390 × 844 responsive TapLog home page, captured the same day                                                          |
+| `projects/taplog-clip.mp4`            | Silent clip of the live TapLog home page scrolling, 960 × 540, recorded 30 October 2026 with `tools/record-clips.mjs`        |
+| `projects/fairmints-clip.mp4`         | Silent clip of the live Fairmints dashboard scrolling to its token table, recorded the same way and day                      |
+| `projects/festcompass-clip.mp4`       | Silent clip of the live FestCompass festival guide scrolling, recorded the same way and day (its install banner dismissed)   |
+| `favicon.ico`, `apple-touch-icon.png` | Generated from `brand/beyond-blockchain-icon.png`; the touch icon sits on the site's porcelain background                    |
 
-Ikitai’s existing store captures were produced from the real app with fictional demo plans, frozen at 21 October 2026. The caption makes the demo data explicit. A CSS device frame surrounds the unchanged captures. The gallery lets visitors switch between timeline, plan details, and calendar; its list lives in `src/content/app-screens.ts`. No product interface, testimonial, or portrait was invented for this website. The previous cropped website demonstration is no longer used.
+Ikitai’s existing store captures were produced from the real app with fictional demo plans, frozen at 21 October 2026. The caption makes the demo data explicit. A CSS device frame surrounds the unchanged captures. The project window shows the timeline, plan details, and calendar side by side; the list lives in `src/content/app-screens.ts`. No product interface, testimonial, or portrait was invented for this website. The previous cropped website demonstration is no longer used.
 
 ## Previous work
 

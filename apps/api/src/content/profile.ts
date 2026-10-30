@@ -6,7 +6,7 @@ export const profile: Profile = {
   name: 'Quentin de Beauchesne',
   handle: 'ffmad',
   intro:
-    'I started CryptoFR in 2014 and co-founded Ownest in 2017. Today I build Ikitai, Fairmints and FestCompass at Beyond Blockchain, my one-person studio.',
+    'I started CryptoFR in 2014 and co-founded Ownest in 2017. Today I build Ikitai, Fairmints, FestCompass and TapLog at Beyond Blockchain, my own studio.',
   focus:
     'Founder and developer. These days that means AI for everyday plans, Bitcoin tools and festival discovery in Japan.',
   artefacts: [
@@ -62,20 +62,27 @@ export const profile: Profile = {
       name: 'Ikitai',
       since: 'Since October 2026',
       description: 'An AI app that turns screenshots and saved links into plans with friends.',
-      url: '/#work-ikitai',
+      url: '/work/ikitai',
     },
     {
       name: 'Fairmints',
       since: 'Since 2024',
       description: 'A platform for creating, minting and trading Bitcoin-native tokens and NFTs.',
-      url: '/#work-fairmints',
+      url: '/work/fairmints',
     },
     {
       name: 'FestCompass',
       since: 'Since July 2026',
       description:
         'Festival discovery and schedule planning for people attending festivals in Japan.',
-      url: '/#work-festcompass',
+      url: '/work/festcompass',
+    },
+    {
+      name: 'TapLog',
+      since: 'Since August 2026',
+      description:
+        'Live tap lists for Tokyo craft beer bars, with a personal log of what you’ve tried.',
+      url: '/work/taplog',
     },
   ],
   experience: [
@@ -92,7 +99,7 @@ export const profile: Profile = {
       name: 'Ledgys',
       year: '2016',
       period: 'Feb 2016 — Nov 2017',
-      role: 'Co-founder',
+      role: 'Co-founder and CEO',
       description:
         'I co-founded Ledgys to explore Ethereum-based data sharing through decentralized marketplaces.',
     },
@@ -100,7 +107,7 @@ export const profile: Profile = {
       name: 'Ownest',
       year: '2017',
       period: 'Dec 2017 — Mar 2026',
-      role: 'Co-founder',
+      role: 'CEO and co-founder',
       description:
         'Blockchain software for tracking ownership and responsibility across supply chains. My technical work brought together Polygon, Vue and NestJS.',
       url: 'https://ownest.io',
@@ -115,12 +122,12 @@ export const profile: Profile = {
       url: 'https://fairmints.io',
     },
     {
-      name: 'Ikitai & FestCompass',
+      name: 'Ikitai, FestCompass & TapLog',
       year: '2026',
       period: '2026 — now',
       role: 'Solo founder',
       description:
-        'FestCompass (since July 2026) is a festival guide for Japan. Ikitai (since October 2026) is an AI app that turns saved inspiration into plans with friends.',
+        'FestCompass (since July 2026) is a festival guide for Japan. TapLog (since August 2026) shows live tap lists for Tokyo craft beer bars. Ikitai (since October 2026) is an AI app that turns saved inspiration into plans with friends.',
       url: '/',
     },
   ],

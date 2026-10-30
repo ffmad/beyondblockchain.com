@@ -6,11 +6,34 @@
     <meta name="theme-color" content="#f5f4f0" />
     <script>
       document.documentElement.classList.add('js');
+      // After a language switch (switchLanguage in src/i18n) the page opens where the visitor was, and its words
+      // cross-fade from the other language's. Other navigations between pages skip the transition.
+      addEventListener('pagereveal', function (event) {
+        var place = null;
+        try {
+          place = JSON.parse(sessionStorage.getItem('bb.language-switch'));
+          sessionStorage.removeItem('bb.language-switch');
+        } catch (error) {}
+        if (!place) {
+          if (event.viewTransition) event.viewTransition.skipTransition();
+          return;
+        }
+        var anchor = place.id && document.getElementById(place.id);
+        var top = anchor ? scrollY + anchor.getBoundingClientRect().top - place.top : place.y;
+        if (top) scrollTo({ top: top, behavior: 'instant' });
+        if (!event.viewTransition) return;
+        var root = document.documentElement;
+        root.classList.add('language-switching');
+        event.viewTransition.finished.finally(function () {
+          root.classList.remove('language-switching');
+        });
+      });
     </script>
     <!-- page-meta:start -->
     <!-- page-meta:end -->
     <link rel="icon" type="image/png" href="/brand/beyond-blockchain-icon.png" />
     <link rel="icon" type="image/svg+xml" href="/brand/beyond-blockchain-mark.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
     <div id="app"><!-- app-html --></div>

@@ -1,0 +1,390 @@
+/* How I build: every technology across the projects, as a turning globe (when the browser can draw one) and as a
+   list, with the projects that use the picked one beside them. Without script or WebGL, the list and the result
+   are the whole thing. */
+.stack-explorer {
+  --stack-surface: var(--ground, var(--porcelain));
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-areas: 'list result';
+  gap: 28px clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+.js .stack-explorer:not(.is-flat) {
+  grid-template-areas:
+    'visual result'
+    'list list';
+}
+
+/* The globe */
+.stack-visual {
+  grid-area: visual;
+  display: none;
+  gap: 8px;
+  min-width: 0;
+}
+.js .stack-visual {
+  display: grid;
+}
+.stack-stage {
+  position: relative;
+  height: clamp(380px, 38vw, 540px);
+  overflow: hidden;
+  background: var(--stack-surface);
+  /* Vertical swipes still scroll the page; sideways ones turn the globe. */
+  touch-action: pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.is-ready .stack-stage {
+  opacity: 1;
+}
+.stack-stage.is-pointing {
+  cursor: pointer;
+}
+.stack-stage.is-dragging {
+  cursor: grabbing;
+}
+.stack-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.stack-labels {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* Same size in every state: the globe measures each label once and keeps them from overlapping. */
+.stack-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--stack-surface) 82%, transparent);
+  font-family: var(--f-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: var(--muted);
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+.stack-label.is-related {
+  color: var(--ink);
+}
+.stack-label.is-hovered {
+  color: var(--brand-700);
+}
+.stack-label.is-selected {
+  background: var(--brand-700);
+  color: #fff;
+}
+/* Logos keep their brand colour; faded technologies' logos fade too, and the picked one turns white. */
+.stack-label-icon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  vertical-align: -1.5px;
+  transition: opacity 0.2s;
+}
+.stack-label.is-other .stack-label-icon {
+  opacity: 0.45;
+}
+.stack-label.is-selected .stack-label-icon path {
+  fill: currentColor;
+}
+.stack-hint {
+  min-height: 1.5em;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Every technology, most-used first */
+.stack-list {
+  grid-area: list;
+  min-width: 0;
+}
+.stack-list ul {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stack-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 5px 6px 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--muted);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    color 0.2s;
+}
+.stack-chip.is-related {
+  color: var(--ink);
+}
+.stack-chip:hover,
+.stack-chip.is-hovered {
+  border-color: var(--brand-300);
+  color: var(--ink);
+}
+.stack-chip[aria-pressed='true'] {
+  border-color: var(--brand-700);
+  background: var(--brand-700);
+  color: #fff;
+}
+.stack-chip:focus-visible {
+  border-radius: 99px;
+}
+.stack-chip-count {
+  min-width: 24px;
+  padding: 3px 7px;
+  border-radius: 99px;
+  background: var(--panel, #eceef2);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.stack-chip .tech-icon {
+  width: 16px;
+  height: 16px;
+}
+.stack-chip[aria-pressed='true'] .tech-icon path {
+  fill: currentColor;
+}
+.stack-chip[aria-pressed='true'] .tech-initials {
+  background: rgb(255 255 255 / 0.16);
+  color: #fff;
+}
+.stack-chip[aria-pressed='true'] .stack-chip-count {
+  background: rgb(255 255 255 / 0.16);
+  color: #fff;
+}
+
+/* Where the picked technology is used */
+.stack-result {
+  grid-area: result;
+  min-width: 0;
+  padding: clamp(20px, 2.4vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card, #fff);
+}
+.stack-result-body {
+  display: grid;
+  gap: 6px;
+  animation: stack-result-in 0.3s ease-out;
+}
+@keyframes stack-result-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.stack-result-count {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stack-result-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.stack-result-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--panel, #eceef2);
+}
+.stack-result-icon .tech-icon {
+  width: 26px;
+  height: 26px;
+  font-size: 12px;
+}
+.stack-result-icon .tech-initials {
+  background: none;
+}
+.stack-result-what {
+  max-width: 40ch;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.stack-result-name {
+  font-family: var(--f-display);
+  font-size: clamp(28px, 2.8vw, 38px);
+  font-weight: 700;
+  font-stretch: 88%;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+.stack-projects {
+  display: grid;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.stack-projects li + li {
+  border-top: 1px solid var(--line);
+}
+.stack-project {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding-block: 10px;
+}
+.stack-project-logo {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--panel, #eceef2);
+}
+img.stack-project-logo {
+  background: none;
+}
+.stack-project-text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.stack-project-text strong {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+.stack-project-text small {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.stack-project .arrow-icon {
+  margin-left: auto;
+  color: var(--brand-700);
+}
+a.stack-project:hover strong {
+  color: var(--brand-700);
+}
+a.stack-project:hover .arrow-right {
+  transform: translateX(3px) rotate(45deg);
+}
+
+@media (max-width: 900px) {
+  .stack-explorer,
+  .js .stack-explorer:not(.is-flat) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .stack-explorer {
+    grid-template-areas: 'list' 'result';
+  }
+  .js .stack-explorer:not(.is-flat) {
+    grid-template-areas: 'visual' 'list' 'result';
+  }
+  .stack-stage {
+    height: clamp(320px, 64vw, 460px);
+  }
+}
+@media (max-width: 640px) {
+  .stack-explorer {
+    gap: 20px;
+  }
+  .stack-stage {
+    height: clamp(280px, 86vw, 360px);
+  }
+  .stack-label {
+    font-size: 12px;
+  }
+  /* On a phone the list scrolls sideways, three rows deep, so the result stays close to the globe. */
+  .stack-list ul {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, auto);
+    justify-content: start;
+    justify-items: start;
+    margin: -6px;
+    padding: 6px 34px 6px 6px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  }
+  .stack-list ul::-webkit-scrollbar {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stack-stage,
+  .stack-chip,
+  .stack-chip-count,
+  .stack-label {
+    transition: none;
+  }
+  .stack-result-body {
+    animation: none;
+  }
+}
+
+/* A technology's logo, or its initials when it has none */
+.tech-icon {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+}
+.tech-initials {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: var(--panel, #eceef2);
+  font-family: var(--f-mono);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--muted);
+}

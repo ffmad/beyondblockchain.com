@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import type { Profile } from '@beyond/shared';
+import { contentPath } from '@beyond/shared/metadata.js';
+import { useLocale } from '../i18n';
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useResource } from '../composables/useResource';
 import { usePageAnchor } from '../composables/usePageAnchor';
 import ResourceState from '../components/ResourceState.vue';
 import ArrowIcon from '../components/ArrowIcon.vue';
 
-const { data: profile, loading, error, reload } = useResource<Profile>('/api/profile');
+const { t, locale } = useLocale();
+const {
+  data: profile,
+  loading,
+  error,
+  reload,
+} = useResource<Profile>(contentPath('/api/profile', locale));
 usePageAnchor(profile);
 
 // Field notes: a few real artefacts, each opening into its short story.
@@ -48,9 +56,15 @@ onUnmounted(() => {
   <div class="field-notes">
     <section class="notes-hero wrap" aria-labelledby="profile-title">
       <div class="notes-greeting">
-        <p class="eyebrow">Quentin de Beauchesne · Founder &amp; developer</p>
-        <h1 id="profile-title">Hi, I’m <span>Quentin.</span></h1>
-        <p class="notes-handle">Online, I’m <a href="https://github.com/ffmad">ffmad</a>.</p>
+        <p class="eyebrow">{{ t('profile.kicker') }}</p>
+        <i18n-t id="profile-title" keypath="profile.hello" tag="h1" scope="global">
+          <template #name
+            ><span>{{ t('profile.helloName') }}</span></template
+          >
+        </i18n-t>
+        <i18n-t keypath="profile.handle" tag="p" class="notes-handle" scope="global">
+          <template #handle><a href="https://github.com/ffmad">ffmad</a></template>
+        </i18n-t>
         <template v-if="profile">
           <p class="notes-intro">{{ profile.intro }}</p>
           <p class="notes-focus">{{ profile.focus }}</p>
@@ -58,7 +72,7 @@ onUnmounted(() => {
       </div>
 
       <div v-if="profile && openArtefact" class="artefacts">
-        <div class="artefact-fan" role="group" aria-label="Things from my story">
+        <div class="artefact-fan" role="group" :aria-label="t('profile.artefacts')">
           <button
             v-for="(artefact, index) in profile.artefacts"
             :key="artefact.id"
@@ -93,12 +107,17 @@ onUnmounted(() => {
     </section>
 
     <div class="wrap">
-      <ResourceState :loading="loading" :error="error" label="personal story" @retry="reload" />
+      <ResourceState
+        :loading="loading"
+        :error="error"
+        :label="t('profile.loadLabel')"
+        @retry="reload"
+      />
     </div>
 
     <template v-if="profile">
       <section id="now" class="notes-now wrap" aria-labelledby="now-title">
-        <h2 id="now-title">What I’m making now</h2>
+        <h2 id="now-title">{{ t('profile.nowTitle') }}</h2>
         <div class="now-list">
           <article v-for="item in profile.now" :key="item.name" class="now-item">
             <h3>
@@ -115,8 +134,8 @@ onUnmounted(() => {
 
       <section id="story" class="notes-story wrap" aria-labelledby="story-title">
         <div class="story-rail">
-          <h2 id="story-title">How I got here</h2>
-          <nav class="year-index" aria-label="Years">
+          <h2 id="story-title">{{ t('profile.storyTitle') }}</h2>
+          <nav class="year-index" :aria-label="t('profile.years')">
             <a
               v-for="item in profile.experience"
               :key="item.year"
@@ -141,37 +160,44 @@ onUnmounted(() => {
                 ><a v-else-if="item.url" :href="item.url">{{ item.name }} <ArrowIcon /></a
                 ><span v-else>{{ item.name }}</span>
               </h3>
-              <p class="story-role">{{ item.role }} · {{ item.period }}</p>
+              <p class="story-role">
+                {{ t('profile.rolePeriod', { role: item.role, period: item.period }) }}
+              </p>
               <p>{{ item.description }}</p>
 
               <div v-if="item.name === 'Ownest'" class="ownest-notes">
                 <figure class="ownest-screens">
                   <img
                     src="/story/ownest-desktop.png"
-                    alt="Ownest inventory interface for selecting items to transfer."
+                    :alt="t('profile.ownestAlt')"
                     width="758"
                     height="706"
                     loading="lazy"
                   />
-                  <figcaption>Ownest’s public product previews</figcaption>
+                  <figcaption>{{ t('profile.ownestCaption') }}</figcaption>
                 </figure>
-                <p>
-                  Ownest joined
-                  <a
-                    href="https://ownest.io/en/news/ownest-lafayette-plug-and-play-startups-innovation-platform"
-                    >Lafayette Plug and Play</a
+                <i18n-t keypath="profile.ownestJoined" tag="p" scope="global">
+                  <template #plugAndPlay
+                    ><a
+                      href="https://ownest.io/en/news/ownest-lafayette-plug-and-play-startups-innovation-platform"
+                      >{{ t('profile.plugAndPlay') }}</a
+                    ></template
                   >
-                  in 2017 and The Warehouse by Cdiscount in 2018.
-                  <a href="https://ownest.io/en/usecases">Customer use cases</a> include Cdiscount
-                  parcel tracking and Saint Laurent’s transfers between warehouses, head office and
-                  stores.
-                </p>
-                <p class="eyebrow">Company milestones</p>
+                  <template #useCases
+                    ><a href="https://ownest.io/en/usecases">{{
+                      t('profile.useCases')
+                    }}</a></template
+                  >
+                </i18n-t>
+                <p class="eyebrow">{{ t('profile.milestones') }}</p>
                 <ul class="milestones">
                   <li v-for="milestone in profile.achievements" :key="milestone.title">
                     <span class="milestone-year">{{ milestone.year }}</span>
                     <span
-                      ><strong>{{ milestone.title }}.</strong> {{ milestone.description }}
+                      ><strong>{{
+                        t('profile.milestoneTitle', { title: milestone.title })
+                      }}</strong>
+                      {{ milestone.description }}
                       <a :href="milestone.source.url">{{ milestone.source.label }}</a></span
                     >
                   </li>
@@ -183,7 +209,7 @@ onUnmounted(() => {
       </section>
 
       <section id="communities" class="notes-section wrap" aria-labelledby="communities-title">
-        <h2 id="communities-title">People and communities</h2>
+        <h2 id="communities-title">{{ t('profile.communitiesTitle') }}</h2>
         <div class="community-grid">
           <article v-for="item in profile.community" :key="item.name" class="community-item">
             <h3>{{ item.name }}</h3>
@@ -196,14 +222,21 @@ onUnmounted(() => {
             class="community-item"
           >
             <h3>{{ project.name }}</h3>
-            <p>{{ project.role }}. {{ project.description }}</p>
-            <a :href="project.url">Visit the club <ArrowIcon /></a>
+            <p>
+              {{
+                t('profile.roleAndDescription', {
+                  role: project.role,
+                  description: project.description,
+                })
+              }}
+            </p>
+            <a :href="project.url">{{ t('profile.visitClub') }} <ArrowIcon /></a>
           </article>
         </div>
       </section>
 
       <section id="writing" class="notes-section wrap" aria-labelledby="writing-title">
-        <h2 id="writing-title">Things I’ve shared</h2>
+        <h2 id="writing-title">{{ t('profile.sharedTitle') }}</h2>
         <ul class="shared-list">
           <li v-for="item in profile.publicWork" :key="item.title">
             <a :href="item.source.url">
@@ -220,7 +253,7 @@ onUnmounted(() => {
       </section>
 
       <section id="contributions" class="notes-section wrap" aria-labelledby="contributions-title">
-        <h2 id="contributions-title">Public contributions</h2>
+        <h2 id="contributions-title">{{ t('profile.contributionsTitle') }}</h2>
         <ul class="shared-list">
           <li v-for="item in profile.contributions" :key="item.title">
             <a :href="item.source.url">

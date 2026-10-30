@@ -29,9 +29,42 @@ model Project {
   mobileImageUrl String?
   imageAlt      String?
   imageCaption  String?
+  /// The technologies it's built with, in display order (a JSON array of strings).
+  stack         Json     @default("[]")
+  /// Text in other languages, by language code: { "ja": { "summary": "…", "description": "…", … } }.
+  translations  Json     @default("{}")
+  /// "product" (a card and a page), "experiment" or "earlier" (listed briefly).
+  kind          String   @default("product")
+  /// For products: "live", "review" (app-store review) or "beta".
+  stage         String?
+  /// Where it can be used ("web", "ios", "android") and its interface languages (language codes), as JSON arrays.
+  platforms     Json     @default("[]")
+  languages     Json     @default("[]")
+  endedYear     Int?
   internalNotes String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@index([published, displayOrder])
+}
+
+/// A message sent through the site's contact form. It is kept until Slack has it, and retried if delivery fails.
+model ContactMessage {
+  id            String    @id @default(cuid())
+  name          String
+  email         String
+  message       String
+  locale        String
+  page          String
+  createdAt     DateTime  @default(now())
+  /// "pending", "sent", or "failed" (gave up after repeated errors).
+  delivery      String    @default("pending")
+  attempts      Int       @default(0)
+  nextAttemptAt DateTime  @default(now())
+  lastError     String?
+  sentAt        DateTime?
+  /// Claude's notes for Quentin (summary, language, kind, spam flag, draft reply), when triage ran.
+  triage        Json?
+
+  @@index([delivery, nextAttemptAt])
 }

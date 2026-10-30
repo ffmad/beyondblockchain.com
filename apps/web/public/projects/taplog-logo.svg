@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none">
+  <title>TapLog</title>
+  <rect width="512" height="512" fill="#f7f4ef"/>
+  <g transform="translate(32 126) scale(.59)" color="#1c2433">
+  <g fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Two stops along the route. -->
+    <path d="M34 361 83 413M38 417 83 360M351 151 397 199M352 203 400 149"/>
+    <!-- Separate curved dashes preserve the rhythm of the original drawing. -->
+    <path d="M98 337Q104 329 114 324M135 314Q148 309 160 314M181 324Q194 330 202 337M223 352Q236 360 248 361M272 357Q287 350 291 341M296 317Q298 307 293 295M287 269Q278 256 278 247M279 224Q282 210 292 205M313 189Q325 184 334 184M421 219Q431 226 437 235M459 265Q466 276 474 281M501 293Q512 298 524 294"/>
+    <!-- The gently uneven foam and tapered glass are drawn as editable curves. -->
+    <path d="M555 123C552 109 568 104 579 109S597 104 612 106C626 103 633 113 640 119C653 114 664 118 670 127C680 139 669 163 666 176L624 329Q591 340 553 323L554 245 549 169C546 150 548 137 555 123Z"/>
+    <path d="M550 156C564 165 574 150 587 158S610 174 624 168S640 164 649 169S660 167 666 171"/>
+    <path d="M611 66 608 48M669 61 685 20M715 97 742 75"/>
+  </g>
+  </g>
+</svg>

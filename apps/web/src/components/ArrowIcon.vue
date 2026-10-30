@@ -1,5 +1,7 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ direction?: 'right' | 'up' | 'down' }>(), { direction: 'up' });
+withDefaults(defineProps<{ direction?: 'right' | 'left' | 'up' | 'down' }>(), {
+  direction: 'up',
+});
 </script>
 
 <template>

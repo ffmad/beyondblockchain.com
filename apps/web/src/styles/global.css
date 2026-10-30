@@ -11,6 +11,7 @@
   --brand-300: #859dc8;
   --brand-100: #cdd7e8;
   --focus: #2f58a1;
+  --error: #a3332d;
   --f-display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
   --f-body: 'DM Sans', system-ui, sans-serif;
   --f-mono: 'DM Mono', ui-monospace, Menlo, monospace;
@@ -21,6 +22,47 @@
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+/* Japanese pages: Latin text keeps the site's faces and Japanese uses the system's Japanese fonts. Japanese text
+   gets more line spacing, phrase-aware line breaks, and none of the tight tracking used on Latin headings. */
+:root:lang(ja) {
+  --f-ja:
+    'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic UI', 'Yu Gothic',
+    Meiryo;
+  --f-display: 'Bricolage Grotesque Variable', var(--f-ja), sans-serif;
+  --f-body: 'DM Sans', var(--f-ja), system-ui, sans-serif;
+  --f-mono: 'DM Mono', var(--f-ja), ui-monospace, monospace;
+  --f-serif: 'Newsreader Variable', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+  word-break: auto-phrase;
+  line-break: strict;
+}
+:lang(ja) p {
+  line-height: 1.8;
+}
+:lang(ja)
+  :is(
+    .footer-top h2,
+    .not-found h1,
+    .notes-greeting h1,
+    .notes-handle,
+    .artefact-note h2,
+    .story-rail h2,
+    .chapter-text h3,
+    .section-head h2,
+    .studio-tagline
+  ) {
+  letter-spacing: 0;
+}
+/* In Japanese the name sits inside the sentence (こんにちは、/ Quentinです。) rather than on a line of its own. */
+:lang(ja) .notes-greeting h1 span {
+  display: inline;
+}
+/* Japanese characters are about twice as wide as the Latin measure these widths were set in. */
+:lang(ja) .studio-lead {
+  max-width: 28em;
+}
+:lang(ja) .notes-greeting h1 {
+  line-height: 1.15;
 }
 .site-studio {
   --ground: var(--porcelain);
@@ -145,6 +187,9 @@ img {
 .arrow-down {
   transform: rotate(135deg);
 }
+.arrow-left {
+  transform: rotate(-135deg);
+}
 .text-link {
   display: inline-flex;
   align-items: center;
@@ -190,10 +235,96 @@ img {
   background: var(--accent);
 }
 
-/* Header */
-.site-header {
+/* Brand mark: the navbar logo is built once on first load (hexagon, then the rocket carving its trail) */
+.brand-mark {
   position: relative;
-  z-index: 5;
+  filter: drop-shadow(0 28px 36px rgb(35 78 155 / 0.22));
+}
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.mark-motion {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: none;
+  pointer-events: none;
+}
+.brand-mark.is-playing .mark-motion,
+.brand-mark.is-settling .mark-motion,
+.brand-mark.is-nudging .mark-motion {
+  display: block;
+}
+/* Until the script decides, the logo waits for its animation; if the script is late, it simply appears. */
+.js .brand-mark.can-animate img {
+  opacity: 0;
+  animation: mark-fallback 0s linear 1.3s forwards;
+}
+.js .brand-mark.can-animate.is-waiting img,
+.js .brand-mark.can-animate.is-playing img,
+.js .brand-mark.can-animate.is-nudging img {
+  animation: none;
+  opacity: 0;
+}
+.js .brand-mark.can-animate.is-settling img {
+  animation: none;
+  opacity: 1;
+  transition: opacity 0.26s ease;
+}
+.mark-ready .brand-mark.can-animate img {
+  opacity: 1;
+  animation: none;
+}
+@media print {
+  .js .brand-mark.can-animate img {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+@keyframes mark-fallback {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .brand-mark.can-animate img {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Header: a bar that condenses on scroll and takes on the colours of the project beneath it */
+html {
+  scroll-padding-top: 80px;
+}
+.site-header {
+  --bar-bg: transparent;
+  --bar-solid: var(--ground);
+  --bar-ink: var(--ink);
+  --bar-muted: var(--muted);
+  --bar-line: transparent;
+  --bar-accent: var(--accent);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bar-bg);
+  color: var(--bar-ink);
+  box-shadow: 0 1px 0 var(--bar-line);
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.site-header.is-stuck {
+  --bar-bg: color-mix(in srgb, var(--ground) 84%, transparent);
+  --bar-line: color-mix(in srgb, var(--ink) 9%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
 }
 .header-inner {
   display: flex;
@@ -201,16 +332,66 @@ img {
   justify-content: space-between;
   gap: 24px;
   min-height: 84px;
+  transition: min-height 0.3s ease;
 }
-.wordmark img {
-  display: block;
-  width: 150px;
-  height: auto;
+.is-stuck .header-inner {
+  min-height: 64px;
 }
+
+/* Identity: the mark first; the name joins it once the masthead has scrolled away. */
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--f-display);
+  font-size: 21px;
+  font-weight: 700;
+  font-stretch: 86%;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+.header-mark {
+  width: 42px;
+  flex-shrink: 0;
+  filter: none;
+  transition: width 0.3s ease;
+}
+.is-stuck .header-mark {
+  width: 34px;
+}
+.wordmark-name {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 0;
+  margin-left: 0;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    max-width 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    margin-left 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.3s ease,
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.is-named .wordmark-name {
+  max-width: 12em;
+  margin-left: 11px;
+  opacity: 1;
+  transform: none;
+}
+.wordmark:hover .wordmark-name {
+  color: var(--bar-accent);
+}
+
+/* Navigation: the projects, the person, and a way to say hello */
 .main-nav {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 24px;
   font-size: 15px;
   font-weight: 500;
 }
@@ -221,19 +402,203 @@ img {
   padding-block: 8px;
 }
 .main-nav a:hover {
-  color: var(--accent);
+  color: var(--bar-accent);
 }
 .main-nav .router-link-exact-active {
+  color: var(--bar-accent);
+}
+.nav-about .arrow-icon {
+  width: 15px;
+  height: 15px;
+}
+.hello-button {
+  padding: 8px 16px;
+  border: 1px solid var(--bar-ink);
+  border-radius: 99px;
+  background: transparent;
+  color: var(--bar-ink);
+  font-size: 15px;
+  font-weight: 500;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+.hello-button:hover {
+  background: var(--bar-ink);
+  color: var(--bar-solid);
+}
+.hello-panel {
+  display: none;
+  position: fixed;
+  inset: auto;
+  top: 72px;
+  right: max(16px, calc((100vw - min(1320px, 100vw - 96px)) / 2));
+  width: min(380px, calc(100vw - 32px));
+  max-height: calc(100dvh - 88px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 30px 60px -30px rgb(12 20 36 / 0.45);
+}
+.hello-panel:popover-open {
+  display: grid;
+  gap: 12px;
+}
+.hello-panel::backdrop {
+  background: transparent;
+}
+.hello-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.hello-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  margin: -6px -6px -6px 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+}
+.hello-close:hover {
+  border-color: var(--ink);
+}
+.hello-close svg,
+.language-hint-close svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.hello-title {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 700;
+  font-stretch: 88%;
+}
+.hello-lead {
+  font-size: 14px;
+  color: var(--muted);
+}
+.hello-elsewhere {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+.hello-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: -6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.hello-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-block: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.hello-links small {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.hello-links .arrow-icon {
+  width: 13px;
+  height: 13px;
+}
+.hello-links a:hover {
   color: var(--accent);
 }
-.header-contact {
-  border: 1px solid var(--ink);
-  border-radius: 99px;
-  padding: 8px 16px !important;
+
+/* The contact form inside "Say hello" */
+.contact-form {
+  display: grid;
+  gap: 12px;
 }
-.header-contact:hover {
-  background: var(--ink);
-  color: #fff !important;
+.contact-field {
+  display: grid;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--porcelain);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink);
+}
+.contact-field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+.contact-field input:focus-visible,
+.contact-field textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+  background: #fff;
+}
+.contact-trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.contact-actions .button {
+  min-height: 44px;
+  padding: 10px 18px;
+}
+.contact-actions .button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.contact-note {
+  flex: 1 1 140px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.contact-status:empty {
+  display: none;
+}
+.contact-status {
+  font-size: 14px;
+  font-weight: 500;
+}
+.contact-status.is-error {
+  color: var(--error);
+}
+.contact-status:focus {
+  outline: none;
 }
 .personal-mark {
   white-space: nowrap;
@@ -261,6 +626,17 @@ img {
   display: none;
 }
 @media (max-width: 380px) {
+  .header-studio .main-nav {
+    gap: 9px;
+    font-size: 13px;
+  }
+  .nav-about .arrow-icon {
+    display: none;
+  }
+  .hello-button {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
   .studio-full {
     display: none;
   }
@@ -327,8 +703,11 @@ img {
   place-items: center;
   width: 76px;
   height: 76px;
+  padding: 0;
   border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--footer-ink) 40%, transparent);
+  background: transparent;
+  color: inherit;
   flex-shrink: 0;
   transition: background 0.2s;
 }
@@ -410,78 +789,6 @@ img {
   margin-top: 8px;
 }
 
-/* Capture viewer */
-.capture-dialog {
-  width: min(1200px, calc(100% - 32px));
-  max-height: calc(100% - 32px);
-  padding: 0;
-  border: 0;
-  border-radius: 10px;
-  background: #fff;
-  color: var(--ink);
-  overflow: hidden;
-}
-.capture-dialog[open] {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-}
-.capture-dialog::backdrop {
-  background: rgb(8 12 22 / 0.78);
-}
-.dialog-top,
-.dialog-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 18px;
-}
-.dialog-top h2 {
-  font-family: var(--f-body);
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: 0;
-}
-.dialog-bottom {
-  font-size: 13px;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-}
-.dialog-close {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: transparent;
-  font-size: 22px;
-  line-height: 1;
-}
-.dialog-image {
-  overflow: auto;
-  background: #eef0f4;
-  display: grid;
-  place-items: start center;
-}
-.dialog-image img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.dialog-image.is-phone img {
-  width: min(420px, 100%);
-  margin-block: 16px;
-  border-radius: 24px;
-}
-@media (max-width: 700px) {
-  .dialog-image.has-mobile img {
-    width: min(420px, 100%);
-    margin-block: 16px;
-    border-radius: 18px;
-  }
-}
-
 .not-found {
   padding-block: 90px 110px;
   display: grid;
@@ -500,23 +807,39 @@ img {
   .wrap {
     width: calc(100% - 64px);
   }
+  .hello-panel {
+    right: 32px;
+  }
 }
 @media (max-width: 700px) {
   .wrap {
     width: calc(100% - 32px);
   }
-  .header-inner {
-    min-height: 68px;
+  .header-inner,
+  .is-stuck .header-inner {
+    min-height: 60px;
   }
-  .wordmark img {
-    width: 118px;
+  .header-mark,
+  .is-stuck .header-mark {
+    width: 32px;
+  }
+  .wordmark-name {
+    display: none;
   }
   .main-nav {
-    gap: 18px;
+    gap: 14px;
     font-size: 14px;
   }
-  .header-contact {
-    display: none !important;
+  .hello-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  .hello-panel {
+    top: 64px;
+    right: 16px;
+  }
+  .header-personal {
+    position: relative;
   }
   .site-personal .header-inner {
     flex-wrap: wrap;
@@ -542,9 +865,92 @@ img {
     height: 60px;
   }
 }
+/* Studio <-> personal: the identity and the mark travel between the two headers. */
+.wordmark,
+.personal-mark {
+  view-transition-name: site-identity;
+}
+.header-studio .header-mark,
+.studio-link img {
+  view-transition-name: brand-mark;
+}
+::view-transition-group(site-identity),
+::view-transition-group(brand-mark) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}
+/* A product's card grows into its window: the frame, the screens, the logo and the name travel; the rest of the
+   card fades out early and the window's content fades in behind it. */
+::view-transition-group(project-window),
+::view-transition-group(project-shot),
+::view-transition-group(project-name),
+::view-transition-group(project-logo) {
+  animation-duration: 0.46s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+::view-transition-group(project-window) {
+  overflow: clip;
+  border-radius: 22px;
+}
+::view-transition-group(project-shot) {
+  overflow: clip;
+  border-radius: 18px;
+}
+::view-transition-old(project-window) {
+  animation: 0.12s ease-out both view-fade-out;
+}
+::view-transition-new(project-window) {
+  animation: 0.3s 0.1s ease-out both view-fade-in;
+}
+/* The screens keep their proportions while their frame changes shape. */
+::view-transition-old(project-shot),
+::view-transition-new(project-shot) {
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+@keyframes view-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes view-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+/* Switching language opens the other language's page, but the layout stays still while the words cross-fade:
+   the page opens at the same place and the cards and the stack keep their own snapshots, so their screens don't
+   blur when a text above them changes length. Browsers without cross-page view transitions just load the page. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+.language-switching .project-card {
+  view-transition-name: var(--language-name);
+}
+.language-switching .stack-explorer {
+  view-transition-name: stack-explorer;
+}
+.language-switching::view-transition-group(*),
+.language-switching::view-transition-old(*),
+.language-switching::view-transition-new(*) {
+  animation-duration: 0.4s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
   *,
   *::before,
@@ -552,5 +958,106 @@ img {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* On phones "Say hello" takes the whole screen, with fields large enough not to zoom the page. */
+@media (max-width: 700px) {
+  .hello-panel {
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    padding: max(18px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px))
+      max(24px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hello-panel:popover-open {
+    align-content: start;
+    gap: 16px;
+  }
+  .hello-title {
+    font-size: 26px;
+  }
+  .hello-close {
+    width: 44px;
+    height: 44px;
+  }
+  .contact-field input,
+  .contact-field textarea {
+    font-size: 16px;
+  }
+  .contact-field textarea {
+    min-height: 160px;
+  }
+}
+
+/* The offer of the Japanese version, for browsers that prefer Japanese */
+.language-hint {
+  position: fixed;
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 16px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 16px 40px -20px rgb(12 20 36 / 0.45);
+  font-size: 15px;
+  font-weight: 500;
+}
+.language-hint a {
+  padding-block: 8px;
+}
+.language-hint a:hover {
+  color: var(--accent);
+}
+.language-hint-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+.language-hint-close:hover {
+  background: var(--porcelain);
+  color: var(--ink);
+}
+.language-hint-enter-active,
+.language-hint-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.language-hint-enter-from,
+.language-hint-leave-to {
+  opacity: 0;
+  transform: translateY(12px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .language-hint-enter-active,
+  .language-hint-leave-active {
+    transition: none;
+  }
+}
+
+/* Navbar items never wrap; on narrow phones the studio's Projects link gives way (the logo leads home). */
+.main-nav a,
+.main-nav .hello-button {
+  white-space: nowrap;
+}
+@media (max-width: 420px) {
+  .header-studio .nav-projects-link {
+    display: none;
   }
 }

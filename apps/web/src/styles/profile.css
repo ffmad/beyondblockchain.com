@@ -19,9 +19,9 @@
 .notes-greeting h1 {
   margin-top: 18px;
   font-family: var(--f-serif);
-  font-size: clamp(64px, 9.4vw, 150px);
+  font-size: clamp(48px, 6.2vw, 96px);
   font-weight: 400;
-  line-height: 0.9;
+  line-height: 0.92;
   letter-spacing: -0.04em;
 }
 .notes-greeting h1 span {
@@ -32,7 +32,7 @@
 .notes-handle {
   margin-top: 14px;
   font-family: var(--f-serif);
-  font-size: clamp(28px, 3.2vw, 46px);
+  font-size: clamp(24px, 2.6vw, 36px);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -216,7 +216,7 @@
 }
 .story-rail {
   position: sticky;
-  top: 28px;
+  top: 96px;
   align-self: start;
   display: grid;
   gap: 28px;
