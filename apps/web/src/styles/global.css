@@ -15,7 +15,6 @@
   --f-display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
   --f-body: 'DM Sans', system-ui, sans-serif;
   --f-mono: 'DM Mono', ui-monospace, Menlo, monospace;
-  --f-serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
   font-family: var(--f-body);
   color: var(--ink);
   background: var(--porcelain);
@@ -32,7 +31,6 @@
   --f-display: 'Bricolage Grotesque Variable', var(--f-ja), sans-serif;
   --f-body: 'DM Sans', var(--f-ja), system-ui, sans-serif;
   --f-mono: 'DM Mono', var(--f-ja), ui-monospace, monospace;
-  --f-serif: 'Newsreader Variable', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
   word-break: auto-phrase;
   line-break: strict;
 }
@@ -43,25 +41,18 @@
   :is(
     .footer-top h2,
     .not-found h1,
-    .notes-greeting h1,
-    .notes-handle,
-    .artefact-note h2,
-    .story-rail h2,
-    .chapter-text h3,
+    .about-title,
+    .about-headline,
     .section-head h2,
     .studio-tagline
   ) {
   letter-spacing: 0;
 }
-/* In Japanese the name sits inside the sentence (こんにちは、/ Quentinです。) rather than on a line of its own. */
-:lang(ja) .notes-greeting h1 span {
-  display: inline;
-}
 /* Japanese characters are about twice as wide as the Latin measure these widths were set in. */
 :lang(ja) .studio-lead {
   max-width: 28em;
 }
-:lang(ja) .notes-greeting h1 {
+:lang(ja) .about-title {
   line-height: 1.15;
 }
 .site-studio {
@@ -71,20 +62,6 @@
   --footer-muted: #98a3bb;
   --accent: var(--brand-700);
   background: var(--ground);
-}
-.site-personal {
-  --ground: #f4efe6;
-  --ink: #1b1a17;
-  --muted: #625c52;
-  --line: #ddd3c3;
-  --accent: #2b3bb8;
-  --ochre: #8b641a;
-  --ochre-soft: #c39433;
-  --footer-bg: #1d1c19;
-  --footer-ink: #f4efe6;
-  --footer-muted: #b3a998;
-  background: var(--ground);
-  color: var(--ink);
 }
 * {
   box-sizing: border-box;
@@ -407,10 +384,6 @@ html {
 .main-nav .router-link-exact-active {
   color: var(--bar-accent);
 }
-.nav-about .arrow-icon {
-  width: 15px;
-  height: 15px;
-}
 .hello-button {
   padding: 8px 16px;
   border: 1px solid var(--bar-ink);
@@ -600,53 +573,15 @@ html {
 .contact-status:focus {
   outline: none;
 }
-.personal-mark {
-  white-space: nowrap;
-  font-family: var(--f-serif);
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-.personal-mark span {
-  color: var(--ochre);
-  margin-inline: 2px;
-}
-.studio-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--accent);
-}
-.studio-link img {
-  display: block;
-}
-.studio-short {
-  display: none;
-}
 @media (max-width: 380px) {
   .header-studio .main-nav {
     gap: 9px;
     font-size: 13px;
   }
-  .nav-about .arrow-icon {
-    display: none;
-  }
   .hello-button {
     padding: 5px 10px;
     font-size: 13px;
   }
-  .studio-full {
-    display: none;
-  }
-  .studio-short {
-    display: inline;
-  }
-}
-.studio-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 .skip-link {
   position: absolute;
@@ -687,12 +622,6 @@ html {
   letter-spacing: -0.035em;
   line-height: 0.95;
   margin-block: 14px 18px;
-}
-.site-personal .footer-top h2 {
-  font-family: var(--f-serif);
-  font-weight: 400;
-  font-stretch: normal;
-  letter-spacing: -0.03em;
 }
 .footer-invitation {
   color: var(--footer-muted);
@@ -838,24 +767,6 @@ html {
     top: 64px;
     right: 16px;
   }
-  .header-personal {
-    position: relative;
-  }
-  .site-personal .header-inner {
-    flex-wrap: wrap;
-    row-gap: 0;
-    padding-block: 10px 4px;
-  }
-  .site-personal .main-nav {
-    order: 3;
-    width: 100%;
-  }
-  .personal-mark {
-    font-size: 18px;
-  }
-  .site-personal .main-nav {
-    gap: 14px;
-  }
   .footer-top {
     flex-direction: column;
     align-items: flex-start;
@@ -865,13 +776,11 @@ html {
     height: 60px;
   }
 }
-/* Studio <-> personal: the identity and the mark travel between the two headers. */
-.wordmark,
-.personal-mark {
+/* Studio <-> about: the pages cross-fade under a header that stays still. */
+.wordmark {
   view-transition-name: site-identity;
 }
-.header-studio .header-mark,
-.studio-link img {
+.header-studio .header-mark {
   view-transition-name: brand-mark;
 }
 ::view-transition-group(site-identity),

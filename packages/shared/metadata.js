@@ -35,12 +35,12 @@ export const pageMetadata = {
         'Beyond Blockchain. Pioneer in blockchain development since 2014, building beyond it with AI: Ikitai, Fairmints, FestCompass and TapLog.',
     },
     '/quentin': {
-      title: 'Quentin de Beauchesne (ffmad)',
+      title: 'Quentin de Beauchesne — Frontend and full-stack engineer, Tokyo',
       description:
-        'Hi, I’m Quentin, online ffmad. I started CryptoFR in 2014, co-founded Ownest in 2017, and now build Ikitai, Fairmints, FestCompass and TapLog.',
+        'Frontend and full-stack engineer in Tokyo (Vue 3, TypeScript, NestJS). 14 years building web apps, 8 as a CEO and co-founder. Now building Ikitai, Fairmints, FestCompass and TapLog.',
       image: '/social/quentin.en.png',
       imageAlt:
-        'Quentin de Beauchesne, founder and product engineer in Tokyo, also known as ffmad, now building Ikitai, Fairmints, FestCompass and TapLog.',
+        'Quentin de Beauchesne (ffmad), frontend and full-stack engineer in Tokyo: Vue 3, TypeScript, NestJS and AI-assisted development.',
     },
   },
   ja: {
@@ -53,12 +53,12 @@ export const pageMetadata = {
         'Beyond Blockchain。2014年からブロックチェーン開発の先駆者として、いまはAIでその先をつくる。Ikitai、Fairmints、FestCompass、TapLog。',
     },
     '/quentin': {
-      title: 'Quentin de Beauchesne（ffmad）',
+      title: 'Quentin de Beauchesne — 東京のフロントエンド／フルスタックエンジニア',
       description:
-        'こんにちは、Quentinです。ネットではffmadとして活動しています。2014年にCryptoFRを立ち上げ、2017年にOwnestを共同創業。いまはIkitai、Fairmints、FestCompass、TapLogをつくっています。',
+        '東京のフロントエンド／フルスタックエンジニア（Vue 3、TypeScript、NestJS）。Webアプリ開発14年、CEO・共同創業者として8年。いまはIkitai、Fairmints、FestCompass、TapLogをつくっています。',
       image: '/social/quentin.ja.png',
       imageAlt:
-        '東京の創業者・プロダクトエンジニア、Quentin de Beauchesne（ffmad）。いまはIkitai、Fairmints、FestCompass、TapLogをつくっています。',
+        'Quentin de Beauchesne（ffmad）。東京のフロントエンド／フルスタックエンジニア。Vue 3、TypeScript、NestJS、AIを活用した開発。',
     },
   },
 };
@@ -130,7 +130,10 @@ const socials = [
   'https://www.linkedin.com/in/qdebeauchesne/',
   'https://x.com/quentinbdb',
 ];
-const jobTitles = { en: 'Founder and product engineer', ja: '創業者・プロダクトエンジニア' };
+const jobTitles = {
+  en: 'Frontend and full-stack engineer',
+  ja: 'フロントエンド／フルスタックエンジニア',
+};
 const platformNames = { web: 'Web', ios: 'iOS', android: 'Android' };
 
 /** schema.org data for search engines and AI assistants: the person, the site and the products. */
@@ -147,6 +150,17 @@ export function structuredData(path, projects, locale = defaultLocale) {
     url: `${siteOrigin}/quentin`,
     jobTitle: jobTitles[locale] ?? jobTitles.en,
     address: { '@type': 'PostalAddress', addressLocality: 'Tokyo', addressCountry: 'JP' },
+    knowsLanguage: ['fr', 'en', 'ja'],
+    knowsAbout: [
+      'Vue.js',
+      'TypeScript',
+      'NestJS',
+      'Capacitor',
+      'AI-assisted software development',
+      'Bitcoin',
+      'Ethereum',
+    ],
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'ENSEM (INP Lorraine)' },
     sameAs: socials,
   };
   const website = {

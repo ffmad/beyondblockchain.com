@@ -11,7 +11,7 @@ import { useLocale } from './i18n';
 const route = useRoute();
 const { t } = useLocale();
 const router = useRouter();
-// The studio and the personal page deliberately use different palettes and type.
+// Every page shares the studio's header and design; the footer speaks for me on the personal page.
 const personal = computed(() => route.path.replace(/\/$/, '') === '/quentin');
 // A project opened over the studio page keeps the studio page underneath it.
 const overlay = useProjectOverlay();
@@ -32,9 +32,9 @@ watch(
 </script>
 
 <template>
-  <div class="site" :class="personal ? 'site-personal' : 'site-studio'">
+  <div class="site site-studio">
     <a href="#main-content" class="skip-link">{{ t('skipToContent') }}</a>
-    <SiteHeader :personal="personal" />
+    <SiteHeader />
     <main id="main-content" tabindex="-1">
       <RouterView :route="overlay ? studio : undefined" />
     </main>

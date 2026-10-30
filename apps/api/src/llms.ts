@@ -58,7 +58,7 @@ export function llmsText(projects: Project[], profile: Profile) {
       .join('\n'),
     `## About`,
     [
-      `- [${profile.name}](${siteOrigin}/quentin): his background, community work, talks and writing.`,
+      `- [${profile.name}](${siteOrigin}/quentin): his experience, skills, how he builds with AI agents, finance and regulation work, talks and communities.`,
       `- [Beyond Blockchain in Japanese](${siteOrigin}/ja/)`,
       `- Contact: the "Say hello" form on any page.`,
     ].join('\n'),

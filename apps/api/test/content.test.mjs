@@ -163,11 +163,20 @@ test('projects are ordered, filtered by publication, and limited to public field
 
 test('API is read-only, profile is available, and health checks the database', async () => {
   assert.deepEqual(await (await get('health')).json(), { status: 'ok' });
-  assert.equal((await (await get('profile')).json()).handle, 'ffmad');
+  const profile = await (await get('profile')).json();
+  assert.equal(profile.handle, 'ffmad');
+  // The personal page follows the CV: its title, and its experience newest first.
+  assert.match(profile.headline, /Frontend and full-stack engineer/);
+  assert.deepEqual(
+    profile.experience.map((item) => item.name),
+    ['Beyond Blockchain', 'Fairmints', 'Ownest', 'Ledgys', 'CryptoFR', 'Avisto', 'CommOnEcoute'],
+  );
   const japaneseProfile = await (await get('profile?lang=ja')).json();
   assert.equal(japaneseProfile.handle, 'ffmad');
-  assert.match(japaneseProfile.intro, /CryptoFR/);
+  assert.match(japaneseProfile.intro, /Beyond Blockchain/);
   assert.match(japaneseProfile.intro, /[ぁ-んァ-ン]/);
+  assert.equal(japaneseProfile.experience.length, profile.experience.length);
+  assert.equal(japaneseProfile.skills.length, profile.skills.length);
   for (const method of ['POST', 'PUT', 'PATCH', 'DELETE']) {
     assert.equal((await fetch(`${base}/api/projects`, { method })).status, 404);
   }

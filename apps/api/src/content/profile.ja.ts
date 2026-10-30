@@ -5,60 +5,27 @@ const ownestStory = { label: 'Ownestの歩み', url: 'https://ownest.io/en/about
 export const profileJa: Profile = {
   name: 'Quentin de Beauchesne',
   handle: 'ffmad',
+  headline: 'フロントエンド／フルスタックエンジニア · Vue 3、TypeScript、NestJS · AIを活用した開発',
   intro:
-    '2014年にCryptoFRを立ち上げ、2017年にOwnestを共同創業しました。現在は、自分のスタジオBeyond Blockchainで、Ikitai、Fairmints、FestCompass、TapLogを開発しています。',
+    '14年にわたりJavaScriptとTypeScriptでWebアプリケーションをつくり、8年間はCEO・共同創業者として、エンジニアリングの体制をゼロから築いてきました。現在は東京の自分のスタジオBeyond Blockchainで、Web・iOS・Android向けのVue 3フロントエンドと、NestJSのバックエンドを開発しています。',
   focus:
-    '創業者であり、開発者です。最近は、日々の予定づくりに役立つAI、ビットコインのツール、そして日本のフェス探しに取り組んでいます。',
-  artefacts: [
+    'AIコーディングエージェント（Claude Code、Codex、Grok）と毎日開発し、すべての変更をテストと自分のレビューに通しています。',
+  glance: [
+    { label: '拠点', value: '東京' },
     {
-      id: 'cryptofr',
-      kicker: 'Bitcoin.fr · 2015',
-      title: 'CryptoFRの立ち上げ',
-      note: '2014年、フランス語圏のビットコインとブロックチェーンのコミュニティ「CryptoFR」を立ち上げました。2015年1月には、フォーラムを築き、そこでの議論をミートアップへと広げていったことについて、Bitcoin.frのインタビューを受けました。',
-      source: {
-        label: 'Bitcoin.frでインタビューを読む（フランス語）',
-        url: 'https://bitcoin.fr/cryptofr/',
-      },
+      label: '現在',
+      value: 'Beyond Blockchain（Ikitai、FestCompass、TapLog）とFairmintsの創業者',
+    },
+    { label: 'これまで', value: 'Ownest CEO・共同創業者。20人規模まで成長（2017〜2026年）' },
+    {
+      label: '開発',
+      value: 'Vue 3、TypeScript、NestJS。AIコーディングエージェントと、変更ごとのテスト',
     },
     {
-      id: 'vitalik',
-      kicker: 'Ethereum France · 2016',
-      title: 'ヴィタリック・ブテリンとの対話',
-      note: 'イーサリアムの生みの親に聞いた前後編のインタビューに、Ethereum FranceおよびCryptoFRコミュニティのメンバーとともに携わりました。',
-      source: {
-        label: 'インタビューを読む（フランス語）',
-        url: 'https://www.ethereum-france.com/blog/interview-de-vitalik-buterin-createur-dethereum-et-president-de-la-fondation-partie-1-sur-2/',
-      },
+      label: '言語',
+      value: 'フランス語（母語）、英語（ビジネス）、日本語（JLPT N2に向けて学習中）',
     },
-    {
-      id: 'ownest',
-      kicker: 'Ownest · 2017–2026',
-      title: 'サプライチェーンのためのソフトウェア',
-      note: 'Ownestを共同創業し、モノが移動するあいだ誰がその責任を負っているかを追跡するブロックチェーンソフトウェアに、8年間取り組みました。技術面では、Polygon、Vue、NestJSを組み合わせました。',
-      image: {
-        src: '/story/ownest-mobile.png',
-        alt: '責任の引き渡しを確認するOwnestのモバイル画面。',
-        width: 269,
-        height: 522,
-      },
-      source: ownestStory,
-    },
-    {
-      id: 'nakamotos',
-      kicker: 'The Nakamotos Club',
-      title: 'Rare Pepe Nakamotoカード',
-      note: 'The Nakamotos Clubを創設しました。オリジナルのRare Pepe Nakamotoカードについて、ビットコイン上での来歴、コレクター、そしてポートレートを扱うプロジェクトです。',
-      image: {
-        src: '/story/nakamoto-card.svg',
-        alt: 'The Nakamotos Clubで紹介されている、オリジナルのRare Pepe Nakamotoトレーディングカード。',
-        width: 379,
-        height: 530,
-      },
-      source: {
-        label: 'NFT Factoryの創設メンバー紹介',
-        url: 'https://nftfactoryparis.com/founders',
-      },
-    },
+    { label: '学歴', value: 'ENSEM 技術者学位（修士相当）' },
   ],
   now: [
     {
@@ -88,50 +55,92 @@ export const profileJa: Profile = {
       url: '/work/taplog',
     },
   ],
-  experience: [
+  workflow: [
+    { title: 'ブリーフ', text: 'タスクごとに、受け入れ条件と通すべきテストを決めます。' },
     {
-      name: 'CryptoFR',
-      year: '2014',
-      period: '2014年に創設',
-      role: '創設者',
-      description:
-        'フランス語圏のビットコインとブロックチェーンのコミュニティをつくりました。最初はフォーラムから始め、その後ミートアップを開いて、議論を実際に顔を合わせる場へと広げました。',
-      url: 'https://cryptofr.com',
+      title: '並行するエージェント',
+      text: 'Claude Code、Codex、Grokが別々のタスクを担い、エージェントネットワークを通じて作業を引き継ぎます。',
     },
     {
-      name: 'Ledgys',
-      year: '2016',
-      period: '2016年2月〜2017年11月',
-      role: '共同創業者・CEO',
+      title: 'テスト',
+      text: '変更ごとにユニットテスト（Vitest、Jest）を書き、重要なフローにはPlaywrightを使います。',
+    },
+    {
+      title: 'レビュー',
+      text: 'マージの前に、すべての差分を自分で読みます。エージェントが単独でデプロイすることはありません。',
+    },
+    {
+      title: 'フィードバック',
+      text: '繰り返されるミスは、エージェントへの指示のルールにします。',
+    },
+  ],
+  workflowNote:
+    'Ikitaiは最初の2週間で、148コミット、57のテストファイルに達しました（2026年10月30日時点のリポジトリより）。',
+  experience: [
+    {
+      name: 'Beyond Blockchain',
+      year: '2026',
+      period: '2026年7月〜現在',
+      role: '創業者・プロダクトエンジニア',
+      place: '東京',
       description:
-        'イーサリアムを基盤に、分散型マーケットプレイスを通じたデータ共有を探るため、Ledgysを共同創業しました。',
+        '一人で運営するスタジオです。Ikitai、FestCompass、TapLog、そしてこのサイトを開発・運営しています。いずれもWeb・iOS・Android向けのVue 3アプリで、バックエンドはNestJSです。その裏側のマルチエージェントの開発体制も自分で構築しました。Claude Code、Codex、Grokが並行してタスクを担い、エージェントネットワークとジョブボードを通じて作業を引き継ぎます。リサーチとコンテンツには15のGrokボットを使っています。',
+      url: '/',
+    },
+    {
+      name: 'Fairmints',
+      year: '2024',
+      period: '2024年10月〜現在',
+      role: '創業者',
+      place: '東京',
+      description:
+        'ビットコインネイティブのトークンやNFTを発行・取引できるプラットフォームです。Alkanesプロトコル上のマーケット、AMM、エクスプローラーに加え、Counterparty（XCP）のアセットにも対応し、英語・日本語・中国語で提供しています。Vue 3、Tailwind CSS、Three.js、NestJS、Socket.IO、bitcoinjs-libで開発しました。',
+      url: 'https://fairmints.io',
     },
     {
       name: 'Ownest',
       year: '2017',
       period: '2017年12月〜2026年3月',
       role: 'CEO・共同創業者',
+      place: 'パリ',
       description:
-        'サプライチェーン全体にわたって、所有権と責任の所在を追跡するブロックチェーンソフトウェアです。技術面では、Polygon、Vue、NestJSを組み合わせました。',
+        'NFTによる追跡で、サプライチェーンのどこで誰がモノの責任を負っているかをたどるSaaSです。Vue、NestJS、Polygonにわたる技術アーキテクチャを担い、会社が20人規模に成長するなかでプロダクトチームを採用し、率いました。顧客には、サンローラン、Orange、カルフール、Bouyguesなど、フランスの大手企業がいました。',
       url: 'https://ownest.io',
     },
     {
-      name: 'Fairmints',
-      year: '2024',
-      period: '2024年〜現在',
-      role: '現在のプロジェクト',
+      name: 'Ledgys',
+      year: '2016',
+      period: '2016年2月〜2017年11月',
+      role: '共同創業者・CEO',
+      place: 'パリ',
       description:
-        'ビットコインネイティブなトークンやNFTを作成・ミント・取引できるプラットフォームです。マーケット、スワップ、エクスプローラーの各ツールを備えています。',
-      url: 'https://fairmints.io',
+        '分散型マーケットプレイスによる、イーサリアムベースのデータ共有に取り組みました。',
     },
     {
-      name: 'Ikitai、FestCompass、TapLog',
-      year: '2026',
-      period: '2026年〜現在',
-      role: '単独創業者',
+      name: 'CryptoFR',
+      year: '2014',
+      period: '2014年〜現在',
+      role: '創業者',
       description:
-        'FestCompass（2026年7月から）は、日本のフェスガイドです。TapLog（2026年8月から）は、東京のクラフトビアバーのタップリストを届けます。Ikitai（2026年10月から）は、保存しておいたアイデアを友だちとの予定に変えるAIアプリです。',
-      url: '/',
+        'フランス語圏のビットコインとブロックチェーンのコミュニティです。MongoDBとRedisを使ったNode.jsのフォーラムから始まり、議論を同じ場に集めるミートアップへと広がりました。',
+      url: 'https://cryptofr.com',
+    },
+    {
+      name: 'Avisto',
+      year: '2012',
+      period: '2012年11月〜2016年1月',
+      role: 'Web開発者',
+      place: 'カシャン',
+      description:
+        'Symfony、eZ Publish、jQuery Mobileを使い、クライアント向けのWebサイトやWebアプリケーションを開発しました。',
+    },
+    {
+      name: 'CommOnEcoute',
+      year: '2012',
+      period: '2012年3月〜8月',
+      role: 'Web開発インターン',
+      place: 'パリ',
+      description: 'jQueryで、Webアプリケーションのフロントエンドを担当しました。',
     },
   ],
   achievements: [
@@ -156,16 +165,35 @@ export const profileJa: Profile = {
       source: ownestStory,
     },
   ],
-  community: [
+  skills: [
+    { area: 'プログラミング言語', items: 'TypeScript、JavaScript、HTML/CSS' },
     {
-      name: 'AMF・個人投資家諮問委員会',
-      description:
-        'フランス金融市場庁（AMF）の個人投資家諮問委員会（Commission consultative Épargnants）に、Association CryptoFRの代表として参加しています。',
-      source: {
-        label: '公式の委員会メンバー一覧（フランス語）',
-        url: 'https://www.amf-france.org/fr/lamf/notre-organisation/les-commissions-consultatives',
-      },
+      area: 'フロントエンド',
+      items:
+        'Vue.js 3（Composition API、Pinia、Vue Router、vue-i18n、サーバーサイドレンダリング）、Vite、Tailwind CSS、Three.js',
     },
+    {
+      area: 'バックエンド・API',
+      items: 'NestJS、Express、REST APIの設計、TypeORM、Prisma、PostgreSQL、SQLite、Socket.IO',
+    },
+    { area: 'モバイル', items: 'Capacitorで、ひとつのVueコードベースからiOS・Androidアプリ' },
+    { area: 'テスト', items: 'Jest、Vitest、Playwright' },
+    {
+      area: 'デリバリー・ホスティング',
+      items: 'Docker、GitHub Actions、Cloudflare、Firebase、Supabase、AWS',
+    },
+    { area: '多言語対応', items: '英語・日本語・中国語などでアプリを提供' },
+    {
+      area: 'AI',
+      items: '開発にClaude Code、Codex、Grok。プロダクトの機能にClaude APIとGemini API',
+    },
+    {
+      area: 'ブロックチェーン',
+      items:
+        'ビットコイン（Counterparty、Alkanes、bitcoinjs-lib）、イーサリアムとPolygon、Solidity、Rustのコントラクト',
+    },
+  ],
+  community: [
     {
       name: 'La Chaintech',
       description:
@@ -281,6 +309,16 @@ export const profileJa: Profile = {
   ],
   contributions: [
     {
+      year: '現在',
+      title: 'AMF・個人投資家諮問委員会',
+      description:
+        'フランス金融市場庁（AMF）の個人投資家諮問委員会（Commission consultative Épargnants）に、Association CryptoFRの代表として参加しています。',
+      source: {
+        label: '公式の委員会メンバー一覧（フランス語）',
+        url: 'https://www.amf-france.org/fr/lamf/notre-organisation/les-commissions-consultatives',
+      },
+    },
+    {
       year: '2021',
       title: 'ACPR・AMF フィンテックフォーラム',
       description:
@@ -301,6 +339,14 @@ export const profileJa: Profile = {
       },
     },
   ],
+  education: [
+    {
+      years: '2008〜2012',
+      school: 'ENSEM（ロレーヌ国立理工科学院）',
+      detail: '技術者学位（修士相当）、総合工学・情報システムコース',
+    },
+  ],
+  languages: 'フランス語（母語）· 英語（ビジネス）· 日本語（JLPT N2に向けて学習中）',
   socials: [
     { label: 'GitHub', url: 'https://github.com/ffmad' },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/qdebeauchesne/' },

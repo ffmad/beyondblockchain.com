@@ -16,7 +16,7 @@ Claude’s. The agreed direction:
   from beyond the lower-left edge, carving its trail, and stops exactly where it sits in the logo; the original SVG
   then takes over and the beam lights up. An earlier tile-assembly entrance was dropped after review because it
   read like an image loading. Compare without it using `?entrance=off`.
-- **Personal — “Field Notes”** (chosen independently by both). A serif greeting, four real artefacts that open
+- **Personal — “Field Notes”** (chosen independently by both; replaced on 30 October 2026 by the studio's design, so both pages read as one site, with the content aligned to the CV). A serif greeting, four real artefacts that open
   short first-person notes with sources, what he is making now, and a story with a quiet year index from 2014.
   No fake tape, stamps or handwriting; opinions or memories are added only in his own words.
 

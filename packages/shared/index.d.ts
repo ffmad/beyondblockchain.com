@@ -39,10 +39,11 @@ export interface ResourceSnapshot {
 export type InitialResources = Record<string, ResourceSnapshot>;
 export interface Experience {
   name: string;
-  /** Short year label for the story index, e.g. "2017". */
+  /** The year it started, e.g. "2017". */
   year: string;
   period: string;
   role: string;
+  place?: string;
   description: string;
   url?: string;
 }
@@ -59,29 +60,46 @@ export interface PublicWork {
   description: string;
   source: Link;
 }
-export interface Artefact {
-  id: string;
-  kicker: string;
-  title: string;
-  note: string;
-  image?: { src: string; alt: string; width: number; height: number };
-  source: Link;
-}
 export interface NowItem {
   name: string;
   since: string;
   description: string;
   url: string;
 }
+export interface Skill {
+  area: string;
+  items: string;
+}
+export interface WorkflowStep {
+  title: string;
+  text: string;
+}
+export interface Education {
+  years: string;
+  school: string;
+  detail: string;
+}
 export interface Profile {
   name: string;
   handle: string;
+  /** What I do, in one line: the same title as the CV. */
+  headline: string;
   intro: string;
   focus: string;
-  artefacts: Artefact[];
+  /** The essentials at a glance, beside the introduction. */
+  glance: { label: string; value: string }[];
   now: NowItem[];
+  /** How I build with AI agents, step by step, and the evidence for it. */
+  workflow: WorkflowStep[];
+  workflowNote: string;
+  /** Newest first, as on the CV. */
   experience: Experience[];
+  /** Ownest's milestones. */
   achievements: Achievement[];
+  skills: Skill[];
+  /** Finance and regulation. */
+  contributions: Achievement[];
+  publicWork: PublicWork[];
   community: { name: string; description: string; source: Link }[];
   additionalProjects: {
     name: string;
@@ -93,7 +111,7 @@ export interface Profile {
     imageAlt: string;
     source: Link;
   }[];
-  publicWork: PublicWork[];
-  contributions: Achievement[];
+  education: Education[];
+  languages: string;
   socials: Link[];
 }

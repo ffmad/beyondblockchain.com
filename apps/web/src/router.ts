@@ -45,8 +45,7 @@ export function createSiteRouter(
     },
   });
 
-  // Moving between the studio and /quentin morphs one header into the other: the studio's mark flies to its
-  // place in the personal header and the names swap. Opening a product from its card on screen grows the card
+  // Moving between the studio and /quentin cross-fades the pages under the header. Opening a product from its card on screen grows the card
   // into the project window, and closing shrinks it back. Browsers without view transitions just navigate.
   let finishTransition: (() => void) | undefined;
   let morphs = 0;

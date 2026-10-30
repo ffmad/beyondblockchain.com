@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { Profile } from '@beyond/shared';
 import { contentPath } from '@beyond/shared/metadata.js';
+import { computed } from 'vue';
 import { useLocale } from '../i18n';
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useResource } from '../composables/useResource';
 import { usePageAnchor } from '../composables/usePageAnchor';
 import ResourceState from '../components/ResourceState.vue';
 import ArrowIcon from '../components/ArrowIcon.vue';
 
+// About me, in the studio's design: who I am and what I do, then what I'm making now, how I build with AI
+// agents, my experience (newest first and worded as on my CV), skills, and the rest of the record.
 const { t, locale } = useLocale();
 const {
   data: profile,
@@ -17,93 +19,57 @@ const {
 } = useResource<Profile>(contentPath('/api/profile', locale));
 usePageAnchor(profile);
 
-// Field notes: a few real artefacts, each opening into its short story.
-const openId = ref('cryptofr');
-const openArtefact = computed(
-  () => profile.value?.artefacts.find((a) => a.id === openId.value) ?? profile.value?.artefacts[0],
-);
-
-// The year index follows the reader through "How I got here".
-const activeYear = ref('');
-let frame = 0;
-function syncYear() {
-  frame = 0;
-  const chapters = document.querySelectorAll<HTMLElement>('[data-year]');
-  let current = chapters[0]?.dataset.year ?? '';
-  for (const chapter of chapters)
-    if (chapter.getBoundingClientRect().top <= window.innerHeight * 0.4)
-      current = chapter.dataset.year ?? current;
-  activeYear.value = current;
-}
-function onScroll() {
-  if (!frame) frame = requestAnimationFrame(syncYear);
-}
-onMounted(() => {
-  window.addEventListener('scroll', onScroll, { passive: true });
-  syncYear();
-});
-watch(profile, async () => {
-  await nextTick();
-  syncYear();
-});
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll);
-  cancelAnimationFrame(frame);
-});
+const CODE_URL = 'https://github.com/ffmad/beyondblockchain.com';
+// A current product has its page at /work/<slug> and its logo at /projects/<slug>-logo.svg.
+const productSlug = (url: string) => url.match(/^\/work\/([\w-]+)$/)?.[1] ?? null;
+const step = (index: number) => String(index + 1).padStart(2, '0');
+// The title's separators stay with the words before them, so a wrapped line never starts with "·".
+const headline = computed(() => profile.value?.headline.replaceAll(' · ', '\u00a0· ') ?? '');
 </script>
 
 <template>
-  <div class="field-notes">
-    <section class="notes-hero wrap" aria-labelledby="profile-title">
-      <div class="notes-greeting">
-        <p class="eyebrow">{{ t('profile.kicker') }}</p>
-        <i18n-t id="profile-title" keypath="profile.hello" tag="h1" scope="global">
+  <div class="about-page">
+    <section class="about-hero wrap" aria-labelledby="profile-title">
+      <div class="about-hero-text">
+        <p class="about-kicker">{{ t('profile.kicker') }}</p>
+        <i18n-t
+          id="profile-title"
+          keypath="profile.hello"
+          tag="h1"
+          class="about-title"
+          scope="global"
+        >
           <template #name
             ><span>{{ t('profile.helloName') }}</span></template
           >
         </i18n-t>
-        <i18n-t keypath="profile.handle" tag="p" class="notes-handle" scope="global">
-          <template #handle><a href="https://github.com/ffmad">ffmad</a></template>
-        </i18n-t>
         <template v-if="profile">
-          <p class="notes-intro">{{ profile.intro }}</p>
-          <p class="notes-focus">{{ profile.focus }}</p>
+          <p class="about-headline">{{ headline }}</p>
+          <p class="about-intro">{{ profile.intro }}</p>
+          <p class="about-focus">{{ profile.focus }}</p>
         </template>
-      </div>
-
-      <div v-if="profile && openArtefact" class="artefacts">
-        <div class="artefact-fan" role="group" :aria-label="t('profile.artefacts')">
-          <button
-            v-for="(artefact, index) in profile.artefacts"
-            :key="artefact.id"
-            type="button"
-            class="artefact"
-            :class="[`artefact-${artefact.id}`, { 'has-image': artefact.image }]"
-            :style="{ '--i': index }"
-            :aria-pressed="openArtefact.id === artefact.id"
-            aria-controls="artefact-note"
-            @click="openId = artefact.id"
-          >
-            <img
-              v-if="artefact.image"
-              :src="artefact.image.src"
-              alt=""
-              :width="artefact.image.width"
-              :height="artefact.image.height"
-            />
-            <span class="artefact-kicker">{{ artefact.kicker }}</span>
-            <span class="artefact-title">{{ artefact.title }}</span>
-          </button>
-        </div>
-        <div id="artefact-note" class="artefact-note" aria-live="polite">
-          <p class="eyebrow">{{ openArtefact.kicker }}</p>
-          <h2>{{ openArtefact.title }}</h2>
-          <p>{{ openArtefact.note }}</p>
-          <a :href="openArtefact.source.url" class="text-link"
-            >{{ openArtefact.source.label }} <ArrowIcon
-          /></a>
+        <div class="about-elsewhere">
+          <i18n-t keypath="profile.handle" tag="p" class="about-handle" scope="global">
+            <template #handle><a href="https://github.com/ffmad">ffmad</a></template>
+          </i18n-t>
+          <ul v-if="profile" class="about-links" :aria-label="t('profile.links')">
+            <li v-for="link in profile.socials" :key="link.url">
+              <a :href="link.url">{{ link.label }} <ArrowIcon /></a>
+            </li>
+            <li>
+              <a :href="CODE_URL">{{ t('profile.code') }} <ArrowIcon /></a>
+            </li>
+          </ul>
         </div>
       </div>
+      <aside v-if="profile" class="about-glance" :aria-label="t('profile.glance')">
+        <dl>
+          <div v-for="item in profile.glance" :key="item.label" class="glance-row">
+            <dt>{{ item.label }}</dt>
+            <dd>{{ item.value }}</dd>
+          </div>
+        </dl>
+      </aside>
     </section>
 
     <div class="wrap">
@@ -116,64 +82,78 @@ onUnmounted(() => {
     </div>
 
     <template v-if="profile">
-      <section id="now" class="notes-now wrap" aria-labelledby="now-title">
-        <h2 id="now-title">{{ t('profile.nowTitle') }}</h2>
-        <div class="now-list">
-          <article v-for="item in profile.now" :key="item.name" class="now-item">
-            <h3>
-              <RouterLink v-if="item.url.startsWith('/')" :to="item.url"
-                >{{ item.name }} <ArrowIcon direction="right"
-              /></RouterLink>
-              <a v-else :href="item.url">{{ item.name }} <ArrowIcon /></a>
-            </h3>
-            <p class="now-since">{{ item.since }}</p>
-            <p>{{ item.description }}</p>
-          </article>
+      <section id="now" class="about-section wrap" aria-labelledby="now-title">
+        <div class="section-head">
+          <h2 id="now-title">{{ t('profile.nowTitle') }}</h2>
         </div>
+        <ul class="now-grid">
+          <li v-for="item in profile.now" :key="item.name">
+            <RouterLink v-if="productSlug(item.url)" :to="item.url" class="now-card">
+              <span class="now-head">
+                <img
+                  :src="`/projects/${productSlug(item.url)}-logo.svg`"
+                  alt=""
+                  width="36"
+                  height="36"
+                  loading="lazy"
+                />
+                <span class="now-name">{{ item.name }}</span>
+                <ArrowIcon direction="right" />
+              </span>
+              <span class="now-since">{{ item.since }}</span>
+              <span class="now-text">{{ item.description }}</span>
+            </RouterLink>
+            <a v-else :href="item.url" class="now-card">
+              <span class="now-head">
+                <span class="now-name">{{ item.name }}</span>
+                <ArrowIcon />
+              </span>
+              <span class="now-since">{{ item.since }}</span>
+              <span class="now-text">{{ item.description }}</span>
+            </a>
+          </li>
+        </ul>
       </section>
 
-      <section id="story" class="notes-story wrap" aria-labelledby="story-title">
-        <div class="story-rail">
-          <h2 id="story-title">{{ t('profile.storyTitle') }}</h2>
-          <nav class="year-index" :aria-label="t('profile.years')">
-            <a
-              v-for="item in profile.experience"
-              :key="item.year"
-              :href="`#year-${item.year}`"
-              :aria-current="activeYear === item.year ? 'location' : undefined"
-              >{{ item.year }}</a
-            >
-          </nav>
+      <section id="experience" class="about-section wrap" aria-labelledby="experience-title">
+        <div class="section-head">
+          <h2 id="experience-title">{{ t('profile.experienceTitle') }}</h2>
         </div>
-        <div class="story-chapters">
-          <article
-            v-for="item in profile.experience"
-            :id="`year-${item.year}`"
-            :key="item.name"
-            class="story-chapter"
-            :data-year="item.year"
-          >
-            <p class="chapter-year" aria-hidden="true">{{ item.year }}</p>
-            <div class="chapter-text">
+        <ol class="earlier-list record-list">
+          <li v-for="item in profile.experience" :key="item.name" class="earlier-item record-item">
+            <span class="earlier-years">{{ item.period }}</span>
+            <div class="earlier-body">
               <h3>
                 <RouterLink v-if="item.url === '/'" to="/">{{ item.name }} <ArrowIcon /></RouterLink
                 ><a v-else-if="item.url" :href="item.url">{{ item.name }} <ArrowIcon /></a
                 ><span v-else>{{ item.name }}</span>
+                <span class="earlier-role">{{
+                  item.place
+                    ? t('profile.rolePlace', { role: item.role, place: item.place })
+                    : item.role
+                }}</span>
               </h3>
-              <p class="story-role">
-                {{ t('profile.rolePeriod', { role: item.role, period: item.period }) }}
-              </p>
               <p>{{ item.description }}</p>
 
               <div v-if="item.name === 'Ownest'" class="ownest-notes">
                 <figure class="ownest-screens">
-                  <img
-                    src="/story/ownest-desktop.png"
-                    :alt="t('profile.ownestAlt')"
-                    width="758"
-                    height="706"
-                    loading="lazy"
-                  />
+                  <div class="ownest-gallery">
+                    <img
+                      src="/story/ownest-desktop.png"
+                      :alt="t('profile.ownestAlt')"
+                      width="758"
+                      height="706"
+                      loading="lazy"
+                    />
+                    <img
+                      class="is-phone"
+                      src="/story/ownest-mobile.png"
+                      :alt="t('profile.ownestMobileAlt')"
+                      width="269"
+                      height="522"
+                      loading="lazy"
+                    />
+                  </div>
                   <figcaption>{{ t('profile.ownestCaption') }}</figcaption>
                 </figure>
                 <i18n-t keypath="profile.ownestJoined" tag="p" scope="global">
@@ -204,24 +184,96 @@ onUnmounted(() => {
                 </ul>
               </div>
             </div>
-          </article>
-        </div>
+          </li>
+        </ol>
       </section>
 
-      <section id="communities" class="notes-section wrap" aria-labelledby="communities-title">
-        <h2 id="communities-title">{{ t('profile.communitiesTitle') }}</h2>
-        <div class="community-grid">
-          <article v-for="item in profile.community" :key="item.name" class="community-item">
+      <section id="workflow" class="about-section wrap" aria-labelledby="workflow-title">
+        <div class="section-head">
+          <h2 id="workflow-title">{{ t('profile.workflowTitle') }}</h2>
+        </div>
+        <ol class="workflow">
+          <li v-for="(item, index) in profile.workflow" :key="item.title" class="workflow-step">
+            <span class="workflow-number" aria-hidden="true">{{ step(index) }}</span>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.text }}</p>
+          </li>
+        </ol>
+        <p class="workflow-note">
+          {{ profile.workflowNote }}
+          <a :href="CODE_URL">{{ t('profile.code') }} <ArrowIcon /></a>
+        </p>
+      </section>
+
+      <section id="skills" class="about-section wrap" aria-labelledby="skills-title">
+        <div class="section-head">
+          <h2 id="skills-title">{{ t('profile.skillsTitle') }}</h2>
+        </div>
+        <dl class="skills">
+          <div v-for="skill in profile.skills" :key="skill.area" class="skill">
+            <dt>{{ skill.area }}</dt>
+            <dd>{{ skill.items }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section id="regulation" class="about-section wrap" aria-labelledby="regulation-title">
+        <div class="section-head">
+          <h2 id="regulation-title">{{ t('profile.regulationTitle') }}</h2>
+        </div>
+        <ul class="earlier-list record-list">
+          <li v-for="item in profile.contributions" :key="item.title" class="earlier-item">
+            <span class="earlier-years">{{ item.year }}</span>
+            <div class="earlier-body">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+              <a class="record-source" :href="item.source.url"
+                >{{ item.source.label }} <ArrowIcon
+              /></a>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="writing" class="about-section wrap" aria-labelledby="writing-title">
+        <div class="section-head">
+          <h2 id="writing-title">{{ t('profile.sharedTitle') }}</h2>
+        </div>
+        <ul class="earlier-list record-list">
+          <li v-for="item in profile.publicWork" :key="item.title" class="earlier-item">
+            <span class="earlier-years">{{ item.year }}</span>
+            <div class="earlier-body">
+              <h3>
+                <a :href="item.source.url">{{ item.title }} <ArrowIcon /></a>
+                <span class="earlier-role">{{ item.kind }}</span>
+              </h3>
+              <p>{{ item.description }}</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="communities" class="about-section wrap" aria-labelledby="communities-title">
+        <div class="section-head">
+          <h2 id="communities-title">{{ t('profile.communitiesTitle') }}</h2>
+        </div>
+        <ul class="community-grid">
+          <li v-for="item in profile.community" :key="item.name" class="community-item">
             <h3>{{ item.name }}</h3>
             <p>{{ item.description }}</p>
-            <a :href="item.source.url">{{ item.source.label }} <ArrowIcon /></a>
-          </article>
-          <article
+            <a class="record-source" :href="item.source.url"
+              >{{ item.source.label }} <ArrowIcon
+            /></a>
+          </li>
+          <li
             v-for="project in profile.additionalProjects"
             :key="project.name"
             class="community-item"
           >
-            <h3>{{ project.name }}</h3>
+            <h3>
+              <img :src="project.logoUrl" alt="" width="28" height="28" loading="lazy" />
+              {{ project.name }}
+            </h3>
             <p>
               {{
                 t('profile.roleAndDescription', {
@@ -230,40 +282,30 @@ onUnmounted(() => {
                 })
               }}
             </p>
-            <a :href="project.url">{{ t('profile.visitClub') }} <ArrowIcon /></a>
-          </article>
-        </div>
-      </section>
-
-      <section id="writing" class="notes-section wrap" aria-labelledby="writing-title">
-        <h2 id="writing-title">{{ t('profile.sharedTitle') }}</h2>
-        <ul class="shared-list">
-          <li v-for="item in profile.publicWork" :key="item.title">
-            <a :href="item.source.url">
-              <span class="shared-year">{{ item.year }}</span>
-              <span class="shared-body"
-                ><span class="shared-kind">{{ item.kind }}</span
-                ><strong>{{ item.title }}</strong
-                ><span>{{ item.description }}</span></span
-              >
-              <ArrowIcon />
-            </a>
+            <a class="record-source" :href="project.url"
+              >{{ t('profile.visitClub') }} <ArrowIcon
+            /></a>
           </li>
         </ul>
       </section>
 
-      <section id="contributions" class="notes-section wrap" aria-labelledby="contributions-title">
-        <h2 id="contributions-title">{{ t('profile.contributionsTitle') }}</h2>
-        <ul class="shared-list">
-          <li v-for="item in profile.contributions" :key="item.title">
-            <a :href="item.source.url">
-              <span class="shared-year">{{ item.year }}</span>
-              <span class="shared-body"
-                ><strong>{{ item.title }}</strong
-                ><span>{{ item.description }}</span></span
-              >
-              <ArrowIcon />
-            </a>
+      <section id="education" class="about-section wrap" aria-labelledby="education-title">
+        <div class="section-head">
+          <h2 id="education-title">{{ t('profile.educationTitle') }}</h2>
+        </div>
+        <ul class="earlier-list record-list">
+          <li v-for="item in profile.education" :key="item.school" class="earlier-item">
+            <span class="earlier-years">{{ item.years }}</span>
+            <div class="earlier-body">
+              <h3>{{ item.school }}</h3>
+              <p>{{ item.detail }}</p>
+            </div>
+          </li>
+          <li class="earlier-item">
+            <span class="earlier-years">{{ t('profile.languagesLabel') }}</span>
+            <div class="earlier-body">
+              <p class="about-languages">{{ profile.languages }}</p>
+            </div>
           </li>
         </ul>
       </section>

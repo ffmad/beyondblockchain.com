@@ -3,8 +3,6 @@ import '@fontsource/dm-sans/latin-400.css';
 import '@fontsource/dm-sans/latin-500.css';
 import '@fontsource/dm-mono/latin-400.css';
 import '@fontsource-variable/bricolage-grotesque/wdth.css';
-import '@fontsource-variable/newsreader/opsz.css';
-import '@fontsource-variable/newsreader/opsz-italic.css';
 import { localeFromPath } from '@beyond/shared/metadata.js';
 import { createSiteApp } from './app';
 import './styles/global.css';

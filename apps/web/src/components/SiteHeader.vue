@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ArrowIcon from './ArrowIcon.vue';
 import BrandMark from './BrandMark.vue';
 import { useProjectOverlay } from '../composables/useProjectOverlay';
 import { languageNames, switchLanguage, useLocale } from '../i18n';
 import { localizedPath } from '@beyond/shared/metadata.js';
 
-defineProps<{ personal: boolean }>();
 const route = useRoute();
 const overlay = useProjectOverlay();
 const { t, locale } = useLocale();
@@ -69,38 +67,11 @@ function goHome(event: MouseEvent, navigate: (event?: MouseEvent) => unknown) {
   <header
     id="page-top"
     ref="header"
-    class="site-header"
-    :class="[
-      personal ? 'header-personal' : 'header-studio',
-      { 'is-stuck': stuck, 'is-named': named },
-    ]"
+    class="site-header header-studio"
+    :class="{ 'is-stuck': stuck, 'is-named': named }"
     tabindex="-1"
   >
-    <div v-if="personal" class="header-inner wrap">
-      <RouterLink class="personal-mark" to="/quentin" aria-label="Quentin de Beauchesne"
-        >quentin <span aria-hidden="true">/</span> ffmad</RouterLink
-      >
-      <nav :aria-label="t('nav.onThisPage')" class="main-nav">
-        <a href="#now">{{ t('nav.now') }}</a>
-        <a href="#story">{{ t('nav.story') }}</a>
-        <a href="#elsewhere">{{ t('nav.elsewhere') }}</a>
-        <a
-          class="language-link"
-          :href="otherHref"
-          :lang="other"
-          :hreflang="other"
-          @click="switchLanguage"
-          >{{ languageNames[other] }}</a
-        >
-      </nav>
-      <RouterLink class="studio-link" to="/" :aria-label="t('nav.studio')"
-        ><img src="/brand/beyond-blockchain-mark.svg" alt="" width="22" height="24" /><span
-          class="studio-full"
-          >Beyond Blockchain</span
-        ><span class="studio-short" aria-hidden="true">{{ t('nav.studioShort') }}</span></RouterLink
-      >
-    </div>
-    <div v-else class="header-inner wrap">
+    <div class="header-inner wrap">
       <div class="identity">
         <RouterLink v-slot="{ href, navigate }" to="/" custom>
           <a
@@ -123,9 +94,7 @@ function goHome(event: MouseEvent, navigate: (event?: MouseEvent) => unknown) {
           active-class=""
           >{{ t('nav.projects') }}</RouterLink
         >
-        <RouterLink to="/quentin" class="nav-about"
-          >{{ t('nav.about') }} <ArrowIcon direction="right"
-        /></RouterLink>
+        <RouterLink to="/quentin" class="nav-about">{{ t('nav.about') }}</RouterLink>
         <a
           class="language-link"
           :href="otherHref"

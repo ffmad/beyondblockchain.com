@@ -5,57 +5,31 @@ const ownestStory = { label: 'Ownest’s story', url: 'https://ownest.io/en/abou
 export const profile: Profile = {
   name: 'Quentin de Beauchesne',
   handle: 'ffmad',
+  headline:
+    'Frontend and full-stack engineer · Vue 3, TypeScript, NestJS · AI-assisted development',
   intro:
-    'I started CryptoFR in 2014 and co-founded Ownest in 2017. Today I build Ikitai, Fairmints, FestCompass and TapLog at Beyond Blockchain, my own studio.',
+    'I’ve spent 14 years building web applications in JavaScript and TypeScript, and 8 years as a CEO and co-founder, setting engineering practice from zero. Today I build Vue 3 front ends for web, iOS and Android, with NestJS back ends, at Beyond Blockchain, my own studio in Tokyo.',
   focus:
-    'Founder and developer. These days that means AI for everyday plans, Bitcoin tools and festival discovery in Japan.',
-  artefacts: [
+    'I work every day with AI coding agents (Claude Code, Codex and Grok), and every change goes through tests and my review.',
+  glance: [
+    { label: 'Based in', value: 'Tokyo' },
     {
-      id: 'cryptofr',
-      kicker: 'Bitcoin.fr · 2015',
-      title: 'Starting CryptoFR',
-      note: 'In 2014 I started CryptoFR, a French-speaking Bitcoin and blockchain community. In January 2015, Bitcoin.fr interviewed me about building the forum and taking the conversations into meetups.',
-      source: { label: 'Read the interview on Bitcoin.fr', url: 'https://bitcoin.fr/cryptofr/' },
+      label: 'Now',
+      value: 'Founder of Beyond Blockchain (Ikitai, FestCompass, TapLog) and Fairmints',
     },
     {
-      id: 'vitalik',
-      kicker: 'Ethereum France · 2016',
-      title: 'A conversation with Vitalik Buterin',
-      note: 'I helped conduct this two-part interview with Ethereum’s creator, together with Ethereum France and members of the CryptoFR community.',
-      source: {
-        label: 'Read the interview',
-        url: 'https://www.ethereum-france.com/blog/interview-de-vitalik-buterin-createur-dethereum-et-president-de-la-fondation-partie-1-sur-2/',
-      },
+      label: 'Before',
+      value: 'CEO and co-founder of Ownest, which grew to 20 people (2017–2026)',
     },
     {
-      id: 'ownest',
-      kicker: 'Ownest · 2017–2026',
-      title: 'Software for supply chains',
-      note: 'I co-founded Ownest and spent eight years on blockchain software that tracks who is responsible for goods as they move. My technical work brought together Polygon, Vue and NestJS.',
-      image: {
-        src: '/story/ownest-mobile.png',
-        alt: 'Ownest mobile screen confirming a transfer of responsibility.',
-        width: 269,
-        height: 522,
-      },
-      source: ownestStory,
+      label: 'Builds with',
+      value: 'Vue 3, TypeScript and NestJS, with AI coding agents and tests on every change',
     },
     {
-      id: 'nakamotos',
-      kicker: 'The Nakamotos Club',
-      title: 'Rare Pepe Nakamoto cards',
-      note: 'I founded The Nakamotos Club, a project about the original Rare Pepe Nakamoto cards: their histories on Bitcoin, their collectors and their portraits.',
-      image: {
-        src: '/story/nakamoto-card.svg',
-        alt: 'The original Rare Pepe Nakamoto trading card, featured by The Nakamotos Club.',
-        width: 379,
-        height: 530,
-      },
-      source: {
-        label: 'Founder listing at NFT Factory',
-        url: 'https://nftfactoryparis.com/founders',
-      },
+      label: 'Languages',
+      value: 'French (native), English (business), Japanese (studying toward JLPT N2)',
     },
+    { label: 'Education', value: 'ENSEM, engineer’s degree (Master’s level)' },
   ],
   now: [
     {
@@ -85,50 +59,91 @@ export const profile: Profile = {
       url: '/work/taplog',
     },
   ],
+  workflow: [
+    { title: 'Brief', text: 'Each task gets acceptance criteria and the tests it must pass.' },
+    {
+      title: 'Parallel agents',
+      text: 'Claude Code, Codex and Grok take separate tasks and hand work to each other through an agent network.',
+    },
+    {
+      title: 'Tests',
+      text: 'Unit tests (Vitest, Jest) come with every change, and Playwright where the flow matters.',
+    },
+    {
+      title: 'Review',
+      text: 'I read every diff before it merges. Agents never deploy on their own.',
+    },
+    {
+      title: 'Feedback',
+      text: 'A recurring mistake becomes a rule in the agents’ instructions.',
+    },
+  ],
+  workflowNote:
+    'Ikitai reached 148 commits and 57 test files in its first two weeks (from its repository on 30 October 2026).',
   experience: [
     {
-      name: 'CryptoFR',
-      year: '2014',
-      period: 'Founded in 2014',
-      role: 'Founder',
+      name: 'Beyond Blockchain',
+      year: '2026',
+      period: 'Jul 2026 – now',
+      role: 'Founder and product engineer',
+      place: 'Tokyo',
       description:
-        'I created a French-speaking Bitcoin and blockchain community: a forum first, then meetups that brought the conversations into the same room.',
-      url: 'https://cryptofr.com',
-    },
-    {
-      name: 'Ledgys',
-      year: '2016',
-      period: 'Feb 2016 — Nov 2017',
-      role: 'Co-founder and CEO',
-      description:
-        'I co-founded Ledgys to explore Ethereum-based data sharing through decentralized marketplaces.',
-    },
-    {
-      name: 'Ownest',
-      year: '2017',
-      period: 'Dec 2017 — Mar 2026',
-      role: 'CEO and co-founder',
-      description:
-        'Blockchain software for tracking ownership and responsibility across supply chains. My technical work brought together Polygon, Vue and NestJS.',
-      url: 'https://ownest.io',
+        'My one-person studio. I build and run Ikitai, FestCompass, TapLog and this site: Vue 3 apps for web, iOS and Android with NestJS back ends. I set up the multi-agent workflow behind them, in which Claude Code, Codex and Grok take tasks in parallel and hand work to each other through an agent network and a job board, with 15 Grok bots for research and content.',
+      url: '/',
     },
     {
       name: 'Fairmints',
       year: '2024',
-      period: '2024 — now',
-      role: 'Current project',
+      period: 'Oct 2024 – now',
+      role: 'Founder',
+      place: 'Tokyo',
       description:
-        'A platform for creating, minting and trading Bitcoin-native tokens and NFTs, with markets, swaps and explorer tools.',
+        'A platform to create, mint and trade Bitcoin-native tokens and NFTs: markets, an AMM and an explorer on the Alkanes protocol, plus Counterparty (XCP) assets, in English, Japanese and Chinese. Built with Vue 3, Tailwind CSS, Three.js, NestJS, Socket.IO and bitcoinjs-lib.',
       url: 'https://fairmints.io',
     },
     {
-      name: 'Ikitai, FestCompass & TapLog',
-      year: '2026',
-      period: '2026 — now',
-      role: 'Solo founder',
+      name: 'Ownest',
+      year: '2017',
+      period: 'Dec 2017 – Mar 2026',
+      role: 'CEO and co-founder',
+      place: 'Paris',
       description:
-        'FestCompass (since July 2026) is a festival guide for Japan. TapLog (since August 2026) shows live tap lists for Tokyo craft beer bars. Ikitai (since October 2026) is an AI app that turns saved inspiration into plans with friends.',
-      url: '/',
+        'SaaS that traced who is responsible for goods along supply chains, built on NFT-based tracking. I owned the technical architecture across Vue, NestJS and Polygon, and hired and led the product team as the company grew to 20 people, with corporate clients in France including Saint Laurent, Orange, Carrefour and Bouygues.',
+      url: 'https://ownest.io',
+    },
+    {
+      name: 'Ledgys',
+      year: '2016',
+      period: 'Feb 2016 – Nov 2017',
+      role: 'Co-founder and CEO',
+      place: 'Paris',
+      description: 'Ethereum-based data sharing through decentralised marketplaces.',
+    },
+    {
+      name: 'CryptoFR',
+      year: '2014',
+      period: '2014 – now',
+      role: 'Founder',
+      description:
+        'A French-speaking Bitcoin and blockchain community: a Node.js forum on MongoDB and Redis, then meetups that brought the conversations into the same room.',
+      url: 'https://cryptofr.com',
+    },
+    {
+      name: 'Avisto',
+      year: '2012',
+      period: 'Nov 2012 – Jan 2016',
+      role: 'Web developer',
+      place: 'Cachan',
+      description:
+        'Websites and web applications for clients, with Symfony, eZ Publish and jQuery Mobile.',
+    },
+    {
+      name: 'CommOnEcoute',
+      year: '2012',
+      period: 'Mar – Aug 2012',
+      role: 'Web development intern',
+      place: 'Paris',
+      description: 'The front end of a web application, in jQuery.',
     },
   ],
   achievements: [
@@ -154,16 +169,39 @@ export const profile: Profile = {
       source: ownestStory,
     },
   ],
-  community: [
+  skills: [
+    { area: 'Languages', items: 'TypeScript, JavaScript, HTML/CSS' },
     {
-      name: 'AMF · Retail Investors Commission',
-      description:
-        'I represent Association CryptoFR on the AMF’s Retail Investors Consultative Commission (Commission consultative Épargnants).',
-      source: {
-        label: 'Official commission membership',
-        url: 'https://www.amf-france.org/fr/lamf/notre-organisation/les-commissions-consultatives',
-      },
+      area: 'Front end',
+      items:
+        'Vue.js 3 (Composition API, Pinia, Vue Router, vue-i18n, server-side rendering), Vite, Tailwind CSS, Three.js',
     },
+    {
+      area: 'Back end and APIs',
+      items: 'NestJS, Express, REST API design, TypeORM, Prisma, PostgreSQL, SQLite, Socket.IO',
+    },
+    { area: 'Mobile', items: 'Capacitor for iOS and Android apps from one Vue codebase' },
+    { area: 'Testing', items: 'Jest, Vitest, Playwright' },
+    {
+      area: 'Delivery and hosting',
+      items: 'Docker, GitHub Actions, Cloudflare, Firebase, Supabase, AWS',
+    },
+    {
+      area: 'Internationalisation',
+      items: 'Apps shipped in English, Japanese, Chinese and other languages',
+    },
+    {
+      area: 'AI',
+      items:
+        'Claude Code, Codex and Grok for development; Claude API and Gemini API in product features',
+    },
+    {
+      area: 'Blockchain',
+      items:
+        'Bitcoin (Counterparty, Alkanes, bitcoinjs-lib), Ethereum and Polygon, Solidity, Rust contracts',
+    },
+  ],
+  community: [
     {
       name: 'La Chaintech',
       description:
@@ -275,6 +313,16 @@ export const profile: Profile = {
   ],
   contributions: [
     {
+      year: 'Now',
+      title: 'AMF · Retail Investors Consultative Commission',
+      description:
+        'Member of the AMF’s Retail Investors Consultative Commission (Commission consultative Épargnants), representing Association CryptoFR.',
+      source: {
+        label: 'Official commission membership',
+        url: 'https://www.amf-france.org/fr/lamf/notre-organisation/les-commissions-consultatives',
+      },
+    },
+    {
       year: '2021',
       title: 'ACPR–AMF Fintech Forum',
       description:
@@ -295,6 +343,15 @@ export const profile: Profile = {
       },
     },
   ],
+  education: [
+    {
+      years: '2008–2012',
+      school: 'ENSEM (INP Lorraine)',
+      detail:
+        'Engineer’s degree, Master’s level, in general engineering, information systems track',
+    },
+  ],
+  languages: 'French (native) · English (business) · Japanese (studying toward JLPT N2)',
   socials: [
     { label: 'GitHub', url: 'https://github.com/ffmad' },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/qdebeauchesne/' },

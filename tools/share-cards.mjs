@@ -35,7 +35,8 @@ const escape = (value) =>
 const text = {
   en: {
     tagline: ['Pioneer in blockchain development since 2014.', 'Building beyond it with AI.'],
-    person: 'Founder and product engineer · ffmad · Tokyo',
+    person: 'Frontend and full-stack engineer · Tokyo',
+    personStack: 'Vue 3, TypeScript, NestJS · AI-assisted development',
     now: 'Now building',
     by: 'A project by Quentin de Beauchesne',
     stage: { live: 'Live', review: 'In App Store review', beta: 'Beta' },
@@ -45,7 +46,8 @@ const text = {
       '2014年からブロックチェーン開発の先駆者として。',
       'いまはAIで、その先をつくっています。',
     ],
-    person: '創業者・プロダクトエンジニア・ffmad・東京',
+    person: 'フロントエンド／フルスタックエンジニア · 東京',
+    personStack: 'Vue 3、TypeScript、NestJS · AIを活用した開発',
     now: 'いまつくっているもの',
     by: 'Quentin de Beauchesneのプロジェクト',
     stage: { live: '公開中', review: 'App Store審査中', beta: 'ベータ版' },
@@ -58,7 +60,6 @@ const style = `
 @font-face { font-family: 'DM Sans'; src: url('${font('@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2')}'); font-weight: 400; }
 @font-face { font-family: 'DM Sans'; src: url('${font('@fontsource/dm-sans/files/dm-sans-latin-500-normal.woff2')}'); font-weight: 500; }
 @font-face { font-family: 'DM Mono'; src: url('${font('@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2')}'); font-weight: 400; }
-@font-face { font-family: 'Newsreader'; src: url('${font('@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2')}'); font-weight: 200 800; }
 * { box-sizing: border-box; margin: 0; }
 html, body { width: 1200px; height: 630px; overflow: hidden; }
 body { position: relative; background: #f5f4f0; color: #0c1424; font-family: 'DM Sans', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif; -webkit-font-smoothing: antialiased; }
@@ -112,16 +113,15 @@ function personCard(lang, products) {
   return page(
     lang,
     `<div class="top">${brand}<span>Beyond Blockchain</span><span class="url">beyondblockchain.com${lang === 'ja' ? '/ja' : ''}/quentin</span></div>
-     <div class="copy"><p class="name">Quentin<br>de Beauchesne</p><p class="role">${escape(t.person)}</p></div>
+     <div class="copy"><p class="display">Quentin<br>de Beauchesne</p>
+       <p class="role">${escape(t.person)}</p><p class="stack">${escape(t.personStack)} · ffmad</p></div>
      <div class="bottom"><p class="now">${escape(t.now)}</p>${logoRow(products)}</div>`,
-    `body { background: #f4efe6; color: #1b1a17; }
-     .copy { position: absolute; left: 64px; top: 136px; display: grid; gap: 24px; }
-     .name { font-family: 'Newsreader', 'Hiragino Mincho ProN', serif; font-size: 100px; font-weight: 400; line-height: 0.95; letter-spacing: -0.03em; }
-     .name::first-line { color: #2b3bb8; font-style: italic; }
-     .role { font-size: 30px; color: #625c52; }
-     .url { color: #625c52; }
-     .bottom { position: absolute; left: 64px; right: 64px; bottom: 46px; display: grid; gap: 14px; padding-top: 22px; border-top: 1px solid #ddd3c3; }
-     .now { font-family: 'DM Mono', 'Hiragino Sans', monospace; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; color: #625c52; }`,
+    `.copy { position: absolute; left: 64px; top: 128px; display: grid; gap: 18px; }
+     .display { font-size: 96px; }
+     .role { margin-top: 6px; font-size: ${lang === 'ja' ? 30 : 34}px; font-weight: 500; line-height: 1.2; }
+     .stack { font-size: 22px; color: #586174; }
+     .bottom { position: absolute; left: 64px; right: 64px; bottom: 46px; display: grid; gap: 14px; padding-top: 22px; border-top: 1px solid #d9dbe1; }
+     .now { font-family: 'DM Mono', 'Hiragino Sans', monospace; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: #586174; }`,
   );
 }
 
