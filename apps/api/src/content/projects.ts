@@ -3,7 +3,7 @@ import type { Prisma } from '../generated/prisma/client.js';
 // The seed is the source of truth for these slugs. Other records are left alone. Products get a card and a
 // page; experiments and earlier work are listed briefly on the studio page.
 // Each stack is read from the project's own repository (October 2026). `translations` holds the text of the
-// Japanese pages (/ja); any field left out falls back to the English one.
+// Japanese pages (/ja); any field left out falls back to the English one. `market` marks a product built for Japan.
 export const projects = [
   {
     slug: 'ikitai',
@@ -155,6 +155,7 @@ export const projects = [
     },
     kind: 'product',
     stage: 'live',
+    market: 'japan',
     platforms: ['web'],
     languages: ['en', 'ja'],
     internalNotes:
@@ -206,11 +207,12 @@ export const projects = [
     },
     kind: 'product',
     stage: 'live',
+    market: 'japan',
     platforms: ['web'],
     languages: ['en', 'ja'],
     internalNotes: 'Added 30 October 2026 from the user’s CV; live at taplog.jp.',
   },
-  // Experiments: private repositories, so no links.
+  // Work in progress: GengoFriends is online in beta, Spam the Mempool is coming soon, ShigoShima is private.
   {
     slug: 'gengofriends',
     name: 'GengoFriends',
@@ -218,7 +220,7 @@ export const projects = [
     description:
       'Save a conversation, a message, a menu or a sign, explore its sentences, and keep the vocabulary, grammar and kanji you meet.',
     audience: 'For people learning Japanese',
-    url: '',
+    url: 'https://gengofriends.com',
     category: 'AI · Language learning',
     role: null,
     startedYear: 2026,
@@ -226,7 +228,7 @@ export const projects = [
     featured: false,
     displayOrder: 10,
     published: true,
-    logoUrl: null,
+    logoUrl: '/projects/gengofriends-logo.png',
     imageUrl: null,
     mobileImageUrl: null,
     imageAlt: null,
@@ -242,15 +244,16 @@ export const projects = [
       },
     },
     kind: 'experiment',
-    stage: null,
+    stage: 'beta',
     platforms: [],
     languages: [],
-    internalNotes: 'Private repository ffmad/jlptmaster, started September 2026.',
+    internalNotes:
+      'Repository ffmad/jlptmaster, started September 2026. Online at gengofriends.com, still incomplete (user, 30 October 2026).',
   },
   {
     slug: 'spam-the-mempool',
     name: 'Spam the Mempool',
-    summary: 'A satirical Bitcoin party brawler.',
+    summary: 'A fun Bitcoin-themed party brawler.',
     description:
       'Up to four players grab Bitcoin “spam” and throw it onto a belt that feeds the next block. The miner keeps the highest fee-rate junk, and you score the fees of yours that made it in.',
     audience: 'For Bitcoin people with a sense of humour',
@@ -262,7 +265,7 @@ export const projects = [
     featured: false,
     displayOrder: 11,
     published: true,
-    logoUrl: null,
+    logoUrl: '/projects/spamthemempool-logo.svg',
     imageUrl: null,
     mobileImageUrl: null,
     imageAlt: null,
@@ -270,7 +273,7 @@ export const projects = [
     stack: ['Three.js', 'Rapier', 'Colyseus', 'Supabase', 'bip322-js'],
     translations: {
       ja: {
-        summary: 'ビットコインを風刺した、パーティー乱闘ゲーム。',
+        summary: 'ビットコインがテーマの、楽しいパーティー乱闘ゲーム。',
         description:
           '最大4人でビットコインの「スパム」をつかみ、次のブロックへ流れるベルトに投げ込みます。マイナーは手数料率の高いものから採用し、ブロックに入った分の手数料がスコアになります。',
         audience: 'ユーモアのわかるビットコイン好きへ',
@@ -278,10 +281,11 @@ export const projects = [
       },
     },
     kind: 'experiment',
-    stage: null,
+    stage: 'soon',
     platforms: [],
     languages: [],
-    internalNotes: 'Private repository ffmad/spamthemempool, started October 2026.',
+    internalNotes:
+      'Private repository ffmad/spamthemempool, started October 2026. Will be released (user, 30 October 2026).',
   },
   {
     slug: 'shigoshima',
@@ -298,7 +302,7 @@ export const projects = [
     featured: false,
     displayOrder: 12,
     published: true,
-    logoUrl: null,
+    logoUrl: '/projects/shigoshima-logo.svg',
     imageUrl: null,
     mobileImageUrl: null,
     imageAlt: null,

@@ -19,6 +19,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "0.135.0",
     "@beyond/shared": "*",
+    "@huggingface/transformers": "^4.3.1",
     "@nestjs/common": "12.3.2",
     "@nestjs/core": "12.3.2",
     "@nestjs/platform-express": "12.3.2",

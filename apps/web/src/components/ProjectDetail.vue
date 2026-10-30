@@ -4,6 +4,7 @@ import type { Project } from '@beyond/shared';
 import ArrowIcon from './ArrowIcon.vue';
 import ScreenViewer from './ScreenViewer.vue';
 import DetailClip from './DetailClip.vue';
+import TechIcon from './TechIcon.vue';
 import { projectClip, projectHost, projectScreens } from '../content/project-screens';
 import { useLocale } from '../i18n';
 import { morphStyle } from '../composables/useProjectOverlay';
@@ -27,6 +28,7 @@ const platformNames: Record<string, string> = { web: 'Web', ios: 'iOS', android:
 const facts = computed(() =>
   [
     props.project.stage && t(`studio.stage.${props.project.stage}`),
+    props.project.market && t(`studio.market.${props.project.market}`),
     t('project.since', { year: props.project.startedYear }),
     props.project.role,
     props.project.audience,
@@ -115,7 +117,7 @@ const facts = computed(() =>
         <div v-if="project.stack.length" class="detail-stack">
           <p class="eyebrow">{{ t('project.builtWith') }}</p>
           <ul>
-            <li v-for="tech in project.stack" :key="tech">{{ tech }}</li>
+            <li v-for="tech in project.stack" :key="tech"><TechIcon :name="tech" />{{ tech }}</li>
           </ul>
         </div>
         <a class="button button-dark detail-visit" :href="project.url"

@@ -46,6 +46,7 @@ const headline = computed(() => profile.value?.headline.replaceAll(' · ', '\u00
         <template v-if="profile">
           <p class="about-headline">{{ headline }}</p>
           <p class="about-intro">{{ profile.intro }}</p>
+          <p class="about-intro">{{ profile.home }}</p>
           <p class="about-focus">{{ profile.focus }}</p>
         </template>
         <div class="about-elsewhere">

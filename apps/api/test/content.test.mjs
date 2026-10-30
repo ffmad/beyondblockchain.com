@@ -22,6 +22,8 @@ const { ContactService } = await import('../dist/contact.js');
 // Importing the app reads apps/api/.env. Tests never post to the real Slack channel or call Claude.
 for (const name of ['SLACK_WEBHOOK_CONTACT', 'ANTHROPIC_API_KEY', 'ANTHROPIC_AUTH_TOKEN'])
   delete process.env[name];
+// Nor do they load the assistant's sentence model; its matching is tested with a stand-in.
+process.env.ASSISTANT_MODEL = 'off';
 let db;
 let app;
 let base;
@@ -129,12 +131,17 @@ test('projects are ordered, filtered by publication, and limited to public field
     'imageCaption',
     'stack',
     'kind',
+    'market',
     'stage',
     'platforms',
     'languages',
     'endedYear',
   ].sort();
   for (const project of projects) assert.deepEqual(Object.keys(project).sort(), expectedFields);
+  assert.deepEqual(
+    projects.filter((p) => p.market === 'japan').map((p) => p.slug),
+    ['festcompass', 'taplog'],
+  );
   for (const project of projects) {
     assert.ok(project.stack.length > 0);
     assert.ok(project.stack.every((item) => typeof item === 'string'));
@@ -256,7 +263,10 @@ test('server-rendered pages include public content, isolate requests, and escape
     const llmsBody = await llms.text();
     assert.match(llmsBody, /^# Beyond Blockchain\n\n> /);
     assert.match(llmsBody, /\[TapLog\]\(https:\/\/beyondblockchain\.com\/work\/taplog\)/);
-    assert.match(llmsBody, /## Experiments[\s\S]*Spam the Mempool/);
+    assert.match(
+      llmsBody,
+      /## Work in progress[\s\S]*\[GengoFriends\]\(https:\/\/gengofriends\.com\) \(in beta[\s\S]*Spam the Mempool \(coming soon/,
+    );
     assert.match(
       llmsBody,
       /## Earlier work[\s\S]*\[Ownest\]\(https:\/\/ownest\.io\) \(2017–2026\), CEO and co-founder/,
@@ -393,7 +403,7 @@ test('the sitemap lists every page in both languages, from the published product
     ]),
   ]);
   assert.match(xml, /hreflang="x-default" href="https:\/\/beyondblockchain\.com\/work\/taplog"/);
-  // Experiments and earlier work have no page of their own.
+  // Work in progress and earlier work have no page of their own.
   assert.doesNotMatch(xml, /gengofriends|ownest/);
 });
 
@@ -454,9 +464,24 @@ test('the contact form validates, filters bots, saves, delivers to Slack and rat
   };
   process.env.SLACK_WEBHOOK_CONTACT = 'https://hooks.slack.com/services/T0000/B0000/abcdEFGH1234';
   try {
-    assert.equal((await post({ ...valid, message: '<!channel> please call me' })).status, 202);
+    // A message from the site's assistant carries what the visitor asked it first.
+    const asked = 'Can you work with me? · What’s your stack?';
+    assert.equal(
+      (await post({ ...valid, message: '<!channel> please call me', asked })).status,
+      202,
+    );
     await until(async () => (await db.contactMessage.count({ where: { delivery: 'sent' } })) === 2);
     assert.equal(sent.length, 2);
+    assert.equal((await db.contactMessage.findFirst({ where: { asked } }))?.asked, asked);
+    const fromAssistant = sent.find((p) => JSON.stringify(p).includes('please call me'));
+    assert.ok(
+      fromAssistant.blocks.some(
+        (block) =>
+          block.type === 'context' &&
+          block.elements[0].type === 'plain_text' &&
+          block.elements[0].text === `Asked the site's assistant: ${asked}`,
+      ),
+    );
     for (const payload of sent) {
       assert.ok(!payload.text.includes('<!channel>'));
       const typed = payload.blocks.filter((block) => block.type === 'section').slice(0, 2);
@@ -475,6 +500,52 @@ test('the contact form validates, filters bots, saves, delivers to Slack and rat
   const { contactWebhook } = await import('../dist/contact.js');
   assert.equal(contactWebhook(), null);
   delete process.env.SLACK_WEBHOOK_CONTACT;
+});
+
+test('the assistant knows the same facts in both languages and answers by meaning', async () => {
+  const { knowledge } = await import('../dist/content/knowledge.js');
+  const { KnowledgeIndex, questionLanguage } = await import('../dist/assistant.js');
+  const ids = (list) => list.map((fact) => fact.id);
+  assert.deepEqual(ids(knowledge.ja), ids(knowledge.en));
+  for (const fact of [...knowledge.en, ...knowledge.ja]) {
+    assert.ok(fact.answer && fact.asks.length >= 2, fact.id);
+    if (fact.link) assert.match(fact.link.to, /^(\/|https:\/\/)/, fact.id);
+  }
+  assert.equal(questionLanguage('Can I hire you?'), 'en');
+  assert.equal(questionLanguage('TapLogとは？'), 'ja');
+
+  // A stand-in for the sentence model: words (or, in Japanese, characters) as dimensions.
+  const embed = async (texts) =>
+    texts.map((text) => {
+      const vector = new Array(512).fill(0);
+      const tokens = /[\u3040-\u9fff]/.test(text) ? [...text] : text.toLowerCase().split(/\W+/);
+      for (const token of tokens.filter(Boolean)) {
+        let hash = 0;
+        for (const char of token) hash = (hash * 31 + char.codePointAt(0)) % 512;
+        vector[hash] += 1;
+      }
+      const norm = Math.hypot(...vector) || 1;
+      return vector.map((x) => x / norm);
+    });
+  const index = await new KnowledgeIndex(embed).build();
+  assert.equal((await index.match('What is TapLog?')).fact.id, 'taplog');
+  assert.equal((await index.match('Can my bar be on TapLog?')).fact.id, 'bar');
+  // "Quentin" and "he" are read as "you".
+  assert.equal((await index.match('Is Quentin open to work?')).fact.id, 'work');
+  const japanese = await index.match('TapLogに自分のバーを載せられますか？');
+  assert.equal(japanese.fact.id, 'bar');
+  assert.match(japanese.fact.answer, /[ぁ-ん]/);
+
+  // Turned off (as in these tests), it says so after checking the question and the visitor's rate.
+  const ask = (body) =>
+    fetch(`${base}/api/assistant`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  assert.equal((await ask({ question: '' })).status, 400);
+  assert.equal((await ask({ question: 'x'.repeat(301) })).status, 400);
+  assert.equal((await ask({ question: 'What is TapLog?' })).status, 503);
 });
 
 test('Claude triage adds notes before Slack, without the sender email, and never blocks delivery', async () => {

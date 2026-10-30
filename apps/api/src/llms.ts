@@ -14,11 +14,13 @@ const stages: Record<string, string> = {
   live: 'live',
   review: 'in App Store review',
   beta: 'in beta',
+  soon: 'coming soon',
 };
 
 function product(project: Project) {
   const facts = [
     project.stage && stages[project.stage],
+    project.market === 'japan' && 'built for Japan',
     project.platforms.length &&
       `on ${project.platforms.map((p) => platformNames[p] ?? p).join(', ')}`,
     project.languages.length && `in ${project.languages.length} languages`,
@@ -35,18 +37,18 @@ export function llmsText(projects: Project[], profile: Profile) {
   const ofKind = (kind: Project['kind']) => projects.filter((p) => p.kind === kind);
   const sections = [
     `# Beyond Blockchain`,
-    `> The studio of ${profile.name} (${profile.handle}), a developer in Tokyo. Pioneer in blockchain development since 2014, now building beyond it with AI. The site shows only his own work.`,
+    `> The studio of ${profile.name} (${profile.handle}), a developer in Tokyo. Pioneer in blockchain development since 2014, now building beyond it with AI. The site shows only Quentin's own work.`,
     line(
-      `He builds Vue 3 front ends for web, iOS and Android with NestJS back ends, ships products in several languages, and works with AI coding agents (Claude Code, Codex and Grok), with tests and his review on every change. Every page is also in Japanese, under ${siteOrigin}/ja/.`,
+      `Quentin builds Vue 3 front ends for web, iOS and Android with NestJS back ends, ships products in several languages, aims for apps that are intuitive, easy and pleasing to use, and works with AI coding agents (Claude Code, Codex and Grok), with tests and review on every change. Every page is also in Japanese, under ${siteOrigin}/ja/.`,
     ),
     `## Products`,
     ofKind('product').map(product).join('\n'),
-    `## Experiments`,
-    'Private side projects in progress.',
+    `## Work in progress`,
+    'Side projects on the way.',
     ofKind('experiment')
       .map(
         (p) =>
-          `- ${p.name} (${years(p)}): ${line(p.summary)} ${line(p.description)} Built with ${p.stack.join(', ')}.`,
+          `- ${p.url ? `[${p.name}](${p.url})` : p.name} (${[p.stage && stages[p.stage], years(p)].filter(Boolean).join(', ')}): ${line(p.summary)} ${line(p.description)} Built with ${p.stack.join(', ')}.`,
       )
       .join('\n'),
     `## Earlier work`,
@@ -60,7 +62,7 @@ export function llmsText(projects: Project[], profile: Profile) {
     [
       `- [${profile.name}](${siteOrigin}/quentin): his experience, skills, how he builds with AI agents, finance and regulation work, talks and communities.`,
       `- [Beyond Blockchain in Japanese](${siteOrigin}/ja/)`,
-      `- Contact: the "Say hello" form on any page.`,
+      `- Contact: the assistant at the top right of every page answers questions about Quentin and passes messages on to him.`,
     ].join('\n'),
     `## Optional`,
     profile.socials.map((social) => `- [${social.label}](${social.url})`).join('\n'),

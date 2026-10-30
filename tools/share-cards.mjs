@@ -39,7 +39,8 @@ const text = {
     personStack: 'Vue 3, TypeScript, NestJS · AI-assisted development',
     now: 'Now building',
     by: 'A project by Quentin de Beauchesne',
-    stage: { live: 'Live', review: 'In App Store review', beta: 'Beta' },
+    stage: { live: 'Live', review: 'In App Store review', beta: 'Beta', soon: 'Coming soon' },
+    market: { japan: 'For Japan' },
   },
   ja: {
     tagline: [
@@ -50,7 +51,8 @@ const text = {
     personStack: 'Vue 3、TypeScript、NestJS · AIを活用した開発',
     now: 'いまつくっているもの',
     by: 'Quentin de Beauchesneのプロジェクト',
-    stage: { live: '公開中', review: 'App Store審査中', beta: 'ベータ版' },
+    stage: { live: '公開中', review: 'App Store審査中', beta: 'ベータ版', soon: '近日公開' },
+    market: { japan: '日本向け' },
   },
 };
 const platformNames = { web: 'Web', ios: 'iOS', android: 'Android' };
@@ -131,6 +133,7 @@ function productCard(lang, project) {
   const facts = [
     project.category,
     project.stage && t.stage[project.stage],
+    project.market && t.market[project.market],
     project.platforms.map((p) => platformNames[p] ?? p).join(' · '),
   ].filter(Boolean);
   return page(

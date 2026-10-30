@@ -237,6 +237,14 @@
   background: currentColor;
   vertical-align: 1px;
 }
+.card-stage.stage-beta {
+  background: color-mix(in srgb, var(--brand-100) 70%, transparent);
+  color: var(--brand-700);
+}
+.card-stage.stage-soon {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
 .card-summary {
   font-size: 17px;
   font-weight: 500;
@@ -262,11 +270,25 @@
   border-top: 1px solid var(--line);
 }
 .card-stack li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 3px 9px;
   border-radius: 99px;
   background: var(--panel);
   font-size: 12.5px;
   font-weight: 500;
+}
+/* Each technology with its logo, as in the stack explorer. */
+.card-stack .tech-icon {
+  width: 13px;
+  height: 13px;
+  font-size: 7px;
+}
+.detail-stack .tech-icon {
+  width: 14px;
+  height: 14px;
+  font-size: 7.5px;
 }
 .card-stack .card-stack-more {
   background: none;
@@ -313,60 +335,145 @@
   height: 14px;
 }
 
-/* Experiments: side projects, one line each */
-.side-list,
-.earlier-list {
+/* Work in progress: smaller cards, each opening a window that plays the project's preview (PreviewDialog). */
+.wip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 20px;
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--line);
 }
-.side-item,
-.earlier-item {
+.wip-grid li {
   display: grid;
-  grid-template-columns: 7em minmax(0, 1fr) minmax(0, 18em);
-  gap: 6px 24px;
-  align-items: baseline;
-  padding-block: 18px;
-  border-bottom: 1px solid var(--line);
 }
-.side-year,
-.earlier-years {
-  font-family: var(--f-mono);
-  font-size: 13px;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+.wip-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--panel);
 }
-.side-body,
-.earlier-body {
+.wip-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.project-card:hover .wip-media img {
+  transform: scale(1.03);
+}
+/* The play sign says the card shows the project moving. */
+.wip-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: grid;
-  gap: 4px;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgb(12 20 36 / 0.55);
+  color: #fff;
+  translate: -50% -50%;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    scale 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.2s;
 }
-.side-body h3,
-.earlier-body h3 {
-  font-family: var(--f-display);
+.wip-play svg {
+  width: 18px;
+  height: 18px;
+  margin-left: 3px;
+  fill: currentColor;
+}
+.project-card:hover .wip-play {
+  scale: 1.1;
+  background: rgb(12 20 36 / 0.75);
+}
+.wip-card .card-body {
+  gap: 6px;
+  padding: 16px 18px 18px;
+}
+.wip-card .card-head img {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+}
+.wip-card .card-name {
   font-size: 20px;
-  font-weight: 650;
-  font-stretch: 92%;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
 }
-.side-body p,
-.earlier-body p {
-  max-width: 64ch;
+/* The name is a button that opens the window. */
+button.card-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.wip-card .card-summary {
   font-size: 15px;
-  color: var(--muted);
 }
-.side-meta {
-  display: grid;
-  gap: 4px;
+.wip-card .card-category {
   font-size: 13px;
-  line-height: 1.5;
-  color: var(--muted);
 }
-.side-stack {
-  font-family: var(--f-mono);
-  font-size: 12px;
+.wip-card .card-actions {
+  padding-top: 8px;
+}
+.wip-card .card-more {
+  font-size: 14px;
+}
+
+/* A preview leads its window, playing like a product's clip. The window is a little narrower than a product's,
+   except on phones, where both take the whole screen. */
+@media (min-width: 701px) {
+  .project-dialog.preview-dialog {
+    width: min(920px, calc(100% - 48px));
+  }
+}
+.preview-detail .detail-head {
+  flex-wrap: wrap;
+}
+.preview-detail .detail-name {
+  font-size: clamp(32px, 4vw, 48px);
+}
+.preview-media {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0 0;
+}
+.preview-clip {
+  position: relative;
+}
+.preview-clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow:
+    0 16px 36px -20px rgb(12 20 36 / 0.45),
+    0 0 0 1px rgb(12 20 36 / 0.08);
+}
+.dialog-step {
+  font: inherit;
+  font-weight: 500;
+  color: inherit;
+  background: none;
+  text-align: start;
+  cursor: pointer;
+}
+.dialog-arrow {
+  padding: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* How I build */
@@ -376,9 +483,43 @@
   line-height: 1.65;
 }
 
-/* Earlier work */
+/* Earlier work, one line each */
+.earlier-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
 .earlier-item {
+  display: grid;
   grid-template-columns: 7em minmax(0, 1fr);
+  gap: 6px 24px;
+  align-items: baseline;
+  padding-block: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.earlier-years {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.earlier-body {
+  display: grid;
+  gap: 4px;
+}
+.earlier-body h3 {
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 650;
+  font-stretch: 92%;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.earlier-body p {
+  max-width: 64ch;
+  font-size: 15px;
+  color: var(--muted);
 }
 .earlier-body h3 a {
   display: inline-flex;
@@ -579,6 +720,9 @@
   list-style: none;
 }
 .detail-stack li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 5px 10px;
   border-radius: 99px;
   background: var(--panel);
@@ -715,6 +859,12 @@
 .dialog-step.is-next {
   justify-content: flex-end;
   text-align: right;
+}
+.dialog-step-logo {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
 }
 .project-dialog .project-detail.is-swapped {
   animation: detail-swap 0.26s ease-out;
@@ -878,20 +1028,10 @@
   .detail-body {
     grid-template-columns: minmax(0, 1fr);
   }
-  .side-item {
-    grid-template-columns: 4em minmax(0, 1fr);
-  }
-  .side-meta {
-    grid-column: 2;
-  }
 }
 @media (max-width: 600px) {
-  .side-item,
   .earlier-item {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .side-meta {
-    grid-column: auto;
   }
 }
 @media (max-width: 700px) {
@@ -914,6 +1054,27 @@
   .viewer-next {
     right: calc(50% - 60px);
   }
+  /* On a phone the projects in progress sit side by side in a strip that scrolls sideways, edge to edge past
+     the page's 16px margins. */
+  .wip-grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(82%, 340px);
+    gap: 12px;
+    margin-inline: -16px;
+    padding: 4px 16px 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+  }
+  .wip-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .wip-grid li {
+    scroll-snap-align: start;
+  }
   /* On a phone the project window takes the whole screen. */
   .project-dialog {
     width: 100%;
@@ -929,6 +1090,15 @@
     padding: 10px 12px;
     font-size: 14px;
   }
+  /* "Previous" and "Next" say the direction, so the arrows make room for the names. */
+  .dialog-step .arrow-icon {
+    display: none;
+  }
+  .dialog-step-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .project-card,
@@ -936,7 +1106,8 @@
     transition: none;
   }
   .project-card:hover,
-  .project-card:hover .card-media img {
+  .project-card:hover .card-media img,
+  .project-card:hover .wip-media img {
     transform: none;
   }
   .project-dialog .project-detail.is-swapped {

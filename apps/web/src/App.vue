@@ -3,7 +3,6 @@ import { computed, nextTick, watch } from 'vue';
 import { useRoute, useRouter, type RouteLocationNormalizedLoaded } from 'vue-router';
 import SiteHeader from './components/SiteHeader.vue';
 import SiteFooter from './components/SiteFooter.vue';
-import SayHello from './components/SayHello.vue';
 import LanguageHint from './components/LanguageHint.vue';
 import { useProjectOverlay } from './composables/useProjectOverlay';
 import { useLocale } from './i18n';
@@ -39,7 +38,6 @@ watch(
       <RouterView :route="overlay ? studio : undefined" />
     </main>
     <SiteFooter :personal="personal" />
-    <SayHello />
     <LanguageHint />
   </div>
 </template>

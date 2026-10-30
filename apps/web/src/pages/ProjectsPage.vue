@@ -8,13 +8,21 @@ import { useResource } from '../composables/useResource';
 import { usePageAnchor } from '../composables/usePageAnchor';
 import { useProjectDirectory } from '../composables/useProjectDirectory';
 import { morphStyle, overStudio, useProjectOverlay } from '../composables/useProjectOverlay';
-import { projectClip, projectHost, projectScreens } from '../content/project-screens';
+import {
+  PREVIEW_SIZE,
+  projectClip,
+  projectHost,
+  projectPreview,
+  projectScreens,
+} from '../content/project-screens';
 import ResourceState from '../components/ResourceState.vue';
 import ArrowIcon from '../components/ArrowIcon.vue';
 import ProjectDialog from '../components/ProjectDialog.vue';
+import PreviewDialog from '../components/PreviewDialog.vue';
 import StackExplorer from '../components/StackExplorer.vue';
 import HexField from '../components/HexField.vue';
 import CardClip from '../components/CardClip.vue';
+import TechIcon from '../components/TechIcon.vue';
 
 const { t, locale } = useLocale();
 const { data, loading, error, reload } = useResource<Project[]>(
@@ -28,7 +36,8 @@ watch(data, (list) => {
 const projects = computed(() => data.value ?? directory.value);
 usePageAnchor(projects);
 
-// Products get cards and a window; experiments and earlier work are listed more briefly.
+// Products get cards and a window with their own address; projects in progress get smaller cards whose window
+// plays a short preview; earlier work is listed more briefly.
 const ofKind = (kind: Project['kind']) => projects.value?.filter((p) => p.kind === kind) ?? [];
 const products = computed(() => ofKind('product'));
 const experiments = computed(() => ofKind('experiment'));
@@ -37,13 +46,15 @@ const earlier = computed(() => ofKind('earlier'));
 const hero = ref<HTMLElement | null>(null);
 const cover = (project: Project) => projectScreens(project, t)[0] ?? null;
 const platformNames: Record<string, string> = { web: 'Web', ios: 'iOS', android: 'Android' };
+// Who it's for and how: the country it's built for, where it runs, its languages.
 const availability = (project: Project) =>
   [
+    project.market && t(`studio.market.${project.market}`),
     project.platforms.map((platform) => platformNames[platform] ?? platform).join(' · '),
     project.languages.length > 4
       ? t('studio.languagesCount', { n: project.languages.length })
       : project.languages.map((language) => language.toUpperCase()).join(' · '),
-  ].filter(Boolean);
+  ].filter((item): item is string => !!item);
 const STACK_SHOWN = 4;
 const years = (project: Project) =>
   project.endedYear
@@ -84,6 +95,12 @@ watch(
   ([slug, list]) => {
     if (slug && list && !products.value.some((p) => p.slug === slug)) void router.replace('/');
   },
+);
+
+// A project in progress opens over the page without changing the address.
+const previewSlug = ref<string | null>(null);
+const previewProject = computed(
+  () => experiments.value.find((p) => p.slug === previewSlug.value) ?? null,
 );
 
 // Links to the old project sections (/#work-fairmints) open the project's page.
@@ -174,7 +191,9 @@ onMounted(() => {
                 <span v-for="item in availability(project)" :key="item">{{ item }}</span>
               </p>
               <ul v-if="project.stack.length" class="card-stack">
-                <li v-for="tech in project.stack.slice(0, STACK_SHOWN)" :key="tech">{{ tech }}</li>
+                <li v-for="tech in project.stack.slice(0, STACK_SHOWN)" :key="tech">
+                  <TechIcon :name="tech" />{{ tech }}
+                </li>
                 <li
                   v-if="project.stack.length > STACK_SHOWN"
                   class="card-stack-more"
@@ -205,24 +224,79 @@ onMounted(() => {
       </ul>
     </section>
 
-    <section v-if="experiments.length" class="experiments wrap" aria-labelledby="experiments-title">
+    <section
+      v-if="experiments.length"
+      id="work-in-progress"
+      class="experiments wrap"
+      aria-labelledby="experiments-title"
+    >
       <div class="section-head">
         <h2 id="experiments-title">{{ t('studio.experimentsTitle') }}</h2>
         <p class="section-note">{{ t('studio.experimentsNote') }}</p>
       </div>
-      <ul class="side-list">
-        <li v-for="project in experiments" :key="project.slug" class="side-item">
-          <span class="side-year">{{ project.startedYear }}</span>
-          <div class="side-body">
-            <h3>{{ project.name }}</h3>
-            <p>{{ project.summary }} {{ project.description }}</p>
-          </div>
-          <p class="side-meta">
-            <span>{{ project.category }}</span
-            ><span class="side-stack">{{ project.stack.join(' · ') }}</span>
-          </p>
+      <ul class="wip-grid">
+        <li v-for="project in experiments" :key="project.slug">
+          <article class="project-card wip-card" :aria-labelledby="`wip-${project.slug}`">
+            <span class="wip-media" aria-hidden="true">
+              <img
+                v-if="projectPreview(project, t)"
+                :src="projectPreview(project, t)!.poster"
+                alt=""
+                :width="PREVIEW_SIZE.width"
+                :height="PREVIEW_SIZE.height"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="wip-play">
+                <svg viewBox="0 0 16 16"><path d="M4.5 2.5v11l9-5.5z" /></svg>
+              </span>
+            </span>
+            <div class="card-body">
+              <div class="card-head">
+                <img
+                  v-if="project.logoUrl"
+                  :src="project.logoUrl"
+                  alt=""
+                  width="28"
+                  height="28"
+                  loading="lazy"
+                />
+                <h3 :id="`wip-${project.slug}`" class="card-name">
+                  <button
+                    type="button"
+                    class="card-link"
+                    aria-haspopup="dialog"
+                    @click="previewSlug = project.slug"
+                  >
+                    {{ project.name }}
+                  </button>
+                </h3>
+                <span v-if="project.stage" class="card-stage" :class="`stage-${project.stage}`">{{
+                  t(`studio.stage.${project.stage}`)
+                }}</span>
+              </div>
+              <p class="card-summary">{{ project.summary }}</p>
+              <p class="card-category">{{ project.category }} · {{ project.startedYear }}</p>
+              <div class="card-actions">
+                <span class="card-more" aria-hidden="true">{{ t('studio.watch') }}</span>
+                <a
+                  v-if="project.url"
+                  class="card-site"
+                  :href="project.url"
+                  :aria-label="t('studio.open', { host: projectHost(project) })"
+                  >{{ projectHost(project) }} <ArrowIcon
+                /></a>
+              </div>
+            </div>
+          </article>
         </li>
       </ul>
+      <PreviewDialog
+        :project="previewProject"
+        :projects="experiments"
+        @close="previewSlug = null"
+        @step="previewSlug = $event"
+      />
     </section>
 
     <section v-if="projects?.length" class="build wrap" aria-labelledby="build-title">

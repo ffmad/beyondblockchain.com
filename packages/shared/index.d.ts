@@ -19,8 +19,10 @@ export interface Project {
   stack: string[];
   /** Main products have cards and a page; experiments and earlier work are listed more briefly. */
   kind: 'product' | 'experiment' | 'earlier';
-  /** Where a product stands: live, in app-store review, or in beta. */
-  stage: 'live' | 'review' | 'beta' | null;
+  /** Where it stands: live, in app-store review, in beta, or coming soon. */
+  stage: 'live' | 'review' | 'beta' | 'soon' | null;
+  /** The country a product is built for, when it's built for one. */
+  market: 'japan' | null;
   /** Where it can be used: web, ios, android. */
   platforms: string[];
   /** Interface languages, as language codes. */
@@ -85,6 +87,8 @@ export interface Profile {
   /** What I do, in one line: the same title as the CV. */
   headline: string;
   intro: string;
+  /** Living in Japan and building for it. */
+  home: string;
   focus: string;
   /** The essentials at a glance, beside the introduction. */
   glance: { label: string; value: string }[];

@@ -35,8 +35,10 @@ model Project {
   translations  Json     @default("{}")
   /// "product" (a card and a page), "experiment" or "earlier" (listed briefly).
   kind          String   @default("product")
-  /// For products: "live", "review" (app-store review) or "beta".
+  /// "live", "review" (app-store review), "beta" or "soon" (coming soon).
   stage         String?
+  /// The country a product is built for ("japan"), or null when it's for anyone.
+  market        String?
   /// Where it can be used ("web", "ios", "android") and its interface languages (language codes), as JSON arrays.
   platforms     Json     @default("[]")
   languages     Json     @default("[]")
@@ -56,6 +58,8 @@ model ContactMessage {
   message       String
   locale        String
   page          String
+  /// What the visitor asked the site's assistant before writing, e.g. "Can you work with me?".
+  asked         String?
   createdAt     DateTime  @default(now())
   /// "pending", "sent", or "failed" (gave up after repeated errors).
   delivery      String    @default("pending")

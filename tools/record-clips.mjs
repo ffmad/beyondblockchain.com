@@ -1,11 +1,15 @@
 // Records the short silent clips that play on the web products' cards and lead their project windows: each live
-// site, scrolled down and back up so the clip loops without a jump. Chrome records the tab itself (H.264 MP4), so
-// nothing else needs installing. The clips are written to apps/web/public/projects/<slug>-clip.mp4.
+// site, scrolled down and back up so the clip loops without a jump. It also records the previews of the projects
+// still in progress, each moving in its own way, and saves their first frame as a cover image. Chrome records the
+// tab itself (H.264 MP4), so nothing else needs installing. The clips are written to
+// apps/web/public/projects/<slug>-clip.mp4, the covers to <slug>-cover.webp.
 //
 //   node tools/record-clips.mjs [slug ...]
 //
 // Needs Google Chrome (CHROME_PATH overrides the macOS default) and a network connection. Ikitai is an app, so
-// its clip has to come from a screen recording of the app itself.
+// its clip has to come from a screen recording of the app itself. Two previews come from apps running on this
+// computer: Spam the Mempool's client (`npm run dev:client` in ~/Development/spamthemempool, port 6069) and
+// ShigoShima (`npm run dev` in ~/Development/shigoshima, port 5417).
 import { spawn } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -20,7 +24,10 @@ const chromePath =
 const PORT = 9342;
 
 // The same pages as the products' captures (docs/ASSETS.md), at the same 1280 × 720 size.
-// `dismiss` lists the text of banners to close first, as a visitor would.
+// `dismiss` lists the text of banners to close first, as a visitor would. A preview can instead `setup` its page
+// (an async function run there first), get it ready `before` recording (another, run once the page has the
+// recording's size) and play its own `motion` (an async function given the clip's length in milliseconds);
+// `cover` also saves its first frame.
 const clips = [
   { slug: 'taplog', url: 'https://taplog.jp/', scroll: 760 },
   { slug: 'fairmints', url: 'https://fairmints.io/', scroll: 640 },
@@ -29,6 +36,118 @@ const clips = [
     url: 'https://festcompass.jp/festivals',
     scroll: 820,
     dismiss: ['Install FestCompass'],
+  },
+  { slug: 'gengofriends', url: 'https://gengofriends.com/', scroll: 800, cover: true },
+  {
+    // A solo match against bots, with the player steered to grab junk and throw it onto the belt.
+    slug: 'spam-the-mempool',
+    url: 'http://localhost:6069/',
+    seconds: 8,
+    bitrate: 1_600_000,
+    cover: true,
+    setup: async () => {
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      const style = document.createElement('style');
+      // The first-match tips and the keyboard legend.
+      style.textContent = '.coach, .legend { display: none !important; }';
+      document.head.append(style);
+      const stm = window.__stm;
+      await stm.setPhase('match');
+      await wait(5000);
+      stm.fastForward(6);
+      let pressUntil = 0;
+      let lastPress = 0;
+      let carrySince = 0;
+      const press = (now) => {
+        pressUntil = now + 120;
+        lastPress = now;
+      };
+      const steer = (now) => {
+        const snap = stm.snap();
+        const me = snap?.players.find((player) => player.id === 'you');
+        if (me) {
+          const input = { mx: 0, mz: 0, grab: now < pressUntil };
+          let dx = 0;
+          let dz = 0;
+          if (me.carrying != null && me.carrying >= 0) {
+            // To the belt at the back, then throw.
+            carrySince ||= now;
+            dx = Math.max(-5, Math.min(5, -me.pos[0] * 0.3));
+            dz = -4.2 - me.pos[2];
+            const distance = Math.hypot(dx, dz);
+            if ((distance < 1.6 || now - carrySince > 2600) && now - lastPress > 700) press(now);
+            if (distance < 0.6) dx = dz = 0;
+          } else {
+            // To the nearest loose junk, then grab it.
+            carrySince = 0;
+            let nearest = Infinity;
+            for (const junk of snap.junk) {
+              if (junk.state !== 'loose') continue;
+              const distance = Math.hypot(junk.pos[0] - me.pos[0], junk.pos[2] - me.pos[2]);
+              if (distance < nearest) {
+                nearest = distance;
+                dx = junk.pos[0] - me.pos[0];
+                dz = junk.pos[2] - me.pos[2];
+              }
+            }
+            if (nearest < 0.9) {
+              if (now - lastPress > 500) press(now);
+              dx = dz = 0;
+            }
+          }
+          const length = Math.hypot(dx, dz);
+          if (length) Object.assign(input, { mx: dx / length, mz: dz / length });
+          input.grab = now < pressUntil;
+          stm.drive(input);
+        }
+        requestAnimationFrame(steer);
+      };
+      requestAnimationFrame(steer);
+      await wait(4000);
+    },
+    motion: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+  },
+  {
+    // The archipelago, then a flight to Ikitai's island and back.
+    slug: 'shigoshima',
+    url: 'http://127.0.0.1:5417/?intro=0',
+    seconds: 9,
+    bitrate: 900_000,
+    cover: true,
+    setup: async () => {
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      const style = document.createElement('style');
+      // Without the AI usage meters or the island's status card, naming only the islands of projects shown on
+      // the site.
+      const shown = ['ikitai', 'festcompass', 'taplog', 'fairmints', 'gengofriends', 'shigoshima'];
+      style.textContent = `.usage-indicators, .island-card { display: none !important; }
+        .village-label--project:not(${shown.map((name) => `:has(img[src*="${name}"])`).join(', ')}) { display: none !important; }`;
+      document.head.append(style);
+      await wait(4000);
+    },
+    // Going to the island and back, at the recording's size, frames the overview as it will be when the clip
+    // ends, so it loops. The first trip back can return to the opening view instead, so it goes twice.
+    before: async () => {
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      for (let trip = 0; trip < 2; trip++) {
+        [...document.querySelectorAll('.village-label')]
+          .find((label) => label.textContent.trim().startsWith('Ikitai'))
+          .click();
+        await wait(3000);
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+        await wait(3500);
+      }
+    },
+    motion: async (ms) => {
+      const wait = (time) => new Promise((resolve) => setTimeout(resolve, time));
+      await wait(1200);
+      [...document.querySelectorAll('.village-label')]
+        .find((label) => label.textContent.trim().startsWith('Ikitai'))
+        .click();
+      await wait(ms - 1200 - 2800);
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await wait(2800);
+    },
   },
 ];
 const SECONDS = 7;
@@ -89,9 +208,27 @@ const prepare = (distance, dismiss) => `(async () => {
   await Promise.all([...document.images].map((image) => image.decode().catch(() => {})));
 })()`;
 
-// Runs in the product's page: records the tab while easing down `distance` pixels and back up. While a tab is
-// shared Chrome shows a bar above it, so if the page is no longer 1280 × 720 it stops and reports its size.
-const record = (distance, seconds, size, bitrate) => `(async () => {
+// The products' motion: a pause at the top, eased down `distance` pixels, a pause at the bottom, back up.
+const scrolling = (distance) => `async (ms) => {
+  const distance = Math.min(${distance}, document.documentElement.scrollHeight - innerHeight);
+  const start = performance.now();
+  await new Promise((resolve) => {
+    const step = (now) => {
+      const t = (now - start) / ms;
+      if (t >= 1) return resolve();
+      const phase = Math.min(1, Math.max(0, t < 0.5 ? (t - 0.08) / 0.34 : (0.92 - t) / 0.34));
+      // Instant, or a site's smooth scrolling would restart on every frame.
+      window.scrollTo({ top: distance * phase * phase * (3 - 2 * phase), behavior: 'instant' });
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}`;
+
+// Runs in the page: records the tab while the clip's motion plays, and grabs its first frame for the cover.
+// While a tab is shared Chrome shows a bar above it, so if the page is no longer 1280 × 720 it stops and reports
+// its size.
+const record = ({ motion, before, seconds, size, bitrate, cover }) => `(async () => {
   const stream = await navigator.mediaDevices.getDisplayMedia({
     video: { width: ${size.width}, height: ${size.height}, frameRate: 24 },
     audio: false,
@@ -108,30 +245,32 @@ const record = (distance, seconds, size, bitrate) => `(async () => {
   const chunks = [];
   recorder.ondataavailable = (event) => chunks.push(event.data);
   const stopped = new Promise((resolve) => (recorder.onstop = resolve));
-  const distance = Math.min(${distance}, document.documentElement.scrollHeight - innerHeight);
   window.scrollTo(0, 0);
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  await (${before})();
   recorder.start();
-  const start = performance.now();
-  await new Promise((resolve) => {
-    const step = (now) => {
-      const t = (now - start) / ${seconds * 1000};
-      if (t >= 1) return resolve();
-      // A pause at the top, down, a pause at the bottom, back up.
-      const phase = Math.min(1, Math.max(0, t < 0.5 ? (t - 0.08) / 0.34 : (0.92 - t) / 0.34));
-      window.scrollTo(0, distance * phase * phase * (3 - 2 * phase));
-      requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  });
+  const played = (${motion})(${seconds * 1000});
+  let image;
+  if (${cover}) {
+    const frame = await new ImageCapture(stream.getVideoTracks()[0]).grabFrame();
+    const canvas = new OffscreenCanvas(frame.width, frame.height);
+    canvas.getContext('2d').drawImage(frame, 0, 0);
+    image = await canvas.convertToBlob({ type: 'image/webp', quality: 0.82 });
+  }
+  await played;
   recorder.stop();
   await stopped;
   stream.getTracks().forEach((track) => track.stop());
-  const bytes = new Uint8Array(await new Blob(chunks, { type }).arrayBuffer());
-  let binary = '';
-  for (let i = 0; i < bytes.length; i += 0x8000)
-    binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-  return { video: btoa(binary) };
+  const base64 = async (blob) => {
+    const bytes = new Uint8Array(await blob.arrayBuffer());
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 0x8000)
+      binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    return btoa(binary);
+  };
+  return {
+    video: await base64(new Blob(chunks, { type })),
+    cover: image && (await base64(image)),
+  };
 })()`;
 
 async function main() {
@@ -175,10 +314,14 @@ async function main() {
       await loaded;
       // Let data, images and fonts arrive.
       await sleep(4000);
-      await page.send('Runtime.evaluate', {
-        expression: prepare(clip.scroll, clip.dismiss ?? []),
+      const ready = await page.send('Runtime.evaluate', {
+        expression: clip.setup ? `(${clip.setup})()` : prepare(clip.scroll, clip.dismiss ?? []),
         awaitPromise: true,
       });
+      if (ready.exceptionDetails)
+        throw new Error(
+          `${clip.slug}: ${ready.exceptionDetails.exception?.description ?? ready.exceptionDetails.text}`,
+        );
       await sleep(1000);
       let recorded;
       for (let attempt = 0; attempt < 3 && !recorded?.video; attempt++) {
@@ -190,7 +333,17 @@ async function main() {
           await sleep(500);
         }
         const result = await page.send('Runtime.evaluate', {
-          expression: record(clip.scroll, SECONDS, SIZE, BITRATE),
+          expression: record({
+            motion: clip.motion ? String(clip.motion) : scrolling(clip.scroll),
+            seconds: clip.seconds ?? SECONDS,
+            size: SIZE,
+            bitrate: clip.bitrate ?? BITRATE,
+            // A 3D scene redraws for the new size, so a preview waits a little longer by default.
+            before:
+              clip.before ??
+              `() => new Promise((resolve) => setTimeout(resolve, ${clip.setup ? 1500 : 300}))`,
+            cover: !!clip.cover,
+          }),
           awaitPromise: true,
           returnByValue: true,
           userGesture: true,
@@ -206,6 +359,11 @@ async function main() {
       const video = Buffer.from(recorded.video, 'base64');
       writeFileSync(file, video);
       console.log(`projects/${clip.slug}-clip.mp4  ${Math.round(video.length / 1024)} KB`);
+      if (recorded.cover) {
+        const image = Buffer.from(recorded.cover, 'base64');
+        writeFileSync(join(outDir, `${clip.slug}-cover.webp`), image);
+        console.log(`projects/${clip.slug}-cover.webp  ${Math.round(image.length / 1024)} KB`);
+      }
     }
     page.close();
   } finally {

@@ -6,28 +6,205 @@
     <meta name="theme-color" content="#f5f4f0" />
     <script>
       document.documentElement.classList.add('js');
-      // After a language switch (switchLanguage in src/i18n) the page opens where the visitor was, and its words
-      // cross-fade from the other language's. Other navigations between pages skip the transition.
-      addEventListener('pagereveal', function (event) {
-        var place = null;
-        try {
-          place = JSON.parse(sessionStorage.getItem('bb.language-switch'));
-          sessionStorage.removeItem('bb.language-switch');
-        } catch (error) {}
-        if (!place) {
-          if (event.viewTransition) event.viewTransition.skipTransition();
-          return;
+      // Switching language rewrites the page's text into the other language instead of replacing it. The page
+      // being left keeps the text it shows (switchLanguage in src/i18n calls __rememberLanguageText); the page
+      // arriving opens at the same place showing that text, then rewrites each line from left to right, top lines
+      // first, with a few changing letters where the old words meet the new ones. The app starts once it's done
+      // (src/main.ts waits for __languageSettled). Other navigations between pages skip the page transition.
+      (function () {
+        var BLOCKS =
+          'main :is(h1, h2, h3, p, dt, dd, figcaption, .card-more, .card-stage, .now-name, .now-since, .earlier-years), .main-nav > a:not(.language-switch), .site-footer :is(h2, p)';
+        var PLACE = 'bb.language-switch';
+        var TEXT = 'bb.language-text';
+        function textNodes(element) {
+          var nodes = [];
+          var walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+          while (walker.nextNode())
+            if (walker.currentNode.data.trim()) nodes.push(walker.currentNode);
+          return nodes;
         }
-        var anchor = place.id && document.getElementById(place.id);
-        var top = anchor ? scrollY + anchor.getBoundingClientRect().top - place.top : place.y;
-        if (top) scrollTo({ top: top, behavior: 'instant' });
-        if (!event.viewTransition) return;
-        var root = document.documentElement;
-        root.classList.add('language-switching');
-        event.viewTransition.finished.finally(function () {
-          root.classList.remove('language-switching');
-        });
-      });
+        window.__rememberLanguageText = function () {
+          var texts = {};
+          var blocks = document.querySelectorAll(BLOCKS);
+          for (var i = 0; i < blocks.length; i++) {
+            var box = blocks[i].getBoundingClientRect();
+            if (!box.width || box.bottom < 0 || box.top > innerHeight) continue;
+            texts[i] = textNodes(blocks[i]).map(function (node) {
+              return node.data;
+            });
+          }
+          try {
+            sessionStorage.setItem(TEXT, JSON.stringify(texts));
+          } catch (error) {}
+        };
+
+        var place = null;
+        var texts = null;
+        try {
+          place = JSON.parse(sessionStorage.getItem(PLACE));
+          texts = JSON.parse(sessionStorage.getItem(TEXT));
+          sessionStorage.removeItem(PLACE);
+          sessionStorage.removeItem(TEXT);
+        } catch (error) {}
+        var settle = function () {};
+        if (place)
+          window.__languageSettled = new Promise(function (resolve) {
+            settle = resolve;
+          });
+
+        var JAPANESE = /[぀-ヿ㐀-鿿]/;
+        var KANA =
+          'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンガギグゲゴ';
+        var LATIN = 'abcdefghijklmnopqrstuvwxyzetaoinshrdlu';
+        function glyphs(pool, count) {
+          var out = '';
+          for (var i = 0; i < count; i++) out += pool[Math.floor(Math.random() * pool.length)];
+          return out;
+        }
+        // Text the two languages share (a name, a number) stays put; only what differs is rewritten.
+        function change(node, from, to, block) {
+          var start = 0;
+          while (start < from.length && start < to.length && from[start] === to[start]) start++;
+          var end = 0;
+          while (
+            end < from.length - start &&
+            end < to.length - start &&
+            from[from.length - 1 - end] === to[to.length - 1 - end]
+          )
+            end++;
+          return {
+            node: node,
+            block: block,
+            head: to.slice(0, start),
+            tail: to.slice(to.length - end),
+            from: from.slice(start, from.length - end),
+            to: to.slice(start, to.length - end),
+            final: to,
+          };
+        }
+        var running = [];
+        function finish(item) {
+          item.node.data = item.final;
+          (item.restore || []).forEach(function (pair) {
+            pair[0].data = pair[1];
+          });
+          item.done = true;
+        }
+        // If the app has to start before the rewrite is over, the text jumps to its end first.
+        window.__languageFinish = function () {
+          running.forEach(function (item) {
+            if (!item.done) finish(item);
+          });
+          settle();
+        };
+        function rewrite(items) {
+          running = items;
+          if (!items.length) return settle();
+          var order = items
+            .map(function (item) {
+              return item.block;
+            })
+            .filter(function (block, i, all) {
+              return all.indexOf(block) === i;
+            })
+            .sort(function (a, b) {
+              return a - b;
+            });
+          items.forEach(function (item) {
+            item.delay = Math.min(order.indexOf(item.block) * 18, 240);
+            item.duration = Math.min(520, 200 + Math.max(item.from.length, item.to.length) * 4);
+            item.pool = JAPANESE.test(item.to) ? KANA : LATIN;
+          });
+          var start = performance.now();
+          var shuffled = 0;
+          function frame(now) {
+            var running = false;
+            var shuffle = now - shuffled > 50;
+            if (shuffle) shuffled = now;
+            items.forEach(function (item) {
+              if (item.done) return;
+              var t = (now - start - item.delay) / item.duration;
+              if (t >= 1) {
+                finish(item);
+                return;
+              }
+              running = true;
+              if (t <= 0) return;
+              var eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(2 - 2 * t, 2) / 2;
+              var written = Math.round(item.to.length * eased);
+              var edge = Math.min(3, item.to.length - written);
+              if (shuffle || !item.edge) item.edge = glyphs(item.pool, 3);
+              var kept = item.from.slice(
+                Math.min(item.from.length, Math.round(item.from.length * eased) + edge),
+              );
+              item.node.data =
+                item.head + item.to.slice(0, written) + item.edge.slice(0, edge) + kept + item.tail;
+            });
+            if (running) requestAnimationFrame(frame);
+            else settle();
+          }
+          requestAnimationFrame(frame);
+        }
+
+        function arrive(event) {
+          if (!place) {
+            if (event && event.viewTransition) event.viewTransition.skipTransition();
+            return;
+          }
+          var anchor = place.id && document.getElementById(place.id);
+          var top = anchor ? scrollY + anchor.getBoundingClientRect().top - place.top : place.y;
+          if (top) scrollTo({ top: top, behavior: 'instant' });
+          place = null;
+          var root = document.documentElement;
+          if (event && event.viewTransition) {
+            root.classList.add('language-switching');
+            event.viewTransition.finished.finally(function () {
+              root.classList.remove('language-switching');
+            });
+          }
+          // The text the visitor was reading comes back first, then turns into this page's language.
+          var items = [];
+          if (texts && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            var blocks = document.querySelectorAll(BLOCKS);
+            for (var key in texts) {
+              var nodes = blocks[key] ? textNodes(blocks[key]) : [];
+              var old = texts[key];
+              if (!nodes.length || !old.length) continue;
+              if (nodes.length === old.length) {
+                nodes.forEach(function (node, n) {
+                  if (node.data === old[n]) return;
+                  items.push(change(node, old[n], node.data, Number(key)));
+                  node.data = old[n];
+                });
+              } else {
+                // The two languages split this line differently (「こんにちは、Quentinです。」): it is rewritten
+                // as one piece of text in its first part, and the other parts come back at the end.
+                var whole = nodes
+                  .map(function (node) {
+                    return node.data;
+                  })
+                  .join('');
+                var item = change(nodes[0], old.join(''), whole, Number(key));
+                item.final = nodes[0].data;
+                item.restore = nodes.slice(1).map(function (node) {
+                  return [node, node.data];
+                });
+                nodes.slice(1).forEach(function (node) {
+                  node.data = '';
+                });
+                nodes[0].data = old.join('');
+                items.push(item);
+              }
+            }
+          }
+          rewrite(items);
+        }
+        if ('onpagereveal' in window) addEventListener('pagereveal', arrive);
+        else
+          addEventListener('DOMContentLoaded', function () {
+            arrive(null);
+          });
+      })();
     </script>
     <!-- page-meta:start -->
     <!-- page-meta:end -->

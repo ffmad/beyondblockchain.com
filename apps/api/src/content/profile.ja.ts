@@ -8,10 +8,13 @@ export const profileJa: Profile = {
   headline: 'フロントエンド／フルスタックエンジニア · Vue 3、TypeScript、NestJS · AIを活用した開発',
   intro:
     '14年にわたりJavaScriptとTypeScriptでWebアプリケーションをつくり、8年間はCEO・共同創業者として、エンジニアリングの体制をゼロから築いてきました。現在は東京の自分のスタジオBeyond Blockchainで、Web・iOS・Android向けのVue 3フロントエンドと、NestJSのバックエンドを開発しています。',
+  home: '東京に住み、日本のためにプロダクトをつくっています。FestCompassは全国のフェスを、TapLogは東京のクラフトビアバーを、日本語と英語で届けています。',
   focus:
-    'AIコーディングエージェント（Claude Code、Codex、Grok）と毎日開発し、すべての変更をテストと自分のレビューに通しています。',
+    '目指しているのは、最高のUI/UX。直感的で、使いやすく、使っていて心地よいアプリです。毎日AIコーディングエージェント（Claude Code、Codex、Grok）と開発し、すべての変更をテストと自分のレビューに通しています。',
   glance: [
     { label: '拠点', value: '東京' },
+    { label: '対象市場', value: '日本（FestCompass、TapLog）' },
+    { label: '目指すもの', value: '直感的で使いやすく、心地よいUI/UX' },
     {
       label: '現在',
       value: 'Beyond Blockchain（Ikitai、FestCompass、TapLog）とFairmintsの創業者',
@@ -19,7 +22,7 @@ export const profileJa: Profile = {
     { label: 'これまで', value: 'Ownest CEO・共同創業者。20人規模まで成長（2017〜2026年）' },
     {
       label: '開発',
-      value: 'Vue 3、TypeScript、NestJS。AIコーディングエージェントと、変更ごとのテスト',
+      value: 'Vue 3、TypeScript、NestJS。AIエージェントと、変更ごとのテスト',
     },
     {
       label: '言語',
@@ -67,7 +70,7 @@ export const profileJa: Profile = {
     },
     {
       title: 'レビュー',
-      text: 'マージの前に、すべての差分を自分で読みます。エージェントが単独でデプロイすることはありません。',
+      text: 'マージ前にすべての差分を読みます。エージェントが単独でデプロイすることはありません。',
     },
     {
       title: 'フィードバック',
@@ -215,7 +218,7 @@ export const profileJa: Profile = {
     {
       name: 'EDCON・パリ（2017年）',
       description:
-        '2017年2月にパリで開催された欧州イーサリアム開発者会議（European Ethereum Development Conference）の準備にあたり、運営チームをサポートしました。',
+        '2017年2月にパリで開催されたEDCON（欧州イーサリアム開発者会議）の準備で、運営チームをサポートしました。',
       source: {
         label: 'Ethereum Franceによるイベントレポート（フランス語）',
         url: 'https://www.ethereum-france.com/blog/retour-sur-ledcon-premiere-conference-europeenne-sur-ethereum-17-18-fevrier-2017/',

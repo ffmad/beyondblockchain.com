@@ -29,6 +29,7 @@ import { Database } from './database.js';
 import { profile } from './content/profile.js';
 import { profileJa } from './content/profile.ja.js';
 import { ContactController, ContactService } from './contact.js';
+import { AssistantController, AssistantService } from './assistant.js';
 import { llmsText } from './llms.js';
 import { sitemapXml } from './sitemap.js';
 
@@ -52,6 +53,7 @@ const publicProjectFields = {
   stack: true,
   kind: true,
   stage: true,
+  market: true,
   platforms: true,
   languages: true,
   endedYear: true,
@@ -74,7 +76,8 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 const strings = (value: unknown) =>
   Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : [];
 const kinds = ['product', 'experiment', 'earlier'] as const;
-const stages = ['live', 'review', 'beta'] as const;
+const stages = ['live', 'review', 'beta', 'soon'] as const;
+const markets = ['japan'] as const;
 const oneOf = <T extends string>(options: readonly T[], value: unknown) =>
   options.find((option) => option === value);
 
@@ -99,6 +102,7 @@ async function readPublicProjects(database: Database, locale: Locale = 'en'): Pr
       languages: strings(row.languages),
       kind: oneOf(kinds, row.kind) ?? 'product',
       stage: oneOf(stages, row.stage) ?? null,
+      market: oneOf(markets, row.market) ?? null,
     };
   });
 }
@@ -168,8 +172,14 @@ class SitemapController {
 }
 
 @Module({
-  controllers: [PublicController, ContactController, LlmsController, SitemapController],
-  providers: [Database, ContactService],
+  controllers: [
+    PublicController,
+    ContactController,
+    AssistantController,
+    LlmsController,
+    SitemapController,
+  ],
+  providers: [Database, ContactService, AssistantService],
 })
 class AppModule {}
 

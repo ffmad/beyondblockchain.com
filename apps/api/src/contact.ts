@@ -56,6 +56,7 @@ interface StoredMessage {
   message: string;
   locale: string;
   page: string;
+  asked?: string | null;
   createdAt: Date;
 }
 
@@ -89,6 +90,9 @@ export function slackPayload(row: StoredMessage, notes: Triage | null = null) {
       { type: 'header', text: plain(heading) },
       ...summary,
       { type: 'section', text: plain(`${row.name} · ${row.email}`) },
+      ...(row.asked
+        ? [{ type: 'context', elements: [plain(`Asked the site's assistant: ${row.asked}`)] }]
+        : []),
       { type: 'section', text: plain(row.message) },
       ...reply,
       {
@@ -184,8 +188,10 @@ export class ContactService implements OnModuleInit, OnModuleDestroy {
 
     const locale = input.locale === 'ja' ? 'ja' : 'en';
     const page = text(input.page).slice(0, 200) || '/';
+    // From the site's assistant: the questions asked before writing, so the message arrives with its context.
+    const asked = text(input.asked).slice(0, 300) || null;
     await this.database.client.contactMessage.create({
-      data: { name, email, message, locale, page },
+      data: { name, email, message, locale, page, asked },
     });
     void this.deliverDue();
     return { ok: true };

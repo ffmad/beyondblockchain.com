@@ -12,4 +12,6 @@ apps/api/src/generated/
 *.log
 .DS_Store
 coverage/
+# The assistant's sentence model, downloaded on first start
+.models/
 .local/

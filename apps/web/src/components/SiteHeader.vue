@@ -2,8 +2,9 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import BrandMark from './BrandMark.vue';
+import HelloBot from './HelloBot.vue';
 import { useProjectOverlay } from '../composables/useProjectOverlay';
-import { languageNames, switchLanguage, useLocale } from '../i18n';
+import { switchLanguage, useLocale, type Locale } from '../i18n';
 import { localizedPath } from '@beyond/shared/metadata.js';
 
 const route = useRoute();
@@ -11,7 +12,44 @@ const overlay = useProjectOverlay();
 const { t, locale } = useLocale();
 // The same page in the other language. It's a full page load: each language has its own address space.
 const other = locale === 'en' ? 'ja' : 'en';
+const languageOrder = ['en', 'ja'] as const;
+const languageShort = { en: 'EN', ja: '日本語' } as const;
 const otherHref = computed(() => localizedPath(route.fullPath, other));
+
+// A tap on the switch slides its highlight to the other language at once, while that language's page loads. The
+// page is fetched in the background as soon as this one is ready, so the switch doesn't wait for the network.
+const languageSwitch = ref<HTMLAnchorElement | null>(null);
+const shown = ref<Locale>(locale);
+const thumb = ref<{ x: number; width: number } | null>(null);
+function placeThumb(language: Locale) {
+  const option = languageSwitch.value?.querySelector<HTMLElement>(`[data-language="${language}"]`);
+  if (option) thumb.value = { x: option.offsetLeft, width: option.offsetWidth };
+}
+function onLanguage(event: MouseEvent) {
+  switchLanguage(event);
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+    return;
+  shown.value = other;
+  placeThumb(other);
+}
+let prefetched: HTMLElement | null = null;
+function prefetchOther() {
+  prefetched?.remove();
+  if (HTMLScriptElement.supports?.('speculationrules')) {
+    prefetched = Object.assign(document.createElement('script'), {
+      type: 'speculationrules',
+      textContent: JSON.stringify({
+        prefetch: [{ source: 'list', urls: [otherHref.value], eagerness: 'eager' }],
+      }),
+    });
+  } else
+    prefetched = Object.assign(document.createElement('link'), {
+      rel: 'prefetch',
+      href: otherHref.value,
+    });
+  document.head.append(prefetched);
+}
+const onResize = () => placeThumb(shown.value);
 const header = ref<HTMLElement | null>(null);
 const mark = ref<InstanceType<typeof BrandMark> | null>(null);
 
@@ -36,8 +74,14 @@ function schedule() {
 onMounted(() => {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule);
+  window.addEventListener('resize', onResize);
   measure();
+  placeThumb(locale);
+  // Once the fonts are in, the labels have their final widths.
+  void document.fonts?.ready.then(() => placeThumb(shown.value));
+  prefetchOther();
 });
+watch(otherHref, prefetchOther);
 watch(
   () => route.fullPath,
   async () => {
@@ -48,6 +92,8 @@ watch(
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', schedule);
   window.removeEventListener('resize', schedule);
+  window.removeEventListener('resize', onResize);
+  prefetched?.remove();
   cancelAnimationFrame(frame);
 });
 
@@ -95,17 +141,35 @@ function goHome(event: MouseEvent, navigate: (event?: MouseEvent) => unknown) {
           >{{ t('nav.projects') }}</RouterLink
         >
         <RouterLink to="/quentin" class="nav-about">{{ t('nav.about') }}</RouterLink>
+        <!-- Both languages in one switch: a tap anywhere on it changes language. -->
         <a
-          class="language-link"
+          ref="languageSwitch"
+          class="language-switch"
+          :class="{ 'has-thumb': thumb }"
           :href="otherHref"
           :lang="other"
           :hreflang="other"
-          @click="switchLanguage"
-          >{{ languageNames[other] }}</a
+          :aria-label="t('nav.switchLanguage')"
+          @click="onLanguage"
         >
-        <button type="button" class="hello-button" popovertarget="say-hello">
-          {{ t('nav.sayHello') }}
-        </button>
+          <span
+            v-if="thumb"
+            class="language-thumb"
+            aria-hidden="true"
+            :style="{ transform: `translateX(${thumb.x}px)`, width: `${thumb.width}px` }"
+          ></span>
+          <span
+            v-for="language in languageOrder"
+            :key="language"
+            class="language-option"
+            :class="{ 'is-current': language === shown }"
+            :data-language="language"
+            :lang="language"
+            aria-hidden="true"
+            >{{ languageShort[language] }}</span
+          >
+        </a>
+        <HelloBot />
       </nav>
     </div>
   </header>

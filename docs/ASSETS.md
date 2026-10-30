@@ -14,27 +14,30 @@ The user supplied the original SVG wordmark and PNG icon.
 
 ## Current projects
 
-| Local asset under public/             | Origin and treatment                                                                                                         |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `projects/ikitai-logo.svg`            | Original inline SVG from [Ikitai](https://getikitai.com)                                                                     |
-| `projects/ikitai-timeline.jpg`        | Real Ikitai app timeline, copied from `Ikitai/store/screenshots/captures/iphone/en/timeline-concert.jpg` (1320 × 2868)       |
-| `projects/ikitai-detail.jpg`          | Real app plan details, from the same capture set’s `detail.jpg` (1320 × 2868)                                                |
-| `projects/ikitai-calendar.jpg`        | Real app calendar, from the same capture set’s `calendar.jpg` (1320 × 2868)                                                  |
-| `projects/ikitai-source-post.png`     | Fictional concert post used by the Ikitai demo, from `Ikitai/store/screenshots/src/sources/out/post-photo.png` (1080 × 1600) |
-| `projects/fairmints-logo.svg`         | Original SVG from [Fairmints](https://fairmints.io)                                                                          |
-| `projects/fairmints-capture.png`      | Actual 1280 × 720 Fairmints desktop dashboard, captured after loading completed                                              |
-| `projects/fairmints-mobile.png`       | Actual 390 × 844 responsive Fairmints dashboard                                                                              |
-| `projects/festcompass-logo.svg`       | Original SVG from [FestCompass](https://festcompass.jp)                                                                      |
-| `projects/festcompass-background.jpg` | Original illustration from FestCompass’s public website                                                                      |
-| `projects/festcompass-guide.png`      | Actual 1280 × 720 [festival guide](https://festcompass.jp/festivals)                                                         |
-| `projects/festcompass-mobile.png`     | Actual 390 × 844 responsive festival guide                                                                                   |
-| `projects/taplog-logo.svg`            | TapLog’s app icon, from `taplog/frontend/public/brand/taplog-app-icon.svg`                                                   |
-| `projects/taplog-capture.png`         | Actual 1280 × 720 [TapLog](https://taplog.jp) home page (Japanese), captured 30 October 2026                                 |
-| `projects/taplog-mobile.png`          | Actual 390 × 844 responsive TapLog home page, captured the same day                                                          |
-| `projects/taplog-clip.mp4`            | Silent clip of the live TapLog home page scrolling, 960 × 540, recorded 30 October 2026 with `tools/record-clips.mjs`        |
-| `projects/fairmints-clip.mp4`         | Silent clip of the live Fairmints dashboard scrolling to its token table, recorded the same way and day                      |
-| `projects/festcompass-clip.mp4`       | Silent clip of the live FestCompass festival guide scrolling, recorded the same way and day (its install banner dismissed)   |
-| `favicon.ico`, `apple-touch-icon.png` | Generated from `brand/beyond-blockchain-icon.png`; the touch icon sits on the site's porcelain background                    |
+| Local asset under public/                           | Origin and treatment                                                                                                                                                       |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `projects/ikitai-logo.svg`                          | Original inline SVG from [Ikitai](https://getikitai.com)                                                                                                                   |
+| `projects/ikitai-timeline.jpg`                      | Real Ikitai app timeline, copied from `Ikitai/store/screenshots/captures/iphone/en/timeline-concert.jpg` (1320 × 2868)                                                     |
+| `projects/ikitai-detail.jpg`                        | Real app plan details, from the same capture set’s `detail.jpg` (1320 × 2868)                                                                                              |
+| `projects/ikitai-calendar.jpg`                      | Real app calendar, from the same capture set’s `calendar.jpg` (1320 × 2868)                                                                                                |
+| `projects/ikitai-source-post.png`                   | Fictional concert post used by the Ikitai demo, from `Ikitai/store/screenshots/src/sources/out/post-photo.png` (1080 × 1600)                                               |
+| `projects/fairmints-logo.svg`                       | Original SVG from [Fairmints](https://fairmints.io)                                                                                                                        |
+| `projects/fairmints-capture.png`                    | Actual 1280 × 720 Fairmints desktop dashboard, captured after loading completed                                                                                            |
+| `projects/fairmints-mobile.png`                     | Actual 390 × 844 responsive Fairmints dashboard                                                                                                                            |
+| `projects/festcompass-logo.svg`                     | Original SVG from [FestCompass](https://festcompass.jp)                                                                                                                    |
+| `projects/festcompass-background.jpg`               | Original illustration from FestCompass’s public website                                                                                                                    |
+| `projects/festcompass-guide.png`                    | Actual 1280 × 720 [festival guide](https://festcompass.jp/festivals)                                                                                                       |
+| `projects/festcompass-mobile.png`                   | Actual 390 × 844 responsive festival guide                                                                                                                                 |
+| `projects/taplog-logo.svg`                          | TapLog’s app icon, from `taplog/frontend/public/brand/taplog-app-icon.svg`                                                                                                 |
+| `projects/taplog-capture.png`                       | Actual 1280 × 720 [TapLog](https://taplog.jp) home page (Japanese), captured 30 October 2026                                                                               |
+| `projects/taplog-mobile.png`                        | Actual 390 × 844 responsive TapLog home page, captured the same day                                                                                                        |
+| `projects/taplog-clip.mp4`                          | Silent clip of the live TapLog home page scrolling, 960 × 540, recorded 30 October 2026 with `tools/record-clips.mjs`                                                      |
+| `projects/fairmints-clip.mp4`                       | Silent clip of the live Fairmints dashboard scrolling to its token table, recorded the same way and day                                                                    |
+| `projects/festcompass-clip.mp4`                     | Silent clip of the live FestCompass festival guide scrolling, recorded the same way and day (its install banner dismissed)                                                 |
+| `projects/gengofriends-clip.mp4`, `-cover.webp`     | Silent clip of the live GengoFriends notebook scrolling, and its first frame, recorded the same way, 30 October 2026                                                       |
+| `projects/spam-the-mempool-clip.mp4`, `-cover.webp` | A solo match against bots in the game's local client, the player steered to grab junk and throw it onto the belt; the first-match tips and keyboard legend hidden          |
+| `projects/shigoshima-clip.mp4`, `-cover.webp`       | ShigoShima running locally: the archipelago, a flight to Ikitai's island and back; the AI usage meters, the island card and the labels of projects not on this site hidden |
+| `favicon.ico`, `apple-touch-icon.png`               | Generated from `brand/beyond-blockchain-icon.png`; the touch icon sits on the site's porcelain background                                                                  |
 
 Ikitai’s existing store captures were produced from the real app with fictional demo plans, frozen at 21 October 2026. The caption makes the demo data explicit. A CSS device frame surrounds the unchanged captures. The project window shows the timeline, plan details, and calendar side by side; the list lives in `src/content/app-screens.ts`. No product interface, testimonial, or portrait was invented for this website. The previous cropped website demonstration is no longer used.
 

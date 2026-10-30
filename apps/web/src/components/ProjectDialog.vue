@@ -6,6 +6,7 @@ import ProjectDetail from './ProjectDetail.vue';
 import { useRouter } from 'vue-router';
 import { useLocale } from '../i18n';
 import { morphStyle, morphing } from '../composables/useProjectOverlay';
+import { animations, fadeOut, reduceMotion, riseIn } from '../composables/windowMotion';
 
 // The studio page's project window: a native modal dialog, so the page behind can't be reached and Escape
 // closes it. It follows the address: the page turns opening, stepping and closing into history moves.
@@ -26,13 +27,8 @@ const neighbour = (offset: number) =>
 const prev = computed(() => neighbour(-1));
 const next = computed(() => neighbour(1));
 const pad = (n: number) => String(n).padStart(2, '0');
-const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let opener: HTMLElement | null = null;
 let closing: Animation | undefined;
-
-function animations(element: HTMLElement) {
-  return document.getAnimations().filter((a) => (a.effect as KeyframeEffect)?.target === element);
-}
 
 function open(project: Project) {
   const element = dialog.value;
@@ -47,31 +43,14 @@ function open(project: Project) {
   opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   element.showModal();
   // Growing out of its card, the window needs no entrance of its own.
-  if (reduceMotion() || morphing.value) return;
-  const timing = { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' };
-  element.animate(
-    [
-      { opacity: 0, transform: 'translateY(16px) scale(.985)' },
-      { opacity: 1, transform: 'none' },
-    ],
-    timing,
-  );
-  element.animate([{ opacity: 0 }, { opacity: 1 }], { ...timing, pseudoElement: '::backdrop' });
+  if (!reduceMotion() && !morphing.value) riseIn(element);
 }
 
 async function close() {
   const element = dialog.value;
   if (!element?.open) return;
   if (!reduceMotion() && !morphing.value) {
-    const timing = { duration: 160, easing: 'ease-in', fill: 'forwards' as const };
-    const fade = element.animate(
-      [
-        { opacity: 1, transform: 'none' },
-        { opacity: 0, transform: 'translateY(10px) scale(.99)' },
-      ],
-      timing,
-    );
-    element.animate([{ opacity: 1 }, { opacity: 0 }], { ...timing, pseudoElement: '::backdrop' });
+    const fade = fadeOut(element);
     closing = fade;
     await fade.finished.catch(() => undefined);
     if (closing !== fade) return;
@@ -211,7 +190,14 @@ function onPointerUp(event: PointerEvent) {
       />
       <nav v-if="count > 1" class="dialog-steps" :aria-label="t('project.others')">
         <a class="dialog-step" :href="workHref(prev.slug)" @click="onStep($event, prev.slug)"
-          ><ArrowIcon direction="left" /><span
+          ><ArrowIcon direction="left" /><img
+            v-if="prev.logoUrl"
+            class="dialog-step-logo"
+            :src="prev.logoUrl"
+            alt=""
+            width="36"
+            height="36"
+          /><span
             ><small>{{ t('project.previous') }}</small
             >{{ prev.name }}</span
           ></a
@@ -223,7 +209,13 @@ function onPointerUp(event: PointerEvent) {
           ><span
             ><small>{{ t('project.next') }}</small
             >{{ next.name }}</span
-          ><ArrowIcon direction="right"
+          ><img
+            v-if="next.logoUrl"
+            class="dialog-step-logo"
+            :src="next.logoUrl"
+            alt=""
+            width="36"
+            height="36" /><ArrowIcon direction="right"
         /></a>
       </nav>
     </div>

@@ -19,7 +19,7 @@ const { t } = useLocale();
         <button
           type="button"
           class="round-link"
-          popovertarget="say-hello"
+          popovertarget="hello-bot"
           :aria-label="t('footer.contact')"
         >
           <ArrowIcon />

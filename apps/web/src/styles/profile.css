@@ -77,7 +77,6 @@
   max-width: 60ch;
   font-size: 16px;
   line-height: 1.55;
-  color: var(--muted);
 }
 .about-elsewhere {
   display: flex;
@@ -426,7 +425,27 @@
 /* Japanese runs about twice as wide per character, and its paragraphs default to roomier lines. */
 :lang(ja) .about-headline {
   max-width: 24em;
+  font-size: clamp(19px, 2vw, 27px);
   line-height: 1.4;
+}
+:lang(ja) .about-title {
+  font-size: clamp(28px, 3.9vw, 58px);
+}
+:lang(ja) .about-intro {
+  font-size: clamp(15.5px, 1.25vw, 17px);
+}
+:lang(ja) .about-focus {
+  font-size: 14.5px;
+}
+:lang(ja) .record-item .earlier-body > p {
+  font-size: 15px;
+}
+:lang(ja)
+  :is(.glance-row dd, .now-text, .skill dd, .community-item p, .ownest-notes > p, .workflow-note) {
+  font-size: 14px;
+}
+:lang(ja) :is(.workflow-step p, .milestones li) {
+  font-size: 13.5px;
 }
 :lang(ja) .about-intro,
 :lang(ja) .about-focus {

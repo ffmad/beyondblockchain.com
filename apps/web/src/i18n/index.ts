@@ -39,6 +39,18 @@ export function switchLanguage(event: MouseEvent) {
     // Without storage the other page opens at the top, without the cross-fade.
   }
   document.documentElement.classList.add('language-switching');
+  window.__rememberLanguageText?.();
+}
+
+declare global {
+  interface Window {
+    /** Keeps the text on screen, which the other language's page rewrites into its own (index.html). */
+    __rememberLanguageText?: () => void;
+    /** After a language switch, settles once the text is rewritten; the app starts then (main.ts). */
+    __languageSettled?: Promise<void>;
+    /** Ends the rewrite at once, so the app never starts on text that is still changing. */
+    __languageFinish?: () => void;
+  }
 }
 /** Each language's name for itself, for the switch between them. */
 export const languageNames: Record<Locale, string> = { en: 'English', ja: '日本語' };

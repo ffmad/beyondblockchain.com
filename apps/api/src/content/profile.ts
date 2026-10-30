@@ -9,10 +9,13 @@ export const profile: Profile = {
     'Frontend and full-stack engineer · Vue 3, TypeScript, NestJS · AI-assisted development',
   intro:
     'I’ve spent 14 years building web applications in JavaScript and TypeScript, and 8 years as a CEO and co-founder, setting engineering practice from zero. Today I build Vue 3 front ends for web, iOS and Android, with NestJS back ends, at Beyond Blockchain, my own studio in Tokyo.',
+  home: 'I live in Tokyo and build for Japan: FestCompass covers festivals across the country and TapLog covers Tokyo’s craft beer bars, both in Japanese and English.',
   focus:
-    'I work every day with AI coding agents (Claude Code, Codex and Grok), and every change goes through tests and my review.',
+    'What I aim for is the best UI and UX: apps that feel intuitive, easy and pleasing to use. I build them every day with AI coding agents (Claude Code, Codex and Grok), and every change goes through tests and my review.',
   glance: [
     { label: 'Based in', value: 'Tokyo' },
+    { label: 'Building for', value: 'Japan (FestCompass, TapLog)' },
+    { label: 'Aims for', value: 'The best UI and UX: intuitive, easy and pleasing apps' },
     {
       label: 'Now',
       value: 'Founder of Beyond Blockchain (Ikitai, FestCompass, TapLog) and Fairmints',

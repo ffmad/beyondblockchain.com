@@ -69,6 +69,25 @@ export function projectClip(project: Project): { src: string; poster: string } |
     : null;
 }
 
+// A few seconds of each project still in progress, recorded the same way (tools/record-clips.mjs), with its first
+// frame as the cover on its card. Each is described in the interface text, under previews.<slug>.
+const previews = new Set(['gengofriends', 'spam-the-mempool', 'shigoshima']);
+export const PREVIEW_SIZE = { width: 960, height: 540 };
+
+/** The preview of a project in progress, if it has one. */
+export function projectPreview(
+  project: Project,
+  t: Translate,
+): { src: string; poster: string; alt: string } | null {
+  return previews.has(project.slug)
+    ? {
+        src: `/projects/${project.slug}-clip.mp4`,
+        poster: `/projects/${project.slug}-cover.webp`,
+        alt: t(`previews.${project.slug}`, {}),
+      }
+    : null;
+}
+
 /** The project's address without the protocol, for its link label. */
 export const projectHost = (project: Project) =>
   project.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
