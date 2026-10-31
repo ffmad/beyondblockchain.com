@@ -197,10 +197,10 @@
   color: var(--muted);
 }
 
-/* How I build with AI agents: five steps in order */
+/* How I build with AI agents: four steps in order */
 .workflow {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin: 0;
   padding: 0;

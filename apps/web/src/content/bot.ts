@@ -168,7 +168,7 @@ const en: BotContent = {
       id: 'stack',
       ask: 'What’s your stack?',
       answer:
-        'Mostly Vue 3 and TypeScript, with NestJS behind them and Capacitor for iOS and Android from the same code. Data lives in PostgreSQL or SQLite, through Prisma or TypeORM. Every change comes with tests.',
+        'Mostly Vue 3 and TypeScript, with NestJS behind them and Capacitor for iOS and Android from the same code. Data lives in PostgreSQL or SQLite, through Prisma or TypeORM.',
       link: { label: 'All skills', to: '/quentin#skills' },
       keywords: [
         'stack',
@@ -189,7 +189,7 @@ const en: BotContent = {
       id: 'background',
       ask: 'What’s your background?',
       answer:
-        '14 years building web applications, and 8 years as a CEO and co-founder. At Ownest, supply-chain software used by Saint Laurent and Cdiscount, Quentin led the product team as the company grew to 20 people. Before that came Ledgys, and CryptoFR, a French Bitcoin community started in 2014.',
+        '14 years building web applications, and 8 years as a co-founder. At Ownest, supply-chain software used by Saint Laurent and Cdiscount, Quentin led the product team as the company grew to 20 people, and was CEO for its last three years. Before that came Ledgys, and CryptoFR, a French Bitcoin community started in 2014.',
       link: { label: 'Experience', to: '/quentin#experience' },
       keywords: [
         'background',
@@ -235,7 +235,7 @@ const en: BotContent = {
       id: 'ai',
       ask: 'How do you work with AI?',
       answer:
-        'Claude Code, Codex and Grok take tasks in parallel and hand work to each other through an agent network. Each task has acceptance criteria and tests, Quentin reads every diff before it merges, and agents never deploy on their own.',
+        'Claude Code, Codex and Grok take tasks in parallel and hand work to each other through an agent network. Each task has acceptance criteria, Quentin reads every diff before it merges, and agents never deploy on their own.',
       link: { label: 'How Quentin builds', to: '/quentin#workflow' },
       keywords: ['workflow', 'process', 'how do you build', 'how you build', ...shared.ai],
     },
@@ -358,7 +358,7 @@ const ja: BotContent = {
       id: 'stack',
       ask: '技術スタックは？',
       answer:
-        '主にVue 3とTypeScriptで、バックエンドはNestJS、iOS・AndroidはCapacitorで同じコードからつくっています。データはPrismaやTypeORMを通してPostgreSQLかSQLiteに。すべての変更にテストがつきます。',
+        '主にVue 3とTypeScriptで、バックエンドはNestJS、iOS・AndroidはCapacitorで同じコードからつくっています。データはPrismaやTypeORMを通してPostgreSQLかSQLiteに。',
       link: { label: 'スキル一覧', to: '/quentin#skills' },
       keywords: [
         'スタック',
@@ -375,7 +375,7 @@ const ja: BotContent = {
       id: 'background',
       ask: 'これまでの経歴は？',
       answer:
-        'Webアプリケーション開発は14年、CEO・共同創業者として8年。サンローランやCdiscountが使うサプライチェーンのソフトウェアOwnestでは、会社が20人規模になるまでプロダクトチームを率いました。その前はLedgys、そして2014年に立ち上げたフランスのビットコインコミュニティCryptoFRです。',
+        'Webアプリケーション開発は14年、共同創業者として8年。サンローランやCdiscountが使うサプライチェーンのソフトウェアOwnestでは、会社が20人規模になるまでプロダクトチームを率い、最後の3年間はCEOを務めました。その前はLedgys、そして2014年に立ち上げたフランスのビットコインコミュニティCryptoFRです。',
       link: { label: '経歴', to: '/quentin#experience' },
       keywords: [
         '経歴',
@@ -414,7 +414,7 @@ const ja: BotContent = {
       id: 'ai',
       ask: 'AIとはどう開発していますか？',
       answer:
-        'Claude Code、Codex、Grokが並行してタスクを担い、エージェントネットワークを通じて作業を引き継ぎます。タスクごとに受け入れ条件とテストを決め、マージ前にはQuentinがすべての差分を読みます。エージェントが単独でデプロイすることはありません。',
+        'Claude Code、Codex、Grokが並行してタスクを担い、エージェントネットワークを通じて作業を引き継ぎます。タスクごとに受け入れ条件を決め、マージ前にはQuentinがすべての差分を読みます。エージェントが単独でデプロイすることはありません。',
       link: { label: '開発の進め方', to: '/quentin#workflow' },
       keywords: ['エージェント', '開発の進め方', 'ワークフロー', 'プロセス', ...shared.ai],
     },

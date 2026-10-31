@@ -39,7 +39,7 @@ export function llmsText(projects: Project[], profile: Profile) {
     `# Beyond Blockchain`,
     `> The studio of ${profile.name} (${profile.handle}), a developer in Tokyo. Pioneer in blockchain development since 2014, now building beyond it with AI. The site shows only Quentin's own work.`,
     line(
-      `Quentin builds Vue 3 front ends for web, iOS and Android with NestJS back ends, ships products in several languages, aims for apps that are intuitive, easy and pleasing to use, and works with AI coding agents (Claude Code, Codex and Grok), with tests and review on every change. Every page is also in Japanese, under ${siteOrigin}/ja/.`,
+      `Quentin builds Vue 3 front ends for web, iOS and Android with NestJS back ends, ships products in several languages, aims for apps that are intuitive, easy and pleasing to use, and works with AI coding agents (Claude Code, Codex and Grok), reviewing every change. Every page is also in Japanese, under ${siteOrigin}/ja/.`,
     ),
     `## Products`,
     ofKind('product').map(product).join('\n'),

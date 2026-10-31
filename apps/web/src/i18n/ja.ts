@@ -71,7 +71,7 @@ const ja: typeof en = {
     watch: 'プレビューを見る',
     buildTitle: 'つくり方',
     buildText:
-      '目指すのは、直感的で使いやすく、使っていて心地よいアプリ。ウェブ、iOS、Androidをひとつのコードベース（Vue）でつくり、裏側はNestJS。最初から多言語に対応しています。開発はAIコーディングエージェント（Claude Code、Codex、Grok）と一緒に行い、すべての変更にテストと自分のレビューを通しています。',
+      '目指すのは、直感的で使いやすく、使っていて心地よいアプリ。ウェブ、iOS、Androidをひとつのコードベース（Vue）でつくり、裏側はNestJS。最初から多言語に対応しています。開発はAIコーディングエージェント（Claude Code、Codex、Grok）と一緒に行い、すべての変更を自分でレビューしています。',
     earlierTitle: 'これまで',
     earlierNote: '2014年から',
     years: '{from}〜{to}',

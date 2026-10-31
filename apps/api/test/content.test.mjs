@@ -269,7 +269,7 @@ test('server-rendered pages include public content, isolate requests, and escape
     );
     assert.match(
       llmsBody,
-      /## Earlier work[\s\S]*\[Ownest\]\(https:\/\/ownest\.io\) \(2017–2026\), CEO and co-founder/,
+      /## Earlier work[\s\S]*\[Ownest\]\(https:\/\/ownest\.io\) \(2017–2026\), Co-founder, CEO for its last three years/,
     );
     assert.ok(!llmsBody.includes('Never expose this'));
     // English pages point to their Japanese versions, which live under /ja with their own text and links.

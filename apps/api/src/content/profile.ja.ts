@@ -7,22 +7,23 @@ export const profileJa: Profile = {
   handle: 'ffmad',
   headline: 'フロントエンド／フルスタックエンジニア · Vue 3、TypeScript、NestJS · AIを活用した開発',
   intro:
-    '14年にわたりJavaScriptとTypeScriptでWebアプリケーションをつくり、8年間はCEO・共同創業者として、エンジニアリングの体制をゼロから築いてきました。現在は東京の自分のスタジオBeyond Blockchainで、Web・iOS・Android向けのVue 3フロントエンドと、NestJSのバックエンドを開発しています。',
+    '14年にわたりJavaScriptとTypeScriptでWebアプリケーションをつくり、8年間は共同創業者として、エンジニアリングの体制をゼロから築いてきました。現在は東京の自分のスタジオBeyond Blockchainで、Web・iOS・Android向けのVue 3フロントエンドと、NestJSのバックエンドを開発しています。',
   home: '東京に住み、日本のためにプロダクトをつくっています。FestCompassは全国のフェスを、TapLogは東京のクラフトビアバーを、日本語と英語で届けています。',
   focus:
-    '目指しているのは、最高のUI/UX。直感的で、使いやすく、使っていて心地よいアプリです。毎日AIコーディングエージェント（Claude Code、Codex、Grok）と開発し、すべての変更をテストと自分のレビューに通しています。',
+    '目指しているのは、最高のUI/UX。直感的で、使いやすく、使っていて心地よいアプリです。毎日AIコーディングエージェント（Claude Code、Codex、Grok）と開発し、すべての変更を自分でレビューしています。',
   glance: [
     { label: '拠点', value: '東京' },
     { label: '対象市場', value: '日本（FestCompass、TapLog）' },
     { label: '目指すもの', value: '直感的で使いやすく、心地よいUI/UX' },
     {
       label: '現在',
-      value: 'Beyond Blockchain（Ikitai、FestCompass、TapLog）とFairmintsの創業者',
+      value:
+        'ブロックチェーンのアプリ（Fairmints）と、その先のアプリ（Ikitai、FestCompass、TapLog）を開発',
     },
-    { label: 'これまで', value: 'Ownest CEO・共同創業者。20人規模まで成長（2017〜2026年）' },
+    { label: 'これまで', value: 'Ownest 共同創業者。20人規模まで成長（2017〜2026年）' },
     {
       label: '開発',
-      value: 'Vue 3、TypeScript、NestJS。AIエージェントと、変更ごとのテスト',
+      value: 'Vue 3、TypeScript、NestJS、AIコーディングエージェント',
     },
     {
       label: '言語',
@@ -59,14 +60,10 @@ export const profileJa: Profile = {
     },
   ],
   workflow: [
-    { title: 'ブリーフ', text: 'タスクごとに、受け入れ条件と通すべきテストを決めます。' },
+    { title: 'ブリーフ', text: 'タスクごとに、受け入れ条件を決めます。' },
     {
       title: '並行するエージェント',
       text: 'Claude Code、Codex、Grokが別々のタスクを担い、エージェントネットワークを通じて作業を引き継ぎます。',
-    },
-    {
-      title: 'テスト',
-      text: '変更ごとにユニットテスト（Vitest、Jest）を書き、重要なフローにはPlaywrightを使います。',
     },
     {
       title: 'レビュー',
@@ -78,7 +75,7 @@ export const profileJa: Profile = {
     },
   ],
   workflowNote:
-    'Ikitaiは最初の2週間で、148コミット、57のテストファイルに達しました（2026年10月30日時点のリポジトリより）。',
+    'Ikitaiは最初の2週間で、148コミットに達しました（2026年10月30日時点のリポジトリより）。',
   experience: [
     {
       name: 'Beyond Blockchain',
@@ -104,7 +101,7 @@ export const profileJa: Profile = {
       name: 'Ownest',
       year: '2017',
       period: '2017年12月〜2026年3月',
-      role: 'CEO・共同創業者',
+      role: '共同創業者（最後の3年間はCEO）',
       place: 'パリ',
       description:
         'NFTによる追跡で、サプライチェーンのどこで誰がモノの責任を負っているかをたどるSaaSです。Vue、NestJS、Polygonにわたる技術アーキテクチャを担い、会社が20人規模に成長するなかでプロダクトチームを採用し、率いました。顧客には、サンローラン、Orange、カルフール、Bouyguesなど、フランスの大手企業がいました。',

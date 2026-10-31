@@ -37,7 +37,7 @@ export const pageMetadata = {
     '/quentin': {
       title: 'Quentin de Beauchesne — Frontend and full-stack engineer, Tokyo',
       description:
-        'Frontend and full-stack engineer in Tokyo (Vue 3, TypeScript, NestJS). 14 years building web apps, 8 as a CEO and co-founder. Now building Ikitai, Fairmints, FestCompass and TapLog.',
+        'Frontend and full-stack engineer in Tokyo (Vue 3, TypeScript, NestJS). 14 years building web apps, 8 as a co-founder. Now building Ikitai, Fairmints, FestCompass and TapLog.',
       image: '/social/quentin.en.png',
       imageAlt:
         'Quentin de Beauchesne (ffmad), frontend and full-stack engineer in Tokyo: Vue 3, TypeScript, NestJS and AI-assisted development.',
@@ -55,7 +55,7 @@ export const pageMetadata = {
     '/quentin': {
       title: 'Quentin de Beauchesne — 東京のフロントエンド／フルスタックエンジニア',
       description:
-        '東京のフロントエンド／フルスタックエンジニア（Vue 3、TypeScript、NestJS）。Webアプリ開発14年、CEO・共同創業者として8年。いまはIkitai、Fairmints、FestCompass、TapLogをつくっています。',
+        '東京のフロントエンド／フルスタックエンジニア（Vue 3、TypeScript、NestJS）。Webアプリ開発14年、共同創業者として8年。いまはIkitai、Fairmints、FestCompass、TapLogをつくっています。',
       image: '/social/quentin.ja.png',
       imageAlt:
         'Quentin de Beauchesne（ffmad）。東京のフロントエンド／フルスタックエンジニア。Vue 3、TypeScript、NestJS、AIを活用した開発。',

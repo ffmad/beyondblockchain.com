@@ -8,25 +8,26 @@ export const profile: Profile = {
   headline:
     'Frontend and full-stack engineer · Vue 3, TypeScript, NestJS · AI-assisted development',
   intro:
-    'I’ve spent 14 years building web applications in JavaScript and TypeScript, and 8 years as a CEO and co-founder, setting engineering practice from zero. Today I build Vue 3 front ends for web, iOS and Android, with NestJS back ends, at Beyond Blockchain, my own studio in Tokyo.',
+    'I’ve spent 14 years building web applications in JavaScript and TypeScript, and 8 years as a co-founder, setting engineering practice from zero. Today I build Vue 3 front ends for web, iOS and Android, with NestJS back ends, at Beyond Blockchain, my own studio in Tokyo.',
   home: 'I live in Tokyo and build for Japan: FestCompass covers festivals across the country and TapLog covers Tokyo’s craft beer bars, both in Japanese and English.',
   focus:
-    'What I aim for is the best UI and UX: apps that feel intuitive, easy and pleasing to use. I build them every day with AI coding agents (Claude Code, Codex and Grok), and every change goes through tests and my review.',
+    'What I aim for is the best UI and UX: apps that feel intuitive, easy and pleasing to use. I build them every day with AI coding agents (Claude Code, Codex and Grok), and I review every change myself.',
   glance: [
     { label: 'Based in', value: 'Tokyo' },
     { label: 'Building for', value: 'Japan (FestCompass, TapLog)' },
     { label: 'Aims for', value: 'The best UI and UX: intuitive, easy and pleasing apps' },
     {
       label: 'Now',
-      value: 'Founder of Beyond Blockchain (Ikitai, FestCompass, TapLog) and Fairmints',
+      value:
+        'Building a blockchain-based app (Fairmints) and beyond it (Ikitai, FestCompass, TapLog)',
     },
     {
       label: 'Before',
-      value: 'CEO and co-founder of Ownest, which grew to 20 people (2017–2026)',
+      value: 'Co-founder of Ownest, which grew to 20 people (2017–2026)',
     },
     {
       label: 'Builds with',
-      value: 'Vue 3, TypeScript and NestJS, with AI coding agents and tests on every change',
+      value: 'Vue 3, TypeScript and NestJS, with AI coding agents',
     },
     {
       label: 'Languages',
@@ -63,14 +64,10 @@ export const profile: Profile = {
     },
   ],
   workflow: [
-    { title: 'Brief', text: 'Each task gets acceptance criteria and the tests it must pass.' },
+    { title: 'Brief', text: 'Each task gets acceptance criteria.' },
     {
       title: 'Parallel agents',
       text: 'Claude Code, Codex and Grok take separate tasks and hand work to each other through an agent network.',
-    },
-    {
-      title: 'Tests',
-      text: 'Unit tests (Vitest, Jest) come with every change, and Playwright where the flow matters.',
     },
     {
       title: 'Review',
@@ -82,7 +79,7 @@ export const profile: Profile = {
     },
   ],
   workflowNote:
-    'Ikitai reached 148 commits and 57 test files in its first two weeks (from its repository on 30 October 2026).',
+    'Ikitai reached 148 commits in its first two weeks (from its repository on 30 October 2026).',
   experience: [
     {
       name: 'Beyond Blockchain',
@@ -108,7 +105,7 @@ export const profile: Profile = {
       name: 'Ownest',
       year: '2017',
       period: 'Dec 2017 – Mar 2026',
-      role: 'CEO and co-founder',
+      role: 'Co-founder, CEO for its last three years',
       place: 'Paris',
       description:
         'SaaS that traced who is responsible for goods along supply chains, built on NFT-based tracking. I owned the technical architecture across Vue, NestJS and Polygon, and hired and led the product team as the company grew to 20 people, with corporate clients in France including Saint Laurent, Orange, Carrefour and Bouygues.',

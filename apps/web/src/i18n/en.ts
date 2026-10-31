@@ -70,7 +70,7 @@ export default {
     watch: 'Watch the preview',
     buildTitle: 'How I build',
     buildText:
-      'The aim: apps that feel intuitive, easy and pleasing to use. One Vue codebase for web, iOS and Android, with NestJS behind it, and several languages from day one. I build with AI coding agents (Claude Code, Codex and Grok), and every change goes through tests and my review.',
+      'The aim: apps that feel intuitive, easy and pleasing to use. One Vue codebase for web, iOS and Android, with NestJS behind it, and several languages from day one. I build with AI coding agents (Claude Code, Codex and Grok), and I review every change myself.',
     earlierTitle: 'Earlier',
     earlierNote: 'Since 2014',
     years: '{from}–{to}',

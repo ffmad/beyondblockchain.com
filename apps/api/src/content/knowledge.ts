@@ -23,7 +23,7 @@ const en: Fact[] = [
   {
     id: 'about',
     answer:
-      'Quentin de Beauchesne, online ffmad, is a frontend and full-stack engineer in Tokyo. Quentin has built web applications for 14 years, spent 8 years as a CEO and co-founder, and now runs Beyond Blockchain, a one-person studio.',
+      'Quentin de Beauchesne, online ffmad, is a frontend and full-stack engineer in Tokyo. Quentin has built web applications for 14 years, spent 8 years as a co-founder, and now runs Beyond Blockchain, a one-person studio.',
     link: { label: 'About Quentin', to: '/quentin' },
     asks: [
       'Who is Quentin?',
@@ -142,7 +142,7 @@ const en: Fact[] = [
   {
     id: 'experience',
     answer:
-      '14 years building web applications, and 8 years as a CEO and co-founder. At Ownest, supply-chain software used by Saint Laurent and Cdiscount, Quentin led the product team as the company grew to 20 people. Before that came Ledgys, and CryptoFR, a French Bitcoin community started in 2014.',
+      '14 years building web applications, and 8 years as a co-founder. At Ownest, supply-chain software used by Saint Laurent and Cdiscount, Quentin led the product team as the company grew to 20 people, and was CEO for its last three years. Before that came Ledgys, and CryptoFR, a French Bitcoin community started in 2014.',
     link: { label: 'Experience', to: '/quentin#experience' },
     asks: [
       'What is your background?',
@@ -158,7 +158,7 @@ const en: Fact[] = [
   {
     id: 'leadership',
     answer:
-      'At Ownest, as CEO and co-founder, Quentin set the engineering practices from zero, and hired and led the product team as the company grew to 20 people.',
+      'Quentin co-founded Ownest, set its engineering practices from zero, and hired and led the product team as the company grew to 20 people. Quentin was CEO for its last three years.',
     asks: [
       'Have you led a team?',
       'Did you manage people?',
@@ -172,7 +172,7 @@ const en: Fact[] = [
   {
     id: 'ownest',
     answer:
-      'Ownest (2017–2026) was SaaS that traced who is responsible for goods along supply chains, built on NFT-based tracking. Quentin was CEO and co-founder and owned the technical architecture across Vue, NestJS and Polygon.',
+      'Ownest (2017–2026) was SaaS that traced who is responsible for goods along supply chains, built on NFT-based tracking. Quentin co-founded it, owned the technical architecture across Vue, NestJS and Polygon, and was CEO for its last three years.',
     link: { label: 'Experience', to: '/quentin#experience' },
     asks: [
       'What is Ownest?',
@@ -301,7 +301,7 @@ const en: Fact[] = [
   {
     id: 'ikitai-stack',
     answer:
-      'Ikitai is built with Vue 3 and Capacitor for iOS and Android, NestJS, Supabase and PostgreSQL, and the Claude API. It reached 148 commits and 57 test files in its first two weeks.',
+      'Ikitai is built with Vue 3 and Capacitor for iOS and Android, NestJS, Supabase and PostgreSQL, and the Claude API. It reached 148 commits in its first two weeks.',
     asks: ['What is Ikitai built with?', 'How did you build Ikitai?', 'Which AI does Ikitai use?'],
   },
   {
@@ -398,7 +398,7 @@ const en: Fact[] = [
   {
     id: 'stack',
     answer:
-      'Mostly Vue 3 and TypeScript, with NestJS behind them and Capacitor for iOS and Android from the same code. Data lives in PostgreSQL or SQLite, through Prisma or TypeORM. Every change comes with tests.',
+      'Mostly Vue 3 and TypeScript, with NestJS behind them and Capacitor for iOS and Android from the same code. Data lives in PostgreSQL or SQLite, through Prisma or TypeORM.',
     link: { label: 'All skills', to: '/quentin#skills' },
     asks: [
       'What is your stack?',
@@ -447,7 +447,7 @@ const en: Fact[] = [
   {
     id: 'testing',
     answer:
-      'Every change comes with tests: unit tests with Vitest or Jest, and Playwright where the flow matters. TapLog has 37 test files.',
+      'Unit tests with Vitest or Jest, and Playwright where the flow matters. TapLog has 37 test files.',
     asks: ['Do you write tests?', 'How do you test your code?', 'What about code quality?'],
   },
   {
@@ -464,7 +464,7 @@ const en: Fact[] = [
   {
     id: 'ai-workflow',
     answer:
-      'Claude Code, Codex and Grok take tasks in parallel and hand work to each other through an agent network and a job board, with 15 Grok bots for research and content. Each task has acceptance criteria and tests, Quentin reads every diff before it merges, and agents never deploy on their own.',
+      'Claude Code, Codex and Grok take tasks in parallel and hand work to each other through an agent network and a job board, with 15 Grok bots for research and content. Each task has acceptance criteria, Quentin reads every diff before it merges, and agents never deploy on their own.',
     link: { label: 'How Quentin builds', to: '/quentin#workflow' },
     asks: [
       'How do you work with AI?',
@@ -602,7 +602,7 @@ const ja: Fact[] = [
   {
     id: 'about',
     answer:
-      'Quentin de Beauchesne（ネットではffmad）は、東京のフロントエンド／フルスタックエンジニアです。Webアプリケーション開発は14年、CEO・共同創業者として8年。いまは一人で運営するスタジオBeyond Blockchainを営んでいます。',
+      'Quentin de Beauchesne（ネットではffmad）は、東京のフロントエンド／フルスタックエンジニアです。Webアプリケーション開発は14年、共同創業者として8年。いまは一人で運営するスタジオBeyond Blockchainを営んでいます。',
     link: { label: 'プロフィール', to: '/quentin' },
     asks: [
       'Quentinとは誰ですか？',
@@ -708,7 +708,7 @@ const ja: Fact[] = [
   {
     id: 'experience',
     answer:
-      'Webアプリケーション開発は14年、CEO・共同創業者として8年。サンローランやCdiscountが使うサプライチェーンのソフトウェアOwnestでは、会社が20人規模になるまでプロダクトチームを率いました。その前はLedgys、そして2014年に立ち上げたフランスのビットコインコミュニティCryptoFRです。',
+      'Webアプリケーション開発は14年、共同創業者として8年。サンローランやCdiscountが使うサプライチェーンのソフトウェアOwnestでは、会社が20人規模になるまでプロダクトチームを率い、最後の3年間はCEOを務めました。その前はLedgys、そして2014年に立ち上げたフランスのビットコインコミュニティCryptoFRです。',
     link: { label: '経歴', to: '/quentin#experience' },
     asks: [
       '経歴は？',
@@ -722,7 +722,7 @@ const ja: Fact[] = [
   {
     id: 'leadership',
     answer:
-      'Ownestでは、CEO・共同創業者としてエンジニアリングの体制をゼロから築き、会社が20人規模に成長するなかでプロダクトチームを採用し、率いました。',
+      'Ownestを共同創業し、エンジニアリングの体制をゼロから築き、会社が20人規模に成長するなかでプロダクトチームを採用し、率いました。最後の3年間はCEOを務めました。',
     asks: [
       'チームを率いたことはありますか？',
       'マネジメント経験は？',
@@ -734,7 +734,7 @@ const ja: Fact[] = [
   {
     id: 'ownest',
     answer:
-      'Ownest（2017〜2026年）は、NFTによる追跡で、サプライチェーンのどこで誰がモノの責任を負っているかをたどるSaaSでした。QuentinはCEO・共同創業者として、Vue、NestJS、Polygonにわたる技術アーキテクチャを担いました。',
+      'Ownest（2017〜2026年）は、NFTによる追跡で、サプライチェーンのどこで誰がモノの責任を負っているかをたどるSaaSでした。QuentinはOwnestを共同創業し、Vue、NestJS、Polygonにわたる技術アーキテクチャを担い、最後の3年間はCEOを務めました。',
     link: { label: '経歴', to: '/quentin#experience' },
     asks: ['Ownestとは？', 'Ownestは何をしていましたか？', '前の会社は？'],
   },
@@ -830,7 +830,7 @@ const ja: Fact[] = [
   {
     id: 'ikitai-stack',
     answer:
-      'IkitaiはVue 3とCapacitor（iOS・Android）、NestJS、Supabase、PostgreSQL、Claude APIでつくられています。最初の2週間で148コミット、57のテストファイルに達しました。',
+      'IkitaiはVue 3とCapacitor（iOS・Android）、NestJS、Supabase、PostgreSQL、Claude APIでつくられています。最初の2週間で148コミットに達しました。',
     asks: [
       'Ikitaiの技術スタックは？',
       'Ikitaiはどうやってつくりましたか？',
@@ -925,7 +925,7 @@ const ja: Fact[] = [
   {
     id: 'stack',
     answer:
-      '主にVue 3とTypeScriptで、バックエンドはNestJS、iOS・AndroidはCapacitorで同じコードからつくっています。データはPrismaやTypeORMを通してPostgreSQLかSQLiteに。すべての変更にテストがつきます。',
+      '主にVue 3とTypeScriptで、バックエンドはNestJS、iOS・AndroidはCapacitorで同じコードからつくっています。データはPrismaやTypeORMを通してPostgreSQLかSQLiteに。',
     link: { label: 'スキル一覧', to: '/quentin#skills' },
     asks: [
       '技術スタックは？',
@@ -966,7 +966,7 @@ const ja: Fact[] = [
   {
     id: 'testing',
     answer:
-      'すべての変更にテストがつきます。ユニットテストはVitestやJest、重要なフローにはPlaywrightを使います。TapLogには37のテストファイルがあります。',
+      'ユニットテストはVitestやJest、重要なフローにはPlaywrightを使います。TapLogには37のテストファイルがあります。',
     asks: ['テストは書きますか？', 'コードの品質は？', 'どうやってテストしていますか？'],
   },
   {
@@ -983,7 +983,7 @@ const ja: Fact[] = [
   {
     id: 'ai-workflow',
     answer:
-      'Claude Code、Codex、Grokが並行してタスクを担い、エージェントネットワークとジョブボードを通じて作業を引き継ぎます。リサーチとコンテンツには15のGrokボットを使っています。タスクごとに受け入れ条件とテストを決め、マージ前にはQuentinがすべての差分を読みます。エージェントが単独でデプロイすることはありません。',
+      'Claude Code、Codex、Grokが並行してタスクを担い、エージェントネットワークとジョブボードを通じて作業を引き継ぎます。リサーチとコンテンツには15のGrokボットを使っています。タスクごとに受け入れ条件を決め、マージ前にはQuentinがすべての差分を読みます。エージェントが単独でデプロイすることはありません。',
     link: { label: '開発の進め方', to: '/quentin#workflow' },
     asks: [
       'AIとはどう開発していますか？',
