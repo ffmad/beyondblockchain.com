@@ -15,3 +15,8 @@ coverage/
 # The assistant's sentence model, downloaded on first start
 .models/
 .local/
+# Internal working notes, kept locally and out of the public repository
+docs/WEBSITE_BRIEF.md
+docs/KICKOFF_PROMPT.md
+docs/CONTENT_NOTES.md
+docs/REDESIGN.md
