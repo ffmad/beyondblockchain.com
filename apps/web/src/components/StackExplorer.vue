@@ -21,7 +21,12 @@ interface Technology {
   name: string;
   projects: Project[];
 }
-const kindRank: Record<Project['kind'], number> = { product: 0, experiment: 1, earlier: 2 };
+const kindRank: Record<Project['kind'], number> = {
+  product: 0,
+  experiment: 1,
+  other: 2,
+  earlier: 3,
+};
 
 const technologies = computed<Technology[]>(() => {
   const byName = new Map<string, Project[]>();

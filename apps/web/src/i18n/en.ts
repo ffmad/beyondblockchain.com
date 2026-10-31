@@ -67,12 +67,15 @@ export default {
     moreTechLabel: 'and {n} more',
     experimentsTitle: 'Work in progress',
     experimentsNote: 'Side projects on the way: one already online, the others soon.',
+    othersTitle: 'Other projects',
+    othersNote:
+      'Crypto side projects: a French-speaking forum since 2014, a club for CryptoArt on Bitcoin, and NFT collections for a Japanese artist.',
     watch: 'Watch the preview',
     buildTitle: 'How I build',
     buildText:
       'The aim: apps that feel intuitive, easy and pleasing to use. One Vue codebase for web, iOS and Android, with NestJS behind it, and several languages from day one. I build with AI coding agents (Claude Code, Codex and Grok), and I review every change myself.',
     earlierTitle: 'Earlier',
-    earlierNote: 'Since 2014',
+    earlierNote: 'Since 2016',
     years: '{from}–{to}',
     since: 'Since {year}',
     story: 'My story',
@@ -86,7 +89,12 @@ export default {
     since: 'Since {year}',
     span: '{from}–{to}',
     meta: '{kind} · {years}',
-    kind: { product: 'Product', experiment: 'Experiment', earlier: 'Earlier work' },
+    kind: {
+      product: 'Product',
+      experiment: 'Experiment',
+      other: 'Other project',
+      earlier: 'Earlier work',
+    },
   },
   project: {
     since: 'Since {year}',
@@ -115,6 +123,10 @@ export default {
     'spam-the-mempool':
       'A solo match against bots: grabbing Bitcoin “spam” and throwing it onto the belt that feeds the next block.',
     shigoshima: 'The archipelago of projects, then a flight to Ikitai’s island and back.',
+    'nakamotos-club':
+      'The Nakamotos Club’s home page, from the Nakamoto card’s tenth anniversary to its history on Bitcoin.',
+    onigiri: 'onigiri.art, from an Onigiri Pepe down to the artist’s collections.',
+    cryptofr: 'The CryptoFR forum’s home page, its categories from news to Bitcoin.',
   },
   screens: {
     phone: '{name} on a phone',
@@ -159,7 +171,6 @@ export default {
     sharedTitle: 'Talks, interviews and writing',
     communitiesTitle: 'People and communities',
     roleAndDescription: '{role}. {description}',
-    visitClub: 'Visit the club',
     educationTitle: 'Education and languages',
   },
 };

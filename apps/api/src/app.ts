@@ -75,7 +75,7 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 // JSON lists are stored as JSON; anything that isn't a list of strings is left out.
 const strings = (value: unknown) =>
   Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : [];
-const kinds = ['product', 'experiment', 'earlier'] as const;
+const kinds = ['product', 'experiment', 'other', 'earlier'] as const;
 const stages = ['live', 'review', 'beta', 'soon'] as const;
 const markets = ['japan'] as const;
 const oneOf = <T extends string>(options: readonly T[], value: unknown) =>

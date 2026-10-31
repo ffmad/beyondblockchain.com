@@ -36,6 +36,9 @@ The user supplied the original SVG wordmark and PNG icon.
 | `projects/festcompass-clip.mp4`                     | Silent clip of the live FestCompass festival guide scrolling, recorded the same way and day (its install banner dismissed)                                                 |
 | `projects/gengofriends-clip.mp4`, `-cover.webp`     | Silent clip of the live GengoFriends notebook scrolling, and its first frame, recorded the same way, 30 October 2026                                                       |
 | `projects/spam-the-mempool-clip.mp4`, `-cover.webp` | A solo match against bots in the game's local client, the player steered to grab junk and throw it onto the belt; the first-match tips and keyboard legend hidden          |
+| `projects/nakamotos-club-clip.mp4`, `-cover.webp`   | Silent clip of the live Nakamotos Club home page scrolling, and its first frame, recorded 31 October 2026 with `tools/record-clips.mjs`.                                   |
+| `projects/cryptofr-clip.mp4`, `-cover.webp`         | Silent clip of the live CryptoFR forum home page scrolling, its cookie notice hidden, and its first frame, recorded the same way.                                          |
+| `projects/onigiri-clip.mp4`, `-cover.webp`          | Silent clip of the live onigiri.art home page scrolling to the collections, and its first frame, recorded the same way.                                                    |
 | `projects/shigoshima-clip.mp4`, `-cover.webp`       | ShigoShima running locally: the archipelago, a flight to Ikitai's island and back; the AI usage meters, the island card and the labels of projects not on this site hidden |
 | `favicon.ico`, `apple-touch-icon.png`               | Generated from `brand/beyond-blockchain-icon.png`; the touch icon sits on the site's porcelain background                                                                  |
 
@@ -43,13 +46,15 @@ Ikitai’s existing store captures were produced from the real app with fictiona
 
 ## Previous work
 
-| Local asset under public/  | Public source                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------ |
-| `story/ownest-logo.svg`    | [Ownest logo](https://ownest.io/img/ownest-logo.svg)                                       |
-| `story/ownest-desktop.png` | [Ownest desktop product preview](https://ownest.io/img/desktop.png)                        |
-| `story/ownest-mobile.png`  | [Ownest mobile product preview](https://ownest.io/img/mobile.png)                          |
-| `story/nakamotos-logo.png` | [The Nakamotos Club logo](https://thenakamotos.club/img/naka-logo.png)                     |
-| `story/nakamoto-card.svg`  | [Original card displayed by the club](https://thenakamotos.club/img/RAREPEPE.5d0ec499.svg) |
+| Local asset under public/  | Public source                                                                                |
+| -------------------------- | -------------------------------------------------------------------------------------------- |
+| `story/ownest-logo.svg`    | [Ownest logo](https://ownest.io/img/ownest-logo.svg)                                         |
+| `story/ownest-desktop.png` | [Ownest desktop product preview](https://ownest.io/img/desktop.png)                          |
+| `story/ownest-mobile.png`  | [Ownest mobile product preview](https://ownest.io/img/mobile.png)                            |
+| `story/nakamotos-logo.png` | [The Nakamotos Club logo](https://thenakamotos.club/img/naka-logo.png)                       |
+| `story/nakamoto-card.svg`  | [Original card displayed by the club](https://thenakamotos.club/img/RAREPEPE.5d0ec499.svg)   |
+| `story/cryptofr-logo.png`  | [CryptoFR’s 96 × 96 touch icon](https://cryptofr.com/assets/uploads/system/touchicon-96.png) |
+| `story/onigiri-logo.svg`   | [onigiri.art’s favicon](https://onigiri.art/favicon.svg), redrawn with the same shapes       |
 
 The Rare Pepe card is shown as a referenced collectible, not artwork authored by Quentin. Ownest’s images are public product previews from its own website.
 

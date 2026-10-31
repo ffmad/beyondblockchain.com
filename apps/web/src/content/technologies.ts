@@ -1,6 +1,7 @@
 import {
   siBitcoin,
   siCapacitor,
+  siChartdotjs,
   siClaude,
   siEthereum,
   siGooglegemini,
@@ -12,6 +13,7 @@ import {
   siPostgresql,
   siRedis,
   siSocketdotio,
+  siSolidity,
   siSqlite,
   siSupabase,
   siTailwindcss,
@@ -144,6 +146,24 @@ const catalogue: Record<string, TechInfo> = {
       en: 'Blockchain for smart contracts',
       ja: 'スマートコントラクトのためのブロックチェーン',
     },
+  },
+  Solidity: {
+    icon: icon(siSolidity),
+    what: {
+      en: 'Language for Ethereum smart contracts',
+      ja: 'イーサリアムのスマートコントラクトの言語',
+    },
+  },
+  Hardhat: {
+    icon: null,
+    what: {
+      en: 'Tools to build, test and deploy smart contracts',
+      ja: 'スマートコントラクトの開発・テスト・デプロイのツール',
+    },
+  },
+  'Chart.js': {
+    icon: icon(siChartdotjs),
+    what: { en: 'Charts for web pages', ja: 'Webページのグラフ' },
   },
   'Node.js': {
     icon: icon(siNodedotjs),

@@ -36,11 +36,12 @@ watch(data, (list) => {
 const projects = computed(() => data.value ?? directory.value);
 usePageAnchor(projects);
 
-// Products get cards and a window with their own address; projects in progress get smaller cards whose window
-// plays a short preview; earlier work is listed more briefly.
+// Products get cards and a window with their own address; projects in progress and other projects get smaller
+// cards whose window plays a short preview; earlier work is listed more briefly.
 const ofKind = (kind: Project['kind']) => projects.value?.filter((p) => p.kind === kind) ?? [];
 const products = computed(() => ofKind('product'));
 const experiments = computed(() => ofKind('experiment'));
+const others = computed(() => ofKind('other'));
 const earlier = computed(() => ofKind('earlier'));
 
 const hero = ref<HTMLElement | null>(null);
@@ -97,11 +98,27 @@ watch(
   },
 );
 
-// A project in progress opens over the page without changing the address.
-const previewSlug = ref<string | null>(null);
-const previewProject = computed(
-  () => experiments.value.find((p) => p.slug === previewSlug.value) ?? null,
+// Projects in progress and other projects, each group in its own section. Their windows open over the page without
+// changing the address, and step within the group.
+const previewGroups = computed(() =>
+  [
+    { id: 'work-in-progress', key: 'experiments', projects: experiments.value },
+    { id: 'other-projects', key: 'others', projects: others.value },
+  ].filter((group) => group.projects.length),
 );
+const previewSlug = ref<string | null>(null);
+// The group stays set while the window closes, so its arrows keep their neighbours.
+const previewKey = ref('experiments');
+const previewList = computed(
+  () => previewGroups.value.find((group) => group.key === previewKey.value)?.projects ?? [],
+);
+const previewProject = computed(
+  () => previewList.value.find((p) => p.slug === previewSlug.value) ?? null,
+);
+function preview(key: string, slug: string) {
+  previewKey.value = key;
+  previewSlug.value = slug;
+}
 
 // Links to the old project sections (/#work-fairmints) open the project's page.
 onMounted(() => {
@@ -225,17 +242,18 @@ onMounted(() => {
     </section>
 
     <section
-      v-if="experiments.length"
-      id="work-in-progress"
+      v-for="group in previewGroups"
+      :id="group.id"
+      :key="group.id"
       class="experiments wrap"
-      aria-labelledby="experiments-title"
+      :aria-labelledby="`${group.key}-title`"
     >
       <div class="section-head">
-        <h2 id="experiments-title">{{ t('studio.experimentsTitle') }}</h2>
-        <p class="section-note">{{ t('studio.experimentsNote') }}</p>
+        <h2 :id="`${group.key}-title`">{{ t(`studio.${group.key}Title`) }}</h2>
+        <p class="section-note">{{ t(`studio.${group.key}Note`) }}</p>
       </div>
       <ul class="wip-grid">
-        <li v-for="project in experiments" :key="project.slug">
+        <li v-for="project in group.projects" :key="project.slug">
           <article class="project-card wip-card" :aria-labelledby="`wip-${project.slug}`">
             <span class="wip-media" aria-hidden="true">
               <img
@@ -266,7 +284,7 @@ onMounted(() => {
                     type="button"
                     class="card-link"
                     aria-haspopup="dialog"
-                    @click="previewSlug = project.slug"
+                    @click="preview(group.key, project.slug)"
                   >
                     {{ project.name }}
                   </button>
@@ -276,7 +294,9 @@ onMounted(() => {
                 }}</span>
               </div>
               <p class="card-summary">{{ project.summary }}</p>
-              <p class="card-category">{{ project.category }} · {{ project.startedYear }}</p>
+              <p class="card-category">
+                {{ project.role ?? project.category }} · {{ project.startedYear }}
+              </p>
               <div class="card-actions">
                 <span class="card-more" aria-hidden="true">{{ t('studio.watch') }}</span>
                 <a
@@ -291,13 +311,14 @@ onMounted(() => {
           </article>
         </li>
       </ul>
-      <PreviewDialog
-        :project="previewProject"
-        :projects="experiments"
-        @close="previewSlug = null"
-        @step="previewSlug = $event"
-      />
     </section>
+    <PreviewDialog
+      :project="previewProject"
+      :projects="previewList"
+      :label="t(`studio.${previewKey}Title`)"
+      @close="previewSlug = null"
+      @step="previewSlug = $event"
+    />
 
     <section v-if="projects?.length" class="build wrap" aria-labelledby="build-title">
       <div class="section-head">

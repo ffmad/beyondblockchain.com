@@ -50,7 +50,7 @@ after(async () => {
 
 test('seed updates known slugs, keeps IDs stable, and preserves unrelated records', async () => {
   const original = await db.project.findMany({ orderBy: { slug: 'asc' } });
-  assert.equal(original.length, 10);
+  assert.equal(original.length, 12);
   const custom = await db.project.create({
     data: {
       slug: 'unrelated-draft',
@@ -81,7 +81,7 @@ test('seed updates known slugs, keeps IDs stable, and preserves unrelated record
     original.find(({ slug }) => slug === 'ikitai').summary,
   );
   assert.deepEqual(await db.project.findUnique({ where: { id: custom.id } }), custom);
-  assert.equal(await db.project.count(), 11);
+  assert.equal(await db.project.count(), 13);
 });
 
 test('projects are ordered, filtered by publication, and limited to public fields', async () => {
@@ -96,9 +96,11 @@ test('projects are ordered, filtered by publication, and limited to public field
     'gengofriends',
     'spam-the-mempool',
     'shigoshima',
+    'cryptofr',
+    'nakamotos-club',
+    'onigiri',
     'ownest',
     'ledgys',
-    'cryptofr',
   ];
   assert.deepEqual(
     projects.map(({ slug }) => slug),
@@ -108,6 +110,10 @@ test('projects are ordered, filtered by publication, and limited to public field
   assert.deepEqual(
     projects.filter(({ kind }) => kind === 'product').map(({ slug }) => slug),
     ['ikitai', 'fairmints', 'festcompass', 'taplog'],
+  );
+  assert.deepEqual(
+    projects.filter(({ kind }) => kind === 'other').map(({ slug }) => slug),
+    ['cryptofr', 'nakamotos-club', 'onigiri'],
   );
   assert.equal(projects[0].stage, 'review');
   assert.deepEqual(projects[1].languages, ['en', 'ja', 'zh']);
@@ -204,13 +210,15 @@ test('server-rendered pages include public content, isolate requests, and escape
       fetch(`${webBase}/quentin`).then((response) => response.text()),
       fetch(`${webBase}/work/fairmints`),
     ]);
-    // The product cards are in the server-rendered page, each linking to its own page; experiments and
-    // earlier work are listed too.
+    // The product cards are in the server-rendered page, each linking to its own page; projects in progress,
+    // other projects and earlier work are listed too.
     assert.match(home, /class="card-link" href="\/work\/fairmints"/);
     assert.match(home, /class="card-link" href="\/work\/taplog"/);
     assert.match(home, /Turn screenshots into plans/);
     assert.match(home, /In App Store review/);
     assert.match(home, /Spam the Mempool/);
+    assert.match(home, /id="other-projects"/);
+    assert.match(home, /The Nakamotos Club/);
     assert.match(home, /Pioneer in blockchain development since 2014/);
     assert.equal((await fetch(`${webBase}/work/ownest`)).status, 404);
     assert.equal(workResponse.status, 200);

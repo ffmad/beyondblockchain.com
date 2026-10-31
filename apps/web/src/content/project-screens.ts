@@ -69,12 +69,20 @@ export function projectClip(project: Project): { src: string; poster: string } |
     : null;
 }
 
-// A few seconds of each project still in progress, recorded the same way (tools/record-clips.mjs), with its first
-// frame as the cover on its card. Each is described in the interface text, under previews.<slug>.
-const previews = new Set(['gengofriends', 'spam-the-mempool', 'shigoshima']);
+// A few seconds of each project still in progress and each other project, recorded the same way
+// (tools/record-clips.mjs), with its first frame as the cover on its card. Each is described in the interface text,
+// under previews.<slug>.
+const previews = new Set([
+  'gengofriends',
+  'spam-the-mempool',
+  'shigoshima',
+  'nakamotos-club',
+  'onigiri',
+  'cryptofr',
+]);
 export const PREVIEW_SIZE = { width: 960, height: 540 };
 
-/** The preview of a project in progress, if it has one. */
+/** The preview of a project in progress or another project, if it has one. */
 export function projectPreview(
   project: Project,
   t: Translate,

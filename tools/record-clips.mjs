@@ -1,7 +1,7 @@
 // Records the short silent clips that play on the web products' cards and lead their project windows: each live
 // site, scrolled down and back up so the clip loops without a jump. It also records the previews of the projects
-// still in progress, each moving in its own way, and saves their first frame as a cover image. Chrome records the
-// tab itself (H.264 MP4), so nothing else needs installing. The clips are written to
+// still in progress, each moving in its own way, and of the other projects, and saves their first frame as a cover
+// image. Chrome records the tab itself (H.264 MP4), so nothing else needs installing. The clips are written to
 // apps/web/public/projects/<slug>-clip.mp4, the covers to <slug>-cover.webp.
 //
 //   node tools/record-clips.mjs [slug ...]
@@ -38,6 +38,21 @@ const clips = [
     dismiss: ['Install FestCompass'],
   },
   { slug: 'gengofriends', url: 'https://gengofriends.com/', scroll: 800, cover: true },
+  // The other projects, scrolled like the products.
+  { slug: 'nakamotos-club', url: 'https://thenakamotos.club/', scroll: 1100, cover: true },
+  { slug: 'onigiri', url: 'https://onigiri.art/', scroll: 800, cover: true },
+  {
+    // The forum's cookie notice is hidden rather than accepted.
+    slug: 'cryptofr',
+    url: 'https://cryptofr.com/',
+    scroll: 900,
+    cover: true,
+    setup: async () => {
+      const style = document.createElement('style');
+      style.textContent = '.cookie-consent { display: none !important; }';
+      document.head.append(style);
+    },
+  },
   {
     // A solo match against bots, with the player steered to grab junk and throw it onto the belt.
     slug: 'spam-the-mempool',
@@ -205,7 +220,11 @@ const prepare = (distance, dismiss) => `(async () => {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   window.scrollTo(0, 0);
-  await Promise.all([...document.images].map((image) => image.decode().catch(() => {})));
+  // Lazy images further down the page never load, so the wait for decoding is capped.
+  await Promise.race([
+    Promise.all([...document.images].map((image) => image.decode().catch(() => {}))),
+    new Promise((resolve) => setTimeout(resolve, 5000)),
+  ]);
 })()`;
 
 // The products' motion: a pause at the top, eased down `distance` pixels, a pause at the bottom, back up.

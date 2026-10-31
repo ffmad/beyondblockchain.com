@@ -238,6 +238,15 @@ export const profileJa: Profile = {
         url: 'https://nftfactoryparis.com/founders',
       },
     },
+    {
+      name: 'Onigiri',
+      role: 'スマートコントラクトとコミュニティ',
+      description:
+        '日本のRare PepeアーティストONI-GIRIの作品です。2017年にビットコイン上で9枚のRare Pepeを制作し、2022年には独自のスタイルで描いた6,198体のOnigiri PepesをEthereumで発表しました。NFTコレクションのスマートコントラクトづくりと、コミュニティの運営を手伝いました。',
+      url: 'https://onigiri.art',
+      logoUrl: '/story/onigiri-logo.svg',
+      source: { label: 'ONI-GIRIのプロフィール', url: 'https://onigiri.art/ja/about' },
+    },
   ],
   publicWork: [
     {

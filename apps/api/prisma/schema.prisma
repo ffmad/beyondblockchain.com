@@ -33,7 +33,7 @@ model Project {
   stack         Json     @default("[]")
   /// Text in other languages, by language code: { "ja": { "summary": "…", "description": "…", … } }.
   translations  Json     @default("{}")
-  /// "product" (a card and a page), "experiment" or "earlier" (listed briefly).
+  /// "product" (a card and a page), "experiment" (in progress) or "other" (a card with a preview), or "earlier" (listed briefly).
   kind          String   @default("product")
   /// "live", "review" (app-store review), "beta" or "soon" (coming soon).
   stage         String?

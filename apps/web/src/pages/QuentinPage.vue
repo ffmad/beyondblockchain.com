@@ -23,6 +23,7 @@ const CODE_URL = 'https://github.com/ffmad/beyondblockchain.com';
 // A current product has its page at /work/<slug> and its logo at /projects/<slug>-logo.svg.
 const productSlug = (url: string) => url.match(/^\/work\/([\w-]+)$/)?.[1] ?? null;
 const step = (index: number) => String(index + 1).padStart(2, '0');
+const siteHost = (url: string) => new URL(url).hostname.replace(/^www\./, '');
 // The title's separators stay with the words before them, so a wrapped line never starts with "·".
 const headline = computed(() => profile.value?.headline.replaceAll(' · ', '\u00a0· ') ?? '');
 </script>
@@ -284,7 +285,7 @@ const headline = computed(() => profile.value?.headline.replaceAll(' · ', '\u00
               }}
             </p>
             <a class="record-source" :href="project.url"
-              >{{ t('profile.visitClub') }} <ArrowIcon
+              >{{ t('project.visit', { host: siteHost(project.url) }) }} <ArrowIcon
             /></a>
           </li>
         </ul>

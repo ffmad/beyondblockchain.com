@@ -51,6 +51,14 @@ export function llmsText(projects: Project[], profile: Profile) {
           `- ${p.url ? `[${p.name}](${p.url})` : p.name} (${[p.stage && stages[p.stage], years(p)].filter(Boolean).join(', ')}): ${line(p.summary)} ${line(p.description)} Built with ${p.stack.join(', ')}.`,
       )
       .join('\n'),
+    `## Other projects`,
+    'Crypto side projects beyond the studio.',
+    ofKind('other')
+      .map(
+        (p) =>
+          `- [${p.name}](${p.url}) (${[p.role, years(p)].filter(Boolean).join(', ')}): ${line(p.summary)} ${line(p.description)} Built with ${p.stack.join(', ')}.`,
+      )
+      .join('\n'),
     `## Earlier work`,
     ofKind('earlier')
       .map(

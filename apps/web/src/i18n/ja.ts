@@ -68,12 +68,15 @@ const ja: typeof en = {
     moreTechLabel: 'ほか{n}件',
     experimentsTitle: '開発中のプロジェクト',
     experimentsNote: '進行中のサイドプロジェクトです。公開中のものも、これからのものもあります。',
+    othersTitle: 'その他のプロジェクト',
+    othersNote:
+      'クリプトのサイドプロジェクト。2014年からのフランス語圏のフォーラム、ビットコイン上のクリプトアートのクラブ、日本のアーティストのNFTコレクションです。',
     watch: 'プレビューを見る',
     buildTitle: 'つくり方',
     buildText:
       '目指すのは、直感的で使いやすく、使っていて心地よいアプリ。ウェブ、iOS、Androidをひとつのコードベース（Vue）でつくり、裏側はNestJS。最初から多言語に対応しています。開発はAIコーディングエージェント（Claude Code、Codex、Grok）と一緒に行い、すべての変更を自分でレビューしています。',
     earlierTitle: 'これまで',
-    earlierNote: '2014年から',
+    earlierNote: '2016年から',
     years: '{from}〜{to}',
     since: '{year}年から',
     story: 'これまでの歩み',
@@ -88,7 +91,12 @@ const ja: typeof en = {
     since: '{year}年から',
     span: '{from}〜{to}',
     meta: '{kind}・{years}',
-    kind: { product: 'プロダクト', experiment: '実験', earlier: 'これまでの仕事' },
+    kind: {
+      product: 'プロダクト',
+      experiment: '実験',
+      other: 'その他のプロジェクト',
+      earlier: 'これまでの仕事',
+    },
   },
   project: {
     since: '{year}年から',
@@ -116,6 +124,10 @@ const ja: typeof en = {
     'spam-the-mempool':
       'ボット相手のソロ対戦。ビットコインの「スパム」をつかみ、次のブロックへ流れるベルトに投げ込みます。',
     shigoshima: 'プロジェクトの群島から、Ikitaiの島へ飛んで戻るところ。',
+    'nakamotos-club':
+      'The Nakamotos Clubのトップページ。Nakamotoカードの10周年から、ビットコイン上の歴史まで。',
+    onigiri: 'onigiri.art。Onigiri Pepeから、アーティストのコレクションまで。',
+    cryptofr: 'CryptoFRフォーラムのトップページ。ニュースからビットコインまでのカテゴリー。',
   },
   screens: {
     phone: 'スマートフォンで見た{name}',
@@ -159,7 +171,6 @@ const ja: typeof en = {
     sharedTitle: '講演・インタビュー・執筆',
     communitiesTitle: '人とコミュニティ',
     roleAndDescription: '{role}。{description}',
-    visitClub: 'クラブを見る',
     educationTitle: '学歴・言語',
   },
 };

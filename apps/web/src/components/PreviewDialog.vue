@@ -7,10 +7,11 @@ import { useLocale } from '../i18n';
 import { PREVIEW_SIZE, projectHost, projectPreview } from '../content/project-screens';
 import { animations, fadeOut, reduceMotion, riseIn } from '../composables/windowMotion';
 
-// A project still in progress, in a window over the studio page: its preview playing, what it is and what it's
-// built with. Unlike a product it has no page of its own, so the window doesn't change the address; Escape, the
-// close button or a click outside close it, and the arrows step between the projects in progress.
-const props = defineProps<{ project: Project | null; projects: Project[] }>();
+// A project in progress or another project, in a window over the studio page: its preview playing, what it is,
+// the part I played and what it's built with. Unlike a product it has no page of its own, so the window doesn't
+// change the address; Escape, the close button or a click outside close it, and the arrows step between the
+// projects of its group, which `label` names.
+const props = defineProps<{ project: Project | null; projects: Project[]; label: string }>();
 const emit = defineEmits<{ close: []; step: [slug: string] }>();
 const { t } = useLocale();
 const dialog = ref<HTMLDialogElement | null>(null);
@@ -28,6 +29,16 @@ const prev = computed(() => neighbour(-1));
 const next = computed(() => neighbour(1));
 const preview = computed(() => shown.value && projectPreview(shown.value, t));
 const pad = (n: number) => String(n).padStart(2, '0');
+// When it started, the part I played and who it's for.
+const facts = computed(() =>
+  shown.value
+    ? [
+        t('project.since', { year: shown.value.startedYear }),
+        shown.value.role,
+        shown.value.audience,
+      ].filter((fact): fact is string => !!fact)
+    : [],
+);
 let opener: HTMLElement | null = null;
 let closing: Animation | undefined;
 
@@ -184,6 +195,9 @@ function onKeydown(event: KeyboardEvent) {
           }}</span>
         </header>
         <p class="detail-summary">{{ shown.summary }}</p>
+        <p class="detail-facts">
+          <span v-for="fact in facts" :key="fact">{{ fact }}</span>
+        </p>
 
         <figure v-if="preview" class="preview-media">
           <div class="preview-clip">
@@ -233,7 +247,7 @@ function onKeydown(event: KeyboardEvent) {
         </div>
       </article>
 
-      <nav v-if="count > 1" class="dialog-steps" :aria-label="t('studio.experimentsTitle')">
+      <nav v-if="count > 1" class="dialog-steps" :aria-label="label">
         <button type="button" class="dialog-step" @click="emit('step', prev.slug)">
           <ArrowIcon direction="left" /><img
             v-if="prev.logoUrl"

@@ -17,8 +17,9 @@ export interface Project {
   imageCaption: string | null;
   /** The technologies it's built with, in display order. */
   stack: string[];
-  /** Main products have cards and a page; experiments and earlier work are listed more briefly. */
-  kind: 'product' | 'experiment' | 'earlier';
+  /** Main products have cards and a page; projects in progress (experiments) and other projects get smaller
+   * cards whose window plays a preview; earlier work is listed more briefly. */
+  kind: 'product' | 'experiment' | 'other' | 'earlier';
   /** Where it stands: live, in app-store review, in beta, or coming soon. */
   stage: 'live' | 'review' | 'beta' | 'soon' | null;
   /** The country a product is built for, when it's built for one. */
@@ -111,8 +112,8 @@ export interface Profile {
     description: string;
     url: string;
     logoUrl: string;
-    imageUrl: string;
-    imageAlt: string;
+    imageUrl?: string;
+    imageAlt?: string;
     source: Link;
   }[];
   education: Education[];

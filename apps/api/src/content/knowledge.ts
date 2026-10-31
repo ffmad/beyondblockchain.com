@@ -538,6 +538,19 @@ const en: Fact[] = [
     ],
   },
   {
+    id: 'onigiri',
+    answer:
+      'Quentin helped ONI-GIRI, a Japanese Rare Pepe artist, build NFT collections (the smart contracts) and manage the community. ONI-GIRI made 9 Rare Pepes in 2017 and released Onigiri Pepes, 6,198 pepes on Ethereum, in 2022.',
+    link: { label: 'onigiri.art', to: 'https://onigiri.art' },
+    asks: [
+      'What is Onigiri?',
+      'What did you do for Onigiri?',
+      'What are Onigiri Pepes?',
+      'Have you worked with an artist?',
+      'Have you launched an NFT collection?',
+    ],
+  },
+  {
     id: 'site',
     answer:
       'This site is server-rendered Vue 3 with a NestJS API, in English and Japanese, built with AI coding agents. Its code is public on GitHub.',
@@ -1046,6 +1059,19 @@ const ja: Fact[] = [
       'どんなコミュニティに参加していますか？',
       'La Chaintechとは？',
       'The Nakamotos Clubとは？',
+    ],
+  },
+  {
+    id: 'onigiri',
+    answer:
+      'Quentinは、日本のRare PepeアーティストONI-GIRIのNFTコレクションのスマートコントラクトづくりと、コミュニティの運営を手伝いました。ONI-GIRIは2017年に9枚のRare Pepeを制作し、2022年にはEthereumで6,198体のOnigiri Pepesを発表しました。',
+    link: { label: 'onigiri.art', to: 'https://onigiri.art' },
+    asks: [
+      'Onigiriとは？',
+      'Onigiriで何をしましたか？',
+      'Onigiri Pepesとは？',
+      'アーティストと仕事をしたことは？',
+      'NFTコレクションをつくったことは？',
     ],
   },
   {
