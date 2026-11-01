@@ -226,7 +226,8 @@ test('server-rendered pages include public content, isolate requests, and escape
     assert.match(work, /id="work-fairmints"/);
     assert.match(work, /<h1[^>]*>Fairmints<\/h1>/);
     assert.match(work, /Counterparty/);
-    assert.match(work, /<title>Fairmints — Beyond Blockchain<\/title>/);
+    // A product page's title says what the product is.
+    assert.match(work, /<title>Fairmints — Create and trade on Bitcoin<\/title>/);
     assert.match(
       work,
       /<link rel="canonical" href="https:\/\/beyondblockchain.com\/work\/fairmints">/,
@@ -250,6 +251,14 @@ test('server-rendered pages include public content, isolate requests, and escape
     const homeGraph = graph(home);
     assert.ok(
       homeGraph.some((node) => node['@type'] === 'Person' && node.alternateName === 'ffmad'),
+    );
+    // The studio is an organization of its own, founded by the person and publishing the site.
+    const studio = homeGraph.find((node) => node['@type'] === 'Organization');
+    assert.equal(studio.name, 'Beyond Blockchain');
+    assert.equal(studio.founder['@id'], 'https://beyondblockchain.com/#quentin');
+    assert.equal(
+      homeGraph.find((node) => node['@type'] === 'WebSite').publisher['@id'],
+      studio['@id'],
     );
     const list = homeGraph.find((node) => node['@type'] === 'ItemList');
     assert.deepEqual(
@@ -294,6 +303,9 @@ test('server-rendered pages include public content, isolate requests, and escape
     assert.match(jaHomeHtml, /<html lang="ja">/);
     assert.match(jaHomeHtml, /スクショを、そのまま予定に。/);
     assert.match(jaHomeHtml, /href="\/ja\/work\/fairmints"/);
+    // A product with its own Japanese page is linked there from Japanese pages, and to its English one from English pages.
+    assert.match(jaHomeHtml, /href="https:\/\/getikitai\.com\/ja\/"/);
+    assert.match(home, /href="https:\/\/getikitai\.com\/en\/"/);
     assert.match(jaHomeHtml, /<link rel="canonical" href="https:\/\/beyondblockchain.com\/ja\/">/);
     assert.match(jaHomeHtml, /hreflang="en" href="https:\/\/beyondblockchain.com\/"/);
     assert.deepEqual(Object.keys(state(jaHomeHtml)), ['/api/projects?lang=ja']);
@@ -388,6 +400,21 @@ test('server-rendered pages include public content, isolate requests, and escape
     } finally {
       await db.project.update({ where: { slug: 'ikitai' }, data: { summary: original.summary } });
     }
+    // The privacy page says who runs the site, in both languages, and every page links to it.
+    const [en, ja, homePage] = await Promise.all(
+      ['/privacy', '/ja/privacy', '/'].map((path) => fetch(`${webBase}${path}`)),
+    );
+    assert.equal(en.status, 200);
+    const enHtml = await en.text();
+    assert.match(enHtml, /<h1[^>]*>Privacy<\/h1>/);
+    assert.match(enHtml, /Quentin de Beauchesne/);
+    assert.match(enHtml, /no cookies, no analytics/);
+    assert.match(enHtml, /<link rel="canonical" href="https:\/\/beyondblockchain.com\/privacy">/);
+    assert.equal(ja.status, 200);
+    const jaHtml = await ja.text();
+    assert.match(jaHtml, /<h1[^>]*>プライバシーポリシー<\/h1>/);
+    assert.match(jaHtml, /運営者/);
+    assert.match(await homePage.text(), /<a href="\/privacy" class="footer-privacy">/);
   } finally {
     await webApp.close();
   }
@@ -405,6 +432,8 @@ test('the sitemap lists every page in both languages, from the published product
     'https://beyondblockchain.com/ja/',
     'https://beyondblockchain.com/quentin',
     'https://beyondblockchain.com/ja/quentin',
+    'https://beyondblockchain.com/privacy',
+    'https://beyondblockchain.com/ja/privacy',
     ...products.flatMap((slug) => [
       `https://beyondblockchain.com/work/${slug}`,
       `https://beyondblockchain.com/ja/work/${slug}`,

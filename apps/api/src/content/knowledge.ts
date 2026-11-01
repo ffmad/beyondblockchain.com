@@ -288,7 +288,7 @@ const en: Fact[] = [
   {
     id: 'ikitai',
     answer:
-      'Ikitai is an AI app that turns screenshots and saved links into plans with friends. It runs on iOS and Android, in 12 languages, and is in App Store review.',
+      'Ikitai is an AI app that turns shared posts and screenshots into event plans. It runs on iOS and Android, in 12 languages, and is in App Store review.',
     link: { label: 'Ikitai', to: '/work/ikitai' },
     asks: [
       'What is Ikitai?',
@@ -829,7 +829,7 @@ const ja: Fact[] = [
   {
     id: 'ikitai',
     answer:
-      'Ikitaiは、スクリーンショットや保存したリンクを友だちとの予定に変えるAIアプリです。iOSとAndroidで12言語に対応し、現在App Store審査中です。',
+      'Ikitaiは、シェアされた投稿やスクリーンショットをイベントの予定に変えるAIアプリです。iOSとAndroidで12言語に対応し、現在App Store審査中です。',
     link: { label: 'Ikitai', to: '/work/ikitai' },
     asks: [
       'Ikitaiとは？',

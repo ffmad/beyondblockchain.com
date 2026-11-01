@@ -7,6 +7,7 @@ import { cardOnScreen, isOverStudio, morphing } from './composables/useProjectOv
 import ProjectsPage from './pages/ProjectsPage.vue';
 import WorkPage from './pages/WorkPage.vue';
 import QuentinPage from './pages/QuentinPage.vue';
+import PrivacyPage from './pages/PrivacyPage.vue';
 import NotFoundPage from './pages/NotFoundPage.vue';
 
 export function createSiteRouter(
@@ -21,6 +22,7 @@ export function createSiteRouter(
       { path: '/', component: ProjectsPage },
       { path: '/work/:slug', name: 'work', component: WorkPage },
       { path: '/quentin', component: QuentinPage },
+      { path: '/privacy', component: PrivacyPage },
       { path: '/:pathMatch(.*)*', component: NotFoundPage },
     ],
     // New pages open at the top and Back returns to the same place, both at once rather than smoothly.

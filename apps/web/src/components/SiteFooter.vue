@@ -29,6 +29,7 @@ const { t } = useLocale();
         <p>
           © {{ new Date().getFullYear() }} Beyond Blockchain
           <span class="footer-byline">{{ t('footer.byline') }}</span>
+          <RouterLink class="footer-privacy" to="/privacy">{{ t('footer.privacy') }}</RouterLink>
         </p>
         <div class="social-links" :aria-label="t('footer.social')">
           <a href="https://github.com/ffmad">GitHub <ArrowIcon /></a>

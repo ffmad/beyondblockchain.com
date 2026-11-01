@@ -44,6 +44,7 @@ export default {
     byline: '· Built by Quentin.',
     social: 'Social links',
     backToTop: 'Back to top',
+    privacy: 'Privacy',
   },
   state: {
     loading: 'Loading {label}…',

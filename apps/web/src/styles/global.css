@@ -1,3 +1,97 @@
+/* Until the web fonts arrive, text shows in Arial (or Roboto on Android) resized to the web font's width, so lines
+   wrap the same way and nothing moves when the font swaps in. The sizes were measured on the site's own text;
+   Bricolage is set narrower in some places, so its fallback has one size per range of font-stretch. */
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial'), local('ArialMT'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 103.5%;
+  ascent-override: 95.7%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'DM Sans Fallback Roboto';
+  src: local('Roboto'), local('Roboto-Regular');
+  size-adjust: 104%;
+  ascent-override: 95.2%;
+  descent-override: 29.8%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Bricolage Fallback';
+  src:
+    local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'),
+    local('Liberation Sans Bold');
+  font-weight: 100 900;
+  font-stretch: 50% 88%;
+  size-adjust: 88.5%;
+  ascent-override: 105.1%;
+  descent-override: 30.5%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Bricolage Fallback';
+  src:
+    local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'),
+    local('Liberation Sans Bold');
+  font-weight: 100 900;
+  font-stretch: 89% 92%;
+  size-adjust: 92%;
+  ascent-override: 101.1%;
+  descent-override: 29.3%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Bricolage Fallback';
+  src:
+    local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold'),
+    local('Liberation Sans Bold');
+  font-weight: 100 900;
+  font-stretch: 93% 200%;
+  size-adjust: 101%;
+  ascent-override: 92.1%;
+  descent-override: 26.7%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Bricolage Fallback Roboto';
+  src: local('Roboto Bold'), local('Roboto-Bold');
+  font-weight: 100 900;
+  font-stretch: 50% 88%;
+  size-adjust: 95.9%;
+  ascent-override: 97%;
+  descent-override: 28.2%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Bricolage Fallback Roboto';
+  src: local('Roboto Bold'), local('Roboto-Bold');
+  font-weight: 100 900;
+  font-stretch: 89% 92%;
+  size-adjust: 98.7%;
+  ascent-override: 94.2%;
+  descent-override: 27.4%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: 'Bricolage Fallback Roboto';
+  src: local('Roboto Bold'), local('Roboto-Bold');
+  font-weight: 100 900;
+  font-stretch: 93% 200%;
+  size-adjust: 99.7%;
+  ascent-override: 93.3%;
+  descent-override: 27.1%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122;
+}
+
 /* Two registers share one system: the studio (porcelain, ink, logo blues) and the person (paper, serif). */
 :root {
   --porcelain: #f5f4f0;
@@ -12,8 +106,10 @@
   --brand-100: #cdd7e8;
   --focus: #2f58a1;
   --error: #a3332d;
-  --f-display: 'Bricolage Grotesque Variable', 'Avenir Next', system-ui, sans-serif;
-  --f-body: 'DM Sans', system-ui, sans-serif;
+  --f-display:
+    'Bricolage Grotesque Variable', 'Bricolage Fallback', 'Bricolage Fallback Roboto',
+    'Avenir Next', system-ui, sans-serif;
+  --f-body: 'DM Sans', 'DM Sans Fallback', 'DM Sans Fallback Roboto', system-ui, sans-serif;
   --f-mono: 'DM Mono', ui-monospace, Menlo, monospace;
   font-family: var(--f-body);
   color: var(--ink);
@@ -28,8 +124,11 @@
   --f-ja:
     'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic UI', 'Yu Gothic',
     Meiryo;
-  --f-display: 'Bricolage Grotesque Variable', var(--f-ja), sans-serif;
-  --f-body: 'DM Sans', var(--f-ja), system-ui, sans-serif;
+  --f-display:
+    'Bricolage Grotesque Variable', 'Bricolage Fallback', 'Bricolage Fallback Roboto', var(--f-ja),
+    sans-serif;
+  --f-body:
+    'DM Sans', 'DM Sans Fallback', 'DM Sans Fallback Roboto', var(--f-ja), system-ui, sans-serif;
   --f-mono: 'DM Mono', var(--f-ja), ui-monospace, monospace;
   word-break: auto-phrase;
   line-break: strict;
@@ -41,6 +140,8 @@
   :is(
     .footer-top h2,
     .not-found h1,
+    .privacy-head h1,
+    .privacy-section h2,
     .about-title,
     .about-headline,
     .section-head h2,
@@ -520,6 +621,11 @@ html {
   display: inline-flex;
   gap: 8px;
 }
+.footer-privacy {
+  margin-left: 0.75em;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
 /* Loading and error states */
 .resource-state {
@@ -567,6 +673,72 @@ html {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
+}
+
+/* Privacy: plain reading text at a comfortable measure. */
+.privacy-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  padding-block: clamp(48px, 7vw, 96px) clamp(64px, 8vw, 112px);
+}
+.privacy-page > * {
+  max-width: 68ch;
+}
+.privacy-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+.privacy-head h1 {
+  font-family: var(--f-display);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 700;
+  font-stretch: 90%;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.privacy-intro {
+  font-size: clamp(17px, 1.5vw, 19px);
+  line-height: 1.55;
+}
+.privacy-operator {
+  display: grid;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+}
+.privacy-operator div {
+  display: grid;
+  grid-template-columns: 8em minmax(0, 1fr);
+  gap: 12px;
+}
+.privacy-operator dt {
+  color: var(--muted);
+}
+.privacy-operator dd {
+  margin: 0;
+}
+.privacy-section {
+  display: grid;
+  gap: 12px;
+}
+.privacy-section h2 {
+  font-family: var(--f-display);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 680;
+  font-stretch: 90%;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.privacy-section p {
+  line-height: 1.6;
+  color: var(--ink);
+}
+/* 「プライバシーポリシー」 is one phrase, so it never breaks: smaller, it fits a phone's width. */
+:lang(ja) .privacy-head h1 {
+  font-size: clamp(30px, 5vw, 60px);
 }
 
 @media (max-width: 1100px) {

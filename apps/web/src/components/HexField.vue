@@ -69,6 +69,8 @@ function layout() {
   height = Math.round(heroBottom);
   element.style.top = `${-lift}px`;
   element.style.height = `${height}px`;
+  // Hidden until placed, so moving it into place doesn't shift the page.
+  element.style.visibility = 'visible';
   scale = Math.min(window.devicePixelRatio || 1, 2);
   element.width = Math.round(width * scale);
   element.height = Math.round(height * scale);

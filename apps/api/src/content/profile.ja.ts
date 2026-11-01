@@ -35,7 +35,7 @@ export const profileJa: Profile = {
     {
       name: 'Ikitai',
       since: '2026年10月から',
-      description: 'スクリーンショットや保存したリンクを、友だちとの予定に変えるAIアプリです。',
+      description: 'シェアされた投稿やスクリーンショットを、イベントの予定に変えるAIアプリです。',
       url: '/work/ikitai',
     },
     {

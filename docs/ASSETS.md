@@ -14,23 +14,25 @@ The user supplied the original SVG wordmark and PNG icon.
 
 ## Current projects
 
+Screens and captures are WebP (quality 82, converted from the original PNG and JPG files on 1 November 2026). Those 1000 px wide or more also have 360 and 720 px wide copies (`-360.webp`, `-720.webp`), which phones load instead.
+
 | Local asset under public/                           | Origin and treatment                                                                                                                                                       |
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `projects/ikitai-logo.svg`                          | Original inline SVG from [Ikitai](https://getikitai.com)                                                                                                                   |
-| `projects/ikitai-timeline.jpg`                      | Real Ikitai app timeline, copied from `Ikitai/store/screenshots/captures/iphone/en/timeline-concert.jpg` (1320 × 2868)                                                     |
-| `projects/ikitai-detail.jpg`                        | Real app plan details, from the same capture set’s `detail.jpg` (1320 × 2868)                                                                                              |
-| `projects/ikitai-calendar.jpg`                      | Real app calendar, from the same capture set’s `calendar.jpg` (1320 × 2868)                                                                                                |
+| `projects/ikitai-timeline.webp`                     | Real Ikitai app timeline, copied from `Ikitai/store/screenshots/captures/iphone/en/timeline-concert.jpg` (1320 × 2868)                                                     |
+| `projects/ikitai-detail.webp`                       | Real app plan details, from the same capture set’s `detail.jpg` (1320 × 2868)                                                                                              |
+| `projects/ikitai-calendar.webp`                     | Real app calendar, from the same capture set’s `calendar.jpg` (1320 × 2868)                                                                                                |
 | `projects/ikitai-source-post.png`                   | Fictional concert post used by the Ikitai demo, from `Ikitai/store/screenshots/src/sources/out/post-photo.png` (1080 × 1600)                                               |
 | `projects/fairmints-logo.svg`                       | Original SVG from [Fairmints](https://fairmints.io)                                                                                                                        |
-| `projects/fairmints-capture.png`                    | Actual 1280 × 720 Fairmints desktop dashboard, captured after loading completed                                                                                            |
-| `projects/fairmints-mobile.png`                     | Actual 390 × 844 responsive Fairmints dashboard                                                                                                                            |
+| `projects/fairmints-capture.webp`                   | Actual 1280 × 720 Fairmints desktop dashboard, captured after loading completed                                                                                            |
+| `projects/fairmints-mobile.webp`                    | Actual 390 × 844 responsive Fairmints dashboard                                                                                                                            |
 | `projects/festcompass-logo.svg`                     | Original SVG from [FestCompass](https://festcompass.jp)                                                                                                                    |
 | `projects/festcompass-background.jpg`               | Original illustration from FestCompass’s public website                                                                                                                    |
-| `projects/festcompass-guide.png`                    | Actual 1280 × 720 [festival guide](https://festcompass.jp/festivals)                                                                                                       |
-| `projects/festcompass-mobile.png`                   | Actual 390 × 844 responsive festival guide                                                                                                                                 |
+| `projects/festcompass-guide.webp`                   | Actual 1280 × 720 [festival guide](https://festcompass.jp/festivals)                                                                                                       |
+| `projects/festcompass-mobile.webp`                  | Actual 390 × 844 responsive festival guide                                                                                                                                 |
 | `projects/taplog-logo.svg`                          | TapLog’s app icon, from `taplog/frontend/public/brand/taplog-app-icon.svg`                                                                                                 |
-| `projects/taplog-capture.png`                       | Actual 1280 × 720 [TapLog](https://taplog.jp) home page (Japanese), captured 30 October 2026                                                                               |
-| `projects/taplog-mobile.png`                        | Actual 390 × 844 responsive TapLog home page, captured the same day                                                                                                        |
+| `projects/taplog-capture.webp`                      | Actual 1280 × 720 [TapLog](https://taplog.jp) home page (Japanese), captured 30 October 2026                                                                               |
+| `projects/taplog-mobile.webp`                       | Actual 390 × 844 responsive TapLog home page, captured the same day                                                                                                        |
 | `projects/taplog-clip.mp4`                          | Silent clip of the live TapLog home page scrolling, 960 × 540, recorded 30 October 2026 with `tools/record-clips.mjs`                                                      |
 | `projects/fairmints-clip.mp4`                       | Silent clip of the live Fairmints dashboard scrolling to its token table, recorded the same way and day                                                                    |
 | `projects/festcompass-clip.mp4`                     | Silent clip of the live FestCompass festival guide scrolling, recorded the same way and day (its install banner dismissed)                                                 |
@@ -46,15 +48,15 @@ Ikitai’s existing store captures were produced from the real app with fictiona
 
 ## Previous work
 
-| Local asset under public/  | Public source                                                                                |
-| -------------------------- | -------------------------------------------------------------------------------------------- |
-| `story/ownest-logo.svg`    | [Ownest logo](https://ownest.io/img/ownest-logo.svg)                                         |
-| `story/ownest-desktop.png` | [Ownest desktop product preview](https://ownest.io/img/desktop.png)                          |
-| `story/ownest-mobile.png`  | [Ownest mobile product preview](https://ownest.io/img/mobile.png)                            |
-| `story/nakamotos-logo.png` | [The Nakamotos Club logo](https://thenakamotos.club/img/naka-logo.png)                       |
-| `story/nakamoto-card.svg`  | [Original card displayed by the club](https://thenakamotos.club/img/RAREPEPE.5d0ec499.svg)   |
-| `story/cryptofr-logo.png`  | [CryptoFR’s 96 × 96 touch icon](https://cryptofr.com/assets/uploads/system/touchicon-96.png) |
-| `story/onigiri-logo.svg`   | [onigiri.art’s favicon](https://onigiri.art/favicon.svg), redrawn with the same shapes       |
+| Local asset under public/   | Public source                                                                                |
+| --------------------------- | -------------------------------------------------------------------------------------------- |
+| `story/ownest-logo.svg`     | [Ownest logo](https://ownest.io/img/ownest-logo.svg)                                         |
+| `story/ownest-desktop.webp` | [Ownest desktop product preview](https://ownest.io/img/desktop.png)                          |
+| `story/ownest-mobile.webp`  | [Ownest mobile product preview](https://ownest.io/img/mobile.png)                            |
+| `story/nakamotos-logo.png`  | [The Nakamotos Club logo](https://thenakamotos.club/img/naka-logo.png)                       |
+| `story/nakamoto-card.svg`   | [Original card displayed by the club](https://thenakamotos.club/img/RAREPEPE.5d0ec499.svg)   |
+| `story/cryptofr-logo.png`   | [CryptoFR’s 96 × 96 touch icon](https://cryptofr.com/assets/uploads/system/touchicon-96.png) |
+| `story/onigiri-logo.svg`    | [onigiri.art’s favicon](https://onigiri.art/favicon.svg), redrawn with the same shapes       |
 
 The Rare Pepe card is shown as a referenced collectible, not artwork authored by Quentin. Ownest’s images are public product previews from its own website.
 

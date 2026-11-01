@@ -37,10 +37,18 @@ export const pageMetadata = {
     '/quentin': {
       title: 'Quentin de Beauchesne — Frontend and full-stack engineer, Tokyo',
       description:
-        'Frontend and full-stack engineer in Tokyo (Vue 3, TypeScript, NestJS). 14 years building web apps, 8 as a co-founder. Now building Ikitai, Fairmints, FestCompass and TapLog.',
+        'Frontend and full-stack engineer in Tokyo (Vue 3, TypeScript, NestJS). 14 years building web apps, 8 as a co-founder. Now building Ikitai, Fairmints and more.',
       image: '/social/quentin.en.png',
       imageAlt:
         'Quentin de Beauchesne (ffmad), frontend and full-stack engineer in Tokyo: Vue 3, TypeScript, NestJS and AI-assisted development.',
+    },
+    '/privacy': {
+      title: 'Privacy — Beyond Blockchain',
+      description:
+        'What beyondblockchain.com collects and why: contact messages, no cookies or analytics, and server logs kept for 14 days.',
+      image: '/social/home.en.png',
+      imageAlt:
+        'Beyond Blockchain. Pioneer in blockchain development since 2014, building beyond it with AI: Ikitai, Fairmints, FestCompass and TapLog.',
     },
   },
   ja: {
@@ -60,16 +68,26 @@ export const pageMetadata = {
       imageAlt:
         'Quentin de Beauchesne（ffmad）。東京のフロントエンド／フルスタックエンジニア。Vue 3、TypeScript、NestJS、AIを活用した開発。',
     },
+    '/privacy': {
+      title: 'プライバシーポリシー — Beyond Blockchain',
+      description:
+        'beyondblockchain.comが集める情報とその目的。お問い合わせの内容、Cookieやアクセス解析は不使用、サーバーのログは14日間保存。運営者情報も。',
+      image: '/social/home.ja.png',
+      imageAlt:
+        'Beyond Blockchain。2014年からブロックチェーン開発の先駆者として、いまはAIでその先をつくる。Ikitai、Fairmints、FestCompass、TapLog。',
+    },
   },
 };
 
+// A project page's title says what the product is: "Ikitai — Turn screenshots into plans".
+const tagline = (project) => project.summary.replace(/[.。]$/, '');
 const projectText = {
   en: (project) => ({
-    title: `${project.name} — Beyond Blockchain`,
+    title: `${project.name} — ${tagline(project)}`,
     imageAlt: `${project.name}: ${project.summary} A project by Quentin de Beauchesne, with its real screen.`,
   }),
   ja: (project) => ({
-    title: `${project.name} — Beyond Blockchain`,
+    title: `${project.name} — ${tagline(project)}`,
     imageAlt: `${project.name}：${project.summary} Quentin de Beauchesneのプロジェクトと、その実際の画面。`,
   }),
 };
@@ -85,6 +103,21 @@ const notFound = {
     imageAlt: 'Beyond Blockchain — Quentin de Beauchesneのプロジェクト。',
   },
 };
+
+// Search results show about 160 characters of a description, or 120 in Japanese. A longer one is cut after its
+// last whole sentence that fits.
+const descriptionLength = { en: 160, ja: 120 };
+function fitDescription(text, locale) {
+  const limit = descriptionLength[locale] ?? descriptionLength.en;
+  if (text.length <= limit) return text;
+  const sentences = text.match(/[^.。]+[.。]\s*/g) ?? [];
+  let fitted = '';
+  for (const sentence of sentences) {
+    if ((fitted + sentence).trim().length > limit) break;
+    fitted += sentence;
+  }
+  return fitted.trim() || `${text.slice(0, limit - 1).trimEnd()}…`;
+}
 
 /** The project slug in a /work/<slug> path, or null. */
 export function workSlug(path) {
@@ -103,7 +136,7 @@ export function metadataFor(path, projects, locale = defaultLocale) {
   if (project)
     return {
       ...(projectText[locale] ?? projectText.en)(project),
-      description: `${project.summary} ${project.description}`,
+      description: fitDescription(project.description, locale),
       // Rendered by tools/share-cards.mjs for every product and language.
       image: `/social/work-${project.slug}.${locale}.png`,
       indexed: true,
@@ -135,8 +168,12 @@ const jobTitles = {
   ja: 'フロントエンド／フルスタックエンジニア',
 };
 const platformNames = { web: 'Web', ios: 'iOS', android: 'Android' };
+const studioDescriptions = {
+  en: 'Quentin de Beauchesne’s software studio in Tokyo, making Ikitai, Fairmints, FestCompass and TapLog.',
+  ja: 'Quentin de Beauchesneが東京で営むソフトウェアスタジオ。Ikitai、Fairmints、FestCompass、TapLogをつくっています。',
+};
 
-/** schema.org data for search engines and AI assistants: the person, the site and the products. */
+/** schema.org data for search engines and AI assistants: the person, the studio, the site and the products. */
 export function structuredData(path, projects, locale = defaultLocale) {
   path = path.replace(/\/$/, '') || '/';
   if (!metadataFor(path, projects, locale).indexed) return '';
@@ -163,13 +200,24 @@ export function structuredData(path, projects, locale = defaultLocale) {
     alumniOf: { '@type': 'CollegeOrUniversity', name: 'ENSEM (INP Lorraine)' },
     sameAs: socials,
   };
+  // The studio, told apart from other companies with the same name by its founder, address and logo.
+  const studio = {
+    '@type': 'Organization',
+    '@id': `${siteOrigin}/#studio`,
+    name: 'Beyond Blockchain',
+    url: `${siteOrigin}/`,
+    logo: `${siteOrigin}/brand/beyond-blockchain-icon.png`,
+    description: studioDescriptions[locale] ?? studioDescriptions.en,
+    founder: { '@id': person['@id'] },
+    address: person.address,
+  };
   const website = {
     '@type': 'WebSite',
     '@id': `${siteOrigin}/#website`,
     name: 'Beyond Blockchain',
     url: `${siteOrigin}/`,
     inLanguage: locales,
-    publisher: { '@id': person['@id'] },
+    publisher: { '@id': studio['@id'] },
   };
   const products = (projects ?? []).filter((p) => (p.kind ?? 'product') === 'product');
   const application = (project) => ({
@@ -178,6 +226,7 @@ export function structuredData(path, projects, locale = defaultLocale) {
     name: project.name,
     description: `${project.summary} ${project.description}`,
     url: project.url,
+    publisher: { '@id': studio['@id'] },
     mainEntityOfPage: url(`/work/${project.slug}`),
     ...(project.platforms?.length && {
       operatingSystem: project.platforms.map((p) => platformNames[p] ?? p).join(', '),
@@ -187,25 +236,34 @@ export function structuredData(path, projects, locale = defaultLocale) {
   });
   const slug = workSlug(path);
   const graph =
-    path === '/quentin'
-      ? [
-          website,
-          { '@type': 'ProfilePage', url: url('/quentin'), inLanguage: locale, mainEntity: person },
-        ]
-      : slug
-        ? [website, person, ...products.filter((p) => p.slug === slug).map(application)]
-        : [
+    path === '/privacy'
+      ? [website, studio, person]
+      : path === '/quentin'
+        ? [
             website,
-            person,
+            studio,
             {
-              '@type': 'ItemList',
-              itemListElement: products.map((project, index) => ({
-                '@type': 'ListItem',
-                position: index + 1,
-                item: application(project),
-              })),
+              '@type': 'ProfilePage',
+              url: url('/quentin'),
+              inLanguage: locale,
+              mainEntity: person,
             },
-          ];
+          ]
+        : slug
+          ? [website, studio, person, ...products.filter((p) => p.slug === slug).map(application)]
+          : [
+              website,
+              studio,
+              person,
+              {
+                '@type': 'ItemList',
+                itemListElement: products.map((project, index) => ({
+                  '@type': 'ListItem',
+                  position: index + 1,
+                  item: application(project),
+                })),
+              },
+            ];
   // Escaping '<' keeps content from closing the script element.
   const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
   return `<script type="application/ld+json">${json.replaceAll('<', '\\u003c')}</script>`;

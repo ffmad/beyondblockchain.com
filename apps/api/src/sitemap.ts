@@ -11,6 +11,7 @@ export function sitemapXml(projects: Project[]) {
   const paths = [
     '/',
     '/quentin',
+    '/privacy',
     ...projects.filter((p) => p.kind === 'product').map((p) => `/work/${p.slug}`),
   ];
   const entries = paths.flatMap((path) => {

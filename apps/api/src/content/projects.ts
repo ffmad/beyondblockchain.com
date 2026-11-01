@@ -3,16 +3,17 @@ import type { Prisma } from '../generated/prisma/client.js';
 // The seed is the source of truth for these slugs. Other records are left alone. Products get a card and a
 // page; experiments and earlier work are listed briefly on the studio page.
 // Each stack is read from the project's own repository (October 2026). `translations` holds the text of the
-// Japanese pages (/ja); any field left out falls back to the English one. `market` marks a product built for Japan.
+// Japanese pages (/ja), and `url` there the product's own Japanese page; any field left out falls back to the
+// English one. `market` marks a product built for Japan.
 export const projects = [
   {
     slug: 'ikitai',
     name: 'Ikitai',
     summary: 'Turn screenshots into plans.',
     description:
-      'An app that turns screenshots and saved links into events and ideas. Keep track of ticket releases, set reminders, and make plans with friends.',
+      'An app that turns shared posts and screenshots into event plans. Keep track of ticket releases, set reminders, and make plans with friends.',
     audience: 'AI · Mobile app',
-    url: 'https://getikitai.com',
+    url: 'https://getikitai.com/en/',
     category: 'AI · Everyday life',
     role: 'Solo founder',
     startedYear: 2026,
@@ -21,7 +22,7 @@ export const projects = [
     displayOrder: 0,
     published: true,
     logoUrl: '/projects/ikitai-logo.svg',
-    imageUrl: '/projects/ikitai-timeline.jpg',
+    imageUrl: '/projects/ikitai-timeline.webp',
     mobileImageUrl: null,
     imageAlt:
       'Ikitai’s app timeline showing a concert plan, ticket-sale reminder, and upcoming trip.',
@@ -40,7 +41,8 @@ export const projects = [
       ja: {
         summary: 'スクショを、そのまま予定に。',
         description:
-          'スクリーンショットや保存したリンクを、予定やアイデアに変えるアプリ。チケットの発売日を追いかけ、リマインダーを設定して、友だちと予定を立てられます。',
+          'シェアされた投稿やスクリーンショットを、イベントの予定に変えるアプリ。チケットの発売日を追いかけ、リマインダーを設定して、友だちと予定を立てられます。',
+        url: 'https://getikitai.com/ja/',
         audience: 'AI・モバイルアプリ',
         category: 'AI・暮らし',
         role: '単独創業者',
@@ -72,8 +74,8 @@ export const projects = [
     displayOrder: 1,
     published: true,
     logoUrl: '/projects/fairmints-logo.svg',
-    imageUrl: '/projects/fairmints-capture.png',
-    mobileImageUrl: '/projects/fairmints-mobile.png',
+    imageUrl: '/projects/fairmints-capture.webp',
+    mobileImageUrl: '/projects/fairmints-mobile.webp',
     imageAlt:
       'The public Fairmints dashboard with Bitcoin token markets, swaps, and explorer tools.',
     imageCaption: 'Fairmints dashboard · Captured October 2026',
@@ -125,8 +127,8 @@ export const projects = [
     displayOrder: 2,
     published: true,
     logoUrl: '/projects/festcompass-logo.svg',
-    imageUrl: '/projects/festcompass-guide.png',
-    mobileImageUrl: '/projects/festcompass-mobile.png',
+    imageUrl: '/projects/festcompass-guide.webp',
+    mobileImageUrl: '/projects/festcompass-mobile.webp',
     imageAlt:
       'FestCompass’s public festival discovery guide, with dates and festivals across Japan.',
     imageCaption: 'FestCompass festival guide · Captured October 2026',
@@ -177,8 +179,8 @@ export const projects = [
     displayOrder: 3,
     published: true,
     logoUrl: '/projects/taplog-logo.svg',
-    imageUrl: '/projects/taplog-capture.png',
-    mobileImageUrl: '/projects/taplog-mobile.png',
+    imageUrl: '/projects/taplog-capture.webp',
+    mobileImageUrl: '/projects/taplog-mobile.webp',
     imageAlt:
       'TapLog’s home page: tonight in Tokyo, bars open now near Otsuka station, and this week’s events.',
     imageCaption: 'TapLog home page · Captured October 2026',
@@ -228,7 +230,7 @@ export const projects = [
     featured: false,
     displayOrder: 10,
     published: true,
-    logoUrl: '/projects/gengofriends-logo.png',
+    logoUrl: '/projects/gengofriends-logo.webp',
     imageUrl: null,
     mobileImageUrl: null,
     imageAlt: null,

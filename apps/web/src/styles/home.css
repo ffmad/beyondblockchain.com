@@ -19,6 +19,7 @@
   left: 0;
   width: 100%;
   pointer-events: none;
+  visibility: hidden;
   -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
   mask-image: linear-gradient(to bottom, #000 45%, transparent);
 }

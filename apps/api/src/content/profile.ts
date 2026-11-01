@@ -39,7 +39,7 @@ export const profile: Profile = {
     {
       name: 'Ikitai',
       since: 'Since October 2026',
-      description: 'An AI app that turns screenshots and saved links into plans with friends.',
+      description: 'An AI app that turns shared posts and screenshots into event plans.',
       url: '/work/ikitai',
     },
     {

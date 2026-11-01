@@ -20,6 +20,30 @@ export default defineConfig(({ mode, isSsrBuild }) => {
             );
         },
       },
+      {
+        // The fonts of the first screen start loading with the page instead of after its stylesheet.
+        name: 'preload-fonts',
+        transformIndexHtml: {
+          order: 'post',
+          handler(html, { bundle }) {
+            if (!bundle) return html;
+            const fonts = Object.keys(bundle).filter((file) =>
+              /\/(dm-sans-latin-(400|500)-normal|bricolage-grotesque-latin-wdth-normal)-[\w-]+\.woff2$/.test(
+                file,
+              ),
+            );
+            return html.replace(
+              '</head>',
+              fonts
+                .map(
+                  (file) =>
+                    `  <link rel="preload" href="/${file}" as="font" type="font/woff2" crossorigin>\n`,
+                )
+                .join('') + '  </head>',
+            );
+          },
+        },
+      },
     ],
     // vue-i18n: the Composition API only, no devtools in production.
     define: {

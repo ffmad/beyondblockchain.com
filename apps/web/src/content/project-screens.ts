@@ -8,6 +8,18 @@ export interface ProjectScreen {
   phone: boolean;
   width: number;
   height: number;
+  /** Smaller copies for phones, when the screen has them. */
+  srcset?: string;
+}
+
+// Screens 1000 px wide or more also come 360 and 720 px wide (docs/ASSETS.md), next to the full one.
+function withCopies(screen: Omit<ProjectScreen, 'srcset'>): ProjectScreen {
+  if (screen.width < 1000 || !screen.src.endsWith('.webp')) return screen;
+  const base = screen.src.slice(0, -'.webp'.length);
+  return {
+    ...screen,
+    srcset: `${base}-360.webp 360w, ${base}-720.webp 720w, ${screen.src} ${screen.width}w`,
+  };
 }
 
 const PHONE_CAPTURE = { width: 390, height: 844 };
@@ -50,7 +62,7 @@ export function projectScreens(project: Project, t: Translate): ProjectScreen[] 
     });
   for (const screen of moreScreens[project.slug]?.(t) ?? [])
     if (!screens.some((s) => s.src === screen.src)) screens.push(screen);
-  return screens;
+  return screens.map(withCopies);
 }
 
 // A few seconds of each web product in use, silent and looping, recorded from the live site at the size of its
@@ -96,6 +108,6 @@ export function projectPreview(
     : null;
 }
 
-/** The project's address without the protocol, for its link label. */
+/** The project's site name, for its link label. */
 export const projectHost = (project: Project) =>
-  project.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  new URL(project.url).hostname.replace(/^www\./, '');

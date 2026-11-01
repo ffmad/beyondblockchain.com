@@ -141,7 +141,7 @@ const headline = computed(() => profile.value?.headline.replaceAll(' · ', '\u00
                 <figure class="ownest-screens">
                   <div class="ownest-gallery">
                     <img
-                      src="/story/ownest-desktop.png"
+                      src="/story/ownest-desktop.webp"
                       :alt="t('profile.ownestAlt')"
                       width="758"
                       height="706"
@@ -149,7 +149,7 @@ const headline = computed(() => profile.value?.headline.replaceAll(' · ', '\u00
                     />
                     <img
                       class="is-phone"
-                      src="/story/ownest-mobile.png"
+                      src="/story/ownest-mobile.webp"
                       :alt="t('profile.ownestMobileAlt')"
                       width="269"
                       height="522"

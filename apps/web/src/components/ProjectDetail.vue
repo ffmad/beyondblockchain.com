@@ -91,6 +91,12 @@ const facts = computed(() =>
           <img
             :class="screen.phone ? 'shot-phone' : 'shot-wide'"
             :src="screen.src"
+            :srcset="screen.srcset"
+            :sizes="
+              screen.phone
+                ? '(max-width: 706px) 111px, (max-width: 1118px) 16vw, 175px'
+                : '(max-width: 567px) 302px, (max-width: 1133px) 54vw, 604px'
+            "
             :alt="screen.alt"
             :width="screen.width"
             :height="screen.height"

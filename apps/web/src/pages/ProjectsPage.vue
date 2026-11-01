@@ -150,7 +150,7 @@ onMounted(() => {
         @retry="reload"
       />
       <ul v-else class="project-grid">
-        <li v-for="project in products" :key="project.slug">
+        <li v-for="(project, index) in products" :key="project.slug">
           <article
             class="project-card"
             :style="[
@@ -165,12 +165,22 @@ onMounted(() => {
               :class="{ 'is-phone': cover(project)?.phone }"
               aria-hidden="true"
             >
+              <!-- The first card's screen is usually the largest thing on a phone's first screen, so it loads
+                   first; the others wait until they come near. -->
               <img
                 v-if="cover(project)"
                 :src="cover(project)!.src"
+                :srcset="cover(project)!.srcset"
+                :sizes="
+                  cover(project)!.phone
+                    ? '(max-width: 1000px) calc(38vw - 24px), 250px'
+                    : '(max-width: 1000px) calc(100vw - 64px), 660px'
+                "
                 alt=""
                 :width="cover(project)!.width"
                 :height="cover(project)!.height"
+                :loading="index ? 'lazy' : undefined"
+                :fetchpriority="index ? undefined : 'high'"
                 decoding="async"
               />
               <CardClip v-if="projectClip(project)" :src="projectClip(project)!.src" />

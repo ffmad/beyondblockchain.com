@@ -46,6 +46,7 @@ const ja: typeof en = {
     byline: '・つくったのはQuentinです。',
     social: 'ソーシャルリンク',
     backToTop: 'ページの先頭へ',
+    privacy: 'プライバシーポリシー',
   },
   state: {
     loading: '{label}を読み込んでいます…',

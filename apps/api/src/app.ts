@@ -64,6 +64,7 @@ const requestLocale = (lang: unknown): Locale => (lang === 'ja' ? 'ja' : 'en');
 const localizedFields = [
   'summary',
   'description',
+  'url',
   'audience',
   'category',
   'role',
@@ -231,6 +232,10 @@ export async function createApp({ serveWeb = true, logger = true } = {}) {
         setHeaders(res, path) {
           if (path.startsWith(`${webRoot}assets/`)) {
             res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          } else {
+            // Images, clips and icons keep their names when they change, so browsers keep them for a day and
+            // check again in the background for a week after that.
+            res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
           }
         },
       }),
@@ -253,7 +258,7 @@ export async function createApp({ serveWeb = true, logger = true } = {}) {
           const slug = workSlug(path);
           const resources: InitialResources = {};
           let projects: Project[] | null = null;
-          let status = path === '/' || path === '/quentin' ? 200 : 404;
+          let status = ['/', '/quentin', '/privacy'].includes(path) ? 200 : 404;
           // The studio page and each project's own page (/work/<slug>) render from the published projects.
           if (path === '/' || slug) {
             try {
